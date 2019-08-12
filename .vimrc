@@ -12,24 +12,21 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'Shougo/echodoc.vim'
 Plugin 'octol/vim-cpp-enhanced-highlight'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'tpope/vim-fugitive'
+" Plugin 'tpope/vim-fugitive'
 " Plugin 'Yggdroot/indentLine'
 " Plugin 'chrisniael/VimIM'
-Plugin 'rking/ag.vim'
-Plugin 'DoxygenToolkit.vim'
+" Plugin 'DoxygenToolkit.vim'
 Plugin 'rhysd/vim-clang-format'
-Plugin 'a.vim'
-Plugin 'SirVer/ultisnips'
+" Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-commentary'
-Plugin 'L9'    " required by FuzzyFinder
-Plugin 'chrisniael/FuzzyFinder'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'fatih/vim-go'
 Plugin 'w0rp/ale'
-"Plugin 'ludovicchabant/vim-gutentags'
+Plugin 'tpope/vim-obsession'
+Plugin 'junegunn/fzf.vim'  " install fzf in system: pacman -S fzf
+Plugin 'ericcurtin/CurtineIncSw.vim'
+Plugin 'ludovicchabant/vim-gutentags'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -48,6 +45,7 @@ filetype plugin indent on    " required
 
 " YouCompleteMe config
 let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
+let g:ycm_confirm_extra_conf=0
 let g:ycm_auto_trigger=1
 let g:ycm_show_diagnostics_ui=1
 let g:ycm_enable_diagnostic_signs=1
@@ -66,24 +64,13 @@ let g:ycm_filetype_whitelist={'c':1, 'cpp':1, 'go':1}
 
 " echodoc config
 let g:echodoc#enable_at_startup=1
+set noshowmode  " 不显示状态
 
 " vim-cpp-enhanced-highlight config
 "let g:cpp_class_scope_highlight=0
 "let g:cpp_member_variable_highlight=0
 "let g:cpp_class_decl_highlight=0
 "let g:cpp_no_function_highlight=1
-
-" vim-airline config
-set laststatus=2
-let g:airline_powerline_fonts=1
-if &diff
-  let g:airline#extensions#tabline#enabled=0
-else
-  let g:airline#extensions#tabline#enabled=1    " disable tabline
-endif
-let g:airline#extensions#tabline#buffer_nr_show=1    " 显示buffer行号
-"let g:airline_theme="papercolor"
-"set ambiwidth=double    " When iTerm set double-width characters, set it
 
 " indentLine config
 let g:indentLine_color_term=240
@@ -98,15 +85,6 @@ let g:Vimim_map='tab_as_gi'
 let g:Vimim_punctuation=3
 let g:Vimim_shuangpin=0
 
-" ag.vim config
-cnoreabbrev Ag Ag!
-if executable('ag')
-  let g:ag_prg="ag --vimgrep --smart-case --ignore tags"
-endif
-let g:ag_working_path_mode="r"
-let g:ag_highlight=1
-let g:ag_mapping_message=0
-
 "  DoxygenToolkit.vim config
 let g:DoxygenToolkit_versionTag="@version"
 let g:DoxygenToolkit_versionString=""
@@ -117,10 +95,6 @@ let g:DoxygenToolkit_authorName="shenyu, shenyu@shenyu.me"
 " vim-clang-format config
 let g:clang_format#auto_format=0
 let g:clang_format#auto_format_on_insert_leave=0
-
-" a config
-let g:alternateExtensions_cpp="h"
-let g:alternateExtensions_h="cpp"
 
 " vim-commentary config
 autocmd FileType c,cpp setlocal commentstring=//%s
@@ -156,10 +130,46 @@ let g:go_auto_sameids=1
 autocmd FileType go nmap <Leader>i <Plug>(go-info)
 "let g:go_auto_type_info=1
 "set updatetime=100
+let g:go_null_module_warning=0
 
 
-" 不显示状态
-set noshowmode
+" gutentags搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归 "
+let g:gutentags_project_root = ['.root', '.svn', '.git', '.project']
+
+" 所生成的数据文件的名称 "
+let g:gutentags_ctags_tagfile = '.tags'
+
+" 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录 "
+let s:vim_tags = expand('~/.cache/tags')
+let g:gutentags_cache_dir = s:vim_tags
+" 检测 ~/.cache/tags 不存在就新建 "
+if !isdirectory(s:vim_tags)
+  silent! call mkdir(s:vim_tags, 'p')
+endif
+
+" 配置 ctags 的参数 "
+let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extras=+q']
+let g:gutentags_ctags_extra_args += ['--c++-kinds=+pxI']
+let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+let g:gutentags_ctags_extra_args += ['--exclude="*.json"']
+let g:gutentags_ctags_extra_args += ['--exclude="*.md']
+let g:gutentags_ctags_extra_args += ['--exclude="*.html"']
+let g:gutentags_ctags_extra_args += ['--exclude="*.log"']
+let g:gutentags_ctags_extra_args += ['--exclude="*.make"']
+let g:gutentags_ctags_extra_args += ['--exclude="*.txt"']
+let g:gutentags_ctags_extra_args += ['--exclude="*.cmake"']
+" let g:gutentags_trace = 1
+let g:gutentags_file_list_command = {
+    \  'markers': {
+         \  '.git': 'git ls-files',
+         \  '.hg': 'hg files',
+         \  }
+    \  }
+
+" powerline config
+let g:powerline_pycmd="py3"
+set laststatus=2
+set rtp+=/usr/lib/python3.7/site-packages/powerline/bindings/vim
 
 set t_Co=256
 syntax enable    " 语法高亮
@@ -167,11 +177,11 @@ colorscheme default
 set background=light    " 背景使用白色（很多主题颜色会改变背景颜色，建议在 colorscheme 之后修改）
 
 " 列标记颜色，与 colorcolumn 配置对应
-highlight ColorColumn cterm=bold ctermbg=234
+highlight ColorColumn cterm=bold ctermbg=236
 
 " 当前光标所在行颜色，与 cursorline 配置对应
-highlight CursorLine cterm=bold ctermbg=234
-highlight CursorColumn cterm=bold ctermbg=234
+highlight CursorLine cterm=bold ctermbg=236
+highlight CursorColumn cterm=bold ctermbg=236
 
 highlight Search ctermfg=0 ctermbg=11
 highlight MatchParen ctermfg=0 ctermbg=11
@@ -326,7 +336,7 @@ map <C-P> :cprevious<CR>
 
 " 自定义命令：Ctags 生成 tags 文件
 func! Ctags()
-    exec '! ctags -R --c++-kinds=+p --fields=+iaS --extras=+q --exclude="*.json" --exclude="*.md" --exclude="*.html" --exclude="*.log" --exclude="*.make" --exclude="*.txt" --exclude="*.cmake" -o .tags'
+    exec '! ctags -R --c++-kinds=+pxI --fields=+niazS --extras=+q --exclude="*.json" --exclude="*.md" --exclude="*.html" --exclude="*.log" --exclude="*.make" --exclude="*.txt" --exclude="*.cmake" -o .tags'
 endfunc
 
 set cscopetag     " 如果 tags 跳转存在多个选项，则显示列表，无则直接跳转
@@ -341,7 +351,7 @@ func! ShowInvisibles()
   set number
   "set list
   set listchars=tab:⇥\ ,eol:↲
-  set showbreak=>>>\ 
+  " set showbreak=>>>\ 
   " 初始化的时候 IndenetLine 插件还没加载，所以要判断一下
   if exists(':IndentLinesEnable')
     exec "IndentLinesEnable"
@@ -374,7 +384,7 @@ endif
 " 一键编译
 func! CompileGcc()
 	exec "w"
-	let compilecmd="!clang -std=c++14 -pthread"
+	let compilecmd="!gcc -std=c++2a -pthread -g"
 	let compileflag="-o %<.out 2> .%<.err"
 	exec compilecmd." % ".compileflag
 	exec "cfile .%<.err"
@@ -382,7 +392,7 @@ endfunc
 
 func! CompileGpp()
 	exec "w"
-	let compilecmd="!g++ -std=c++14 -pthread"
+	let compilecmd="!g++ -std=c++2a -pthread -g -fno-elide-constructors"
 	let compileflag="-o %<.out 2> .%<.err"
 	exec compilecmd." % ".compileflag
 	exec "cfile .%<.err"
@@ -463,8 +473,8 @@ nmap <Leader>r #<S-N>:%s/<C-R>=expand("<cword>")<CR>//g<Left><Left>
 autocmd FileType c,cpp nmap <Leader>g *<S-N>:YcmCompleter GoToDefinitionElseDeclaration<CR>
 autocmd FileType c,cpp nmap <silent><leader>d :YcmDiags<CR>
 
-nmap <silent><Leader>f :FufFile<CR>
-nmap <silent><Leader>b :FufBuffer<CR>
+nmap <silent><Leader>f :Files<CR>
+nmap <silent><Leader>b :Buffers<CR>
 
 " 高亮光标所在位置的单词，并使用 Ag 来搜索
 nmap <Leader>s :Ag <C-R>=expand("<cword>")<CR> 
@@ -473,7 +483,7 @@ autocmd FileType c,cpp nmap <buffer><Leader>c :ClangFormat<CR>:w<CR>
 autocmd FileType c,cpp vmap <buffer><Leader>c :ClangFormat<CR>:w<CR>
 "autocmd FileType c,cpp ClangFormatAutoEnable
 
-autocmd FileType c,cpp nmap <silent><Leader>a :A<CR>
+autocmd FileType c,cpp nmap <silent><Leader>a :call CurtineIncSw()<CR>
 autocmd FileType c,cpp imap <silent><Leader>a <ESC><Leader>a
 
 nmap <silent><Leader>x :bdelete<CR>
