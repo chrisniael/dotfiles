@@ -9,10 +9,9 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'Valloric/YouCompleteMe'
+Plugin 'ycm-core/YouCompleteMe'
 Plugin 'Shougo/echodoc.vim'
 Plugin 'octol/vim-cpp-enhanced-highlight'
-" Plugin 'tpope/vim-fugitive'
 " Plugin 'Yggdroot/indentLine'
 " Plugin 'chrisniael/VimIM'
 " Plugin 'DoxygenToolkit.vim'
@@ -27,6 +26,7 @@ Plugin 'tpope/vim-obsession'
 Plugin 'junegunn/fzf.vim'  " install fzf in system: pacman -S fzf
 Plugin 'ericcurtin/CurtineIncSw.vim'
 Plugin 'ludovicchabant/vim-gutentags'
+Plugin 'rking/ag.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -149,7 +149,7 @@ endif
 
 " 配置 ctags 的参数 "
 let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extras=+q']
-let g:gutentags_ctags_extra_args += ['--c++-kinds=+pxI']
+let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
 let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
 let g:gutentags_ctags_extra_args += ['--exclude="*.json"']
 let g:gutentags_ctags_extra_args += ['--exclude="*.md']
@@ -165,6 +165,10 @@ let g:gutentags_file_list_command = {
          \  '.hg': 'hg files',
          \  }
     \  }
+
+" ag config
+" 不自动跳转到第一个搜索结果
+cnoreabbrev Ag Ag!
 
 " powerline config
 let g:powerline_pycmd="py3"
@@ -188,7 +192,7 @@ highlight MatchParen ctermfg=0 ctermbg=11
 
 " 行号颜色
 highlight LineNr ctermfg=240
-highlight CursorLineNr ctermfg=249
+highlight CursorLineNr cterm=bold ctermfg=249
 
 " 选项窗口颜色
 highlight Pmenu ctermfg=0 ctermbg=250
@@ -336,7 +340,7 @@ map <C-P> :cprevious<CR>
 
 " 自定义命令：Ctags 生成 tags 文件
 func! Ctags()
-    exec '! ctags -R --c++-kinds=+pxI --fields=+niazS --extras=+q --exclude="*.json" --exclude="*.md" --exclude="*.html" --exclude="*.log" --exclude="*.make" --exclude="*.txt" --exclude="*.cmake" -o .tags'
+    exec '! ctags -R --c++-kinds=+px --fields=+niazS --extras=+q --tag-relative --exclude="*.json" --exclude="*.md" --exclude="*.html" --exclude="*.log" --exclude="*.make" --exclude="*.txt" --exclude="*.cmake" -o .tags'
 endfunc
 
 set cscopetag     " 如果 tags 跳转存在多个选项，则显示列表，无则直接跳转
