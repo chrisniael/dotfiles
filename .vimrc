@@ -21,12 +21,13 @@ Plugin 'tpope/vim-commentary'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'fatih/vim-go'
-Plugin 'w0rp/ale'
+" Plugin 'w0rp/ale'
 Plugin 'tpope/vim-obsession'
 Plugin 'junegunn/fzf.vim'  " install fzf in system: pacman -S fzf
 Plugin 'ericcurtin/CurtineIncSw.vim'
 Plugin 'ludovicchabant/vim-gutentags'
 Plugin 'rking/ag.vim'
+Plugin 'MTDL9/vim-log-highlighting'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -173,7 +174,7 @@ cnoreabbrev Ag Ag!
 " powerline config
 let g:powerline_pycmd="py3"
 set laststatus=2
-set rtp+=/usr/lib/python3.7/site-packages/powerline/bindings/vim
+set rtp+=/usr/lib/python3.8/site-packages/powerline/bindings/vim
 
 set t_Co=256
 syntax enable    " 语法高亮
@@ -388,7 +389,7 @@ endif
 " 一键编译
 func! CompileGcc()
 	exec "w"
-	let compilecmd="!gcc -std=c++2a -pthread -g"
+	let compilecmd="!gcc -std=c++17 -pthread -g"
 	let compileflag="-o %<.out 2> .%<.err"
 	exec compilecmd." % ".compileflag
 	exec "cfile .%<.err"
@@ -396,7 +397,7 @@ endfunc
 
 func! CompileGpp()
 	exec "w"
-	let compilecmd="!g++ -std=c++2a -pthread -g -fno-elide-constructors"
+	let compilecmd="!g++ -std=c++17 -pthread -g -fno-elide-constructors"
 	let compileflag="-o %<.out 2> .%<.err"
 	exec compilecmd." % ".compileflag
 	exec "cfile .%<.err"
