@@ -1,199 +1,50 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+" Specify a directory for plugins
+" - For Neovim: stdpath('data') . '/plugged'
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.vim/plugged')
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+" Use release branch (Recommend)
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'octol/vim-cpp-enhanced-highlight'
+" Plug 'tpope/vim-fugitive'
+" Plug 'vim-airline/vim-airline'
+Plug 'tpope/vim-commentary'
+Plug 'godlygeek/tabular'
+" set rtp+=/usr/local/opt/fzf  " If fzf installed using Homebrew
+Plug 'junegunn/fzf.vim'  " install fzf in system: pacman -S fzf
+Plug 'rking/ag.vim'
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'ycm-core/YouCompleteMe'
-Plugin 'Shougo/echodoc.vim'
-Plugin 'octol/vim-cpp-enhanced-highlight'
-" Plugin 'Yggdroot/indentLine'
-" Plugin 'chrisniael/VimIM'
-" Plugin 'DoxygenToolkit.vim'
-Plugin 'rhysd/vim-clang-format'
-" Plugin 'SirVer/ultisnips'
-Plugin 'tpope/vim-commentary'
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'fatih/vim-go'
-" Plugin 'w0rp/ale'
-Plugin 'tpope/vim-obsession'
-Plugin 'junegunn/fzf.vim'  " install fzf in system: pacman -S fzf
-Plugin 'ericcurtin/CurtineIncSw.vim'
-Plugin 'ludovicchabant/vim-gutentags'
-Plugin 'rking/ag.vim'
-Plugin 'MTDL9/vim-log-highlighting'
+" Initialize plugin system
+call plug#end()
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
-
-" YouCompleteMe config
-let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
-let g:ycm_confirm_extra_conf=0
-let g:ycm_auto_trigger=1
-let g:ycm_show_diagnostics_ui=1
-let g:ycm_enable_diagnostic_signs=1
-let g:ycm_seed_identifiers_with_syntax=1
-let g:ycm_min_num_identifier_candidate_chars=2
-set completeopt=longest,menu
-let g:ycm_add_preview_to_completeopt=0
-let g:ycm_max_num_candidates=10
-if &diff
-  let g:ycm_show_diagnostics_ui=0
-endif
-let g:ycm_use_ultisnips_completer=0
-let g:ycm_collect_identifiers_from_tags_files=0
-
-let g:ycm_filetype_whitelist={'c':1, 'cpp':1, 'go':1}
-
-" echodoc config
-let g:echodoc#enable_at_startup=1
-set noshowmode  " 不显示状态
-
-" vim-cpp-enhanced-highlight config
-"let g:cpp_class_scope_highlight=0
-"let g:cpp_member_variable_highlight=0
-"let g:cpp_class_decl_highlight=0
-"let g:cpp_no_function_highlight=1
-
-" indentLine config
-let g:indentLine_color_term=240
-let g:indentLine_char='│'
-if &diff
-  let g:indentLine_enabled = 0
-endif
-
-" VimIM config
-let g:Vimim_cloud=-1
-let g:Vimim_map='tab_as_gi'
-let g:Vimim_punctuation=3
-let g:Vimim_shuangpin=0
-
-"  DoxygenToolkit.vim config
-let g:DoxygenToolkit_versionTag="@version"
-let g:DoxygenToolkit_versionString=""
-let g:DoxygenToolkit_authorName="shenyu, shenyu@shenyu.me"
-" 新建.h .cpp文件时自动插入作者信息
-" autocmd! BufNewFile *.h,*.cpp exec "DoxAuthor"
-
-" vim-clang-format config
-let g:clang_format#auto_format=0
-let g:clang_format#auto_format_on_insert_leave=0
-
-" vim-commentary config
-autocmd FileType c,cpp setlocal commentstring=//%s
-
-" vim-go config
-"let mapleader = ","
-cnoreabbrev GoBuild GoBuild!
-cnoreabbrev GoTest GoTest!
-" run :GoBuild or :GoTestCompile based on the go file
-function! s:build_go_files()
-  let l:file = expand('%')
-  if l:file =~# '^\f\+_test\.go$'
-    call go#test#Test(1, 1)
-  elseif l:file =~# '^\f\+\.go$'
-    call go#cmd#Build(1)
-  endif
-endfunction
-
-autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
-" autocmd FileType go nmap <leader>b  :GoBuild<CR>
-autocmd FileType go nmap <leader>r  <Plug>(go-run)
-autocmd FileType go nmap <leader>t  :GoTest<CR>
-autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
-let g:go_test_timeout='10s'
-let g:go_list_type="quickfix"
-let g:go_highlight_types=1
-let g:go_highlight_extra_types=1
-let g:go_highlight_variable_declarations=1
-let g:go_highlight_fields=1
-let g:go_highlight_functions=1
-let g:go_highlight_function_calls=1
-let g:go_auto_sameids=1
-autocmd FileType go nmap <Leader>i <Plug>(go-info)
-"let g:go_auto_type_info=1
-"set updatetime=100
-let g:go_null_module_warning=0
-
-
-" gutentags搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归 "
-let g:gutentags_project_root = ['.root', '.svn', '.git', '.project']
-
-" 所生成的数据文件的名称 "
-let g:gutentags_ctags_tagfile = '.tags'
-
-" 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录 "
-let s:vim_tags = expand('~/.cache/tags')
-let g:gutentags_cache_dir = s:vim_tags
-" 检测 ~/.cache/tags 不存在就新建 "
-if !isdirectory(s:vim_tags)
-  silent! call mkdir(s:vim_tags, 'p')
-endif
-
-" 配置 ctags 的参数 "
-let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extras=+q']
-let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
-let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
-let g:gutentags_ctags_extra_args += ['--exclude="*.json"']
-let g:gutentags_ctags_extra_args += ['--exclude="*.md']
-let g:gutentags_ctags_extra_args += ['--exclude="*.html"']
-let g:gutentags_ctags_extra_args += ['--exclude="*.log"']
-let g:gutentags_ctags_extra_args += ['--exclude="*.make"']
-let g:gutentags_ctags_extra_args += ['--exclude="*.txt"']
-let g:gutentags_ctags_extra_args += ['--exclude="*.cmake"']
-" let g:gutentags_trace = 1
-let g:gutentags_file_list_command = {
-    \  'markers': {
-         \  '.git': 'git ls-files',
-         \  '.hg': 'hg files',
-         \  }
-    \  }
-
-" ag config
-" 不自动跳转到第一个搜索结果
-cnoreabbrev Ag Ag!
-
-" powerline config
-let g:powerline_pycmd="py3"
-set laststatus=2
-set rtp+=/usr/lib/python3.8/site-packages/powerline/bindings/vim
+"let g:python3_host_prog = '/usr/local/bin/python3'
 
 set t_Co=256
-syntax enable    " 语法高亮
+syntax enable  " 语法高亮
 colorscheme default
-set background=light    " 背景使用白色（很多主题颜色会改变背景颜色，建议在 colorscheme 之后修改）
+set background=light  " 背景使用白色（很多主题颜色会改变背景颜色，建议在 colorscheme 之后修改）
+set number
+
+" 设置Backspace模式
+set backspace=indent,eol,start
+
 
 " 列标记颜色，与 colorcolumn 配置对应
-highlight ColorColumn cterm=bold ctermbg=236
+highlight ColorColumn cterm=bold ctermbg=233
 
 " 当前光标所在行颜色，与 cursorline 配置对应
-highlight CursorLine cterm=bold ctermbg=236
-highlight CursorColumn cterm=bold ctermbg=236
+highlight CursorLine cterm=bold ctermbg=233
+" 当前光标所在列颜色，与 cursorcolum 配置对应
+highlight CursorColumn cterm=bold ctermbg=233
 
+" 搜索高亮的颜色
 highlight Search ctermfg=0 ctermbg=11
 highlight MatchParen ctermfg=0 ctermbg=11
 
-" 行号颜色
-highlight LineNr ctermfg=240
-highlight CursorLineNr cterm=bold ctermfg=249
+" 其他行号颜
+highlight LineNr ctermfg=240 ctermbg=233
+" 当前行号颜色
+highlight CursorLineNr cterm=bold ctermfg=250 ctermbg=233
 
 " 选项窗口颜色
 highlight Pmenu ctermfg=0 ctermbg=250
@@ -226,16 +77,32 @@ highlight FoldColumn ctermfg=0 ctermbg=250
 " 垂直分隔线颜色
 highlight VertSplit ctermfg=234
 
+
+" powerline 配置
+let g:powerline_pycmd="py3"
+set rtp+=/usr/lib/python3.8/site-packages/powerline/bindings/vim
+" set laststatus=2
+" set showtabline=2
+set noshowmode
+
+
 " 设置垂直分隔符号
 set fillchars+=vert:\ 
 
-" 突出显示当前行, 可能会导致光标移动时卡顿，不建议开启
 if &diff
   set nocursorline
   set colorcolumn=
+  set signcolumn=no
+  set cmdheight=1
+  set laststatus=2
+  set showtabline=1
 else
   set cursorline
   set colorcolumn=81
+  set signcolumn=yes
+  set cmdheight=2
+  set laststatus=2
+  set showtabline=2
 endif
 
 " 折行
@@ -341,7 +208,7 @@ map <C-P> :cprevious<CR>
 
 " 自定义命令：Ctags 生成 tags 文件
 func! Ctags()
-    exec '! ctags -R --c++-kinds=+px --fields=+niazS --extras=+q --tag-relative --exclude="*.json" --exclude="*.md" --exclude="*.html" --exclude="*.log" --exclude="*.make" --exclude="*.txt" --exclude="*.cmake" -o .tags'
+    exec '! ctags -R --c++-kinds=+pxI --fields=+niazS --extras=+q --exclude="*.json" --exclude="*.md" --exclude="*.html" --exclude="*.log" --exclude="*.make" --exclude="*.txt" --exclude="*.cmake" -o .tags'
 endfunc
 
 set cscopetag     " 如果 tags 跳转存在多个选项，则显示列表，无则直接跳转
@@ -350,46 +217,11 @@ if !exists(':Ctags')
     command! Ctags call Ctags()
 endif
 
-func! ShowInvisibles()
-  let g:show_invisibles_state=1
-  " 显示特殊字符
-  set number
-  "set list
-  set listchars=tab:⇥\ ,eol:↲
-  " set showbreak=>>>\ 
-  " 初始化的时候 IndenetLine 插件还没加载，所以要判断一下
-  if exists(':IndentLinesEnable')
-    exec "IndentLinesEnable"
-  endif
-endfunc
-
-func! ShowNoInvisibles()
-  let g:show_invisibles_state=0
-  set nonumber
-  set nolist
-  set showbreak=
-  if exists(':IndentLinesDisable')
-    exec "IndentLinesDisable"
-  endif
-endfunc
-
-func! ShowInvisiblesToggle()
-  if g:show_invisibles_state
-    call ShowNoInvisibles()
-  else
-    call ShowInvisibles()
-  endif
-endfunc
-
-call ShowInvisibles()
-if !exists(':ShowInvisiblesToggle')
-  command! ShowInvisiblesToggle call ShowInvisiblesToggle()
-endif
 
 " 一键编译
 func! CompileGcc()
 	exec "w"
-	let compilecmd="!gcc -std=c++17 -pthread -g"
+	let compilecmd="!gcc -std=c++2a -pthread -g"
 	let compileflag="-o %<.out 2> .%<.err"
 	exec compilecmd." % ".compileflag
 	exec "cfile .%<.err"
@@ -397,7 +229,7 @@ endfunc
 
 func! CompileGpp()
 	exec "w"
-	let compilecmd="!g++ -std=c++17 -pthread -g -fno-elide-constructors"
+	let compilecmd="!g++ -std=c++2a -pthread -g -fno-elide-constructors"
 	let compileflag="-o %<.out 2> .%<.err"
 	exec compilecmd." % ".compileflag
 	exec "cfile .%<.err"
@@ -464,19 +296,9 @@ endfunc
 map <Leader>j :call CompileCode()<CR>
 map <Leader>k :call RunResult()<CR>
 
-if !exists(':Build')
-    command! Build call CompileCode()
-endif
-
-if !exists(':Run')
-  command! Run call RunResult()
-endif
 
 " 高亮光标所在位置的单词，并输入全文替换的命令，替换单词代填充
 nmap <Leader>r #<S-N>:%s/<C-R>=expand("<cword>")<CR>//g<Left><Left>
-
-autocmd FileType c,cpp nmap <Leader>g *<S-N>:YcmCompleter GoToDefinitionElseDeclaration<CR>
-autocmd FileType c,cpp nmap <silent><leader>d :YcmDiags<CR>
 
 nmap <silent><Leader>f :Files<CR>
 nmap <silent><Leader>b :Buffers<CR>
@@ -484,22 +306,179 @@ nmap <silent><Leader>b :Buffers<CR>
 " 高亮光标所在位置的单词，并使用 Ag 来搜索
 nmap <Leader>s :Ag <C-R>=expand("<cword>")<CR> 
 
-autocmd FileType c,cpp nmap <buffer><Leader>c :ClangFormat<CR>:w<CR>
-autocmd FileType c,cpp vmap <buffer><Leader>c :ClangFormat<CR>:w<CR>
-"autocmd FileType c,cpp ClangFormatAutoEnable
-
 autocmd FileType c,cpp nmap <silent><Leader>a :call CurtineIncSw()<CR>
 autocmd FileType c,cpp imap <silent><Leader>a <ESC><Leader>a
 
 nmap <silent><Leader>x :bdelete<CR>
 
-" ALE 配置
-if &diff
-  let g:ale_enabled = 0
-else
-  " let g:ale_c_parse_compile_commands = 1
-  " let g:ale_linters = { 'cpp': ['cpplint', 'g++'], 'c': ['cpplint', 'gcc'] }
-  let g:ale_linters = { 'cpp': ['cpplint'], 'c': ['cpplint'] }
-  " let g:ale_set_loclist = 0
-  " let g:ale_set_quickfix = 1
-endif
+
+
+
+
+
+
+
+
+
+
+
+" if hidden is not set, TextEdit might fail.
+set hidden
+
+" Some servers have issues with backup files, see #649
+set nobackup
+set nowritebackup
+
+" Better display for messages
+" set cmdheight=2
+
+" You will have bad experience for diagnostic messages when it's default 4000.
+set updatetime=300
+
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+
+" always show signcolumns
+" set signcolumn=yes
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" Or use `complete_info` if your vim support it, like:
+" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Create mappings for function text object, requires document symbols feature of languageserver.
+xmap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap if <Plug>(coc-funcobj-i)
+omap af <Plug>(coc-funcobj-a)
+
+" Use <C-d> for select selections ranges, needs server support, like: coc-tsserver, coc-python
+nmap <silent> <C-d> <Plug>(coc-range-select)
+xmap <silent> <C-d> <Plug>(coc-range-select)
+
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" Use `:Fold` to fold current buffer
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" use `:OR` for organize import of current buffer
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" Add status line support, for integration with other plugin, checkout `:h coc-status`
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+" Using CocList
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+
+
+function! s:EditAlternate()
+    let l:alter = CocRequest('clangd', 'textDocument/switchSourceHeader', {'uri': 'file://'.expand("%:p")})
+    " remove file:/// from response
+    let l:alter = substitute(l:alter, "file://", "", "")
+    execute 'edit ' . l:alter
+endfunction
+autocmd FileType c,cpp nmap <leader>a :call <SID>EditAlternate()<CR>
+
+
+" vim-airline 配置
+" 设置为双字宽显示，否则无法完整显示如:☆
+" set ambiwidth=double
+" 总是显示状态栏 
+" let laststatus = 2
+let g:airline_powerline_fonts = 1   " 使用powerline打过补丁的字体
+let g:airline_theme="dark"      " 设置主题
+" 开启tabline
+let g:airline#extensions#tabline#enabled = 1      "tabline中当前buffer两端的分隔字符
+let g:airline#extensions#tabline#left_sep = ' '   "tabline中未激活buffer两端的分隔字符
+let g:airline#extensions#tabline#left_alt_sep = '|'      "tabline中buffer显示编号
+let g:airline#extensions#tabline#buffer_nr_show = 1 
+" 映射切换buffer的键位
+nnoremap [b :bp<CR>
+nnoremap ]b :bn<CR>
+
+
+" ag 配置
+" 不自动跳转到第一个搜索结果
+cnoreabbrev Ag Ag!
