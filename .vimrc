@@ -126,7 +126,8 @@ else
   autocmd FileType c,cpp set colorcolumn=81
 endif
 
-
+" vimdiff 折行
+au VimEnter * if &diff | execute 'windo set wrap' | endif
 " 折行
 set wrap
 
