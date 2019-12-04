@@ -3,16 +3,24 @@
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
 
-" Use release branch (Recommend)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'octol/vim-cpp-enhanced-highlight'
-" Plug 'tpope/vim-fugitive'
-" Plug 'vim-airline/vim-airline'
+if has("nvim")
+  Plug 'tpope/vim-fugitive'
+  Plug 'vim-airline/vim-airline'
+  Plug 'vim-airline/vim-airline-themes'
+endif
 Plug 'tpope/vim-commentary'
 Plug 'godlygeek/tabular'
-" set rtp+=/usr/local/opt/fzf  " If fzf installed using Homebrew
+Plug 'plasticboy/vim-markdown'
+if has("mac")
+  set rtp+=/usr/local/opt/fzf  " If fzf installed using Homebrew (macOS)
+else
+  set rtp+=/usr/local/opt/fzf  " If fzf installed using Homebrew (macOS)
+endif
 Plug 'junegunn/fzf.vim'  " install fzf in system: pacman -S fzf
 Plug 'rking/ag.vim'
+Plug 'MTDL9/vim-log-highlighting'
 
 " Initialize plugin system
 call plug#end()
@@ -78,12 +86,27 @@ highlight FoldColumn ctermfg=0 ctermbg=250
 highlight VertSplit ctermfg=234
 
 
-" powerline 配置
-let g:powerline_pycmd="py3"
-set rtp+=/usr/lib/python3.8/site-packages/powerline/bindings/vim
-" set laststatus=2
-" set showtabline=2
-set noshowmode
+if has("nvim")
+  " vim-airline 配置
+  " set laststatus=2  " 底部显示状态栏, 1:不显示, 2:显示
+  let g:airline_powerline_fonts = 1   " 使用 powerline 符号
+  let g:airline_theme="powerlineish"  " 设置主题
+  " 开启tabline
+  let g:airline#extensions#tabline#enabled = 0  " 不显示 buffer 标签页
+  let g:airline#extensions#tabline#left_sep = ' '
+  let g:airline#extensions#tabline#left_alt_sep = '|'
+  let g:airline#extensions#tabline#buffer_nr_show = 1  " 实现 buffer 序号
+  " 映射切换buffer的键位
+  " nnoremap [b :bp<CR>
+  " nnoremap ]b :bn<CR>
+else
+  " powerline 配置
+  let g:powerline_pycmd="py3"
+  set rtp+=/usr/lib/python3.8/site-packages/powerline/bindings/vim
+  " set laststatus=2  " 底部显示状态栏, 1:不显示, 2:显示
+  set showtabline=1  " 顶部显示 bufs 栏, 1:不显示, 2:显示
+  set noshowmode
+endif
 
 
 " 设置垂直分隔符号
@@ -95,15 +118,14 @@ if &diff
   set signcolumn=no
   set cmdheight=1
   set laststatus=2
-  set showtabline=1
 else
   set cursorline
-  set colorcolumn=81
   set signcolumn=yes
   set cmdheight=2
   set laststatus=2
-  set showtabline=2
+  autocmd FileType c,cpp set colorcolumn=81
 endif
+
 
 " 折行
 set wrap
@@ -220,77 +242,77 @@ endif
 
 " 一键编译
 func! CompileGcc()
-	exec "w"
-	let compilecmd="!gcc -std=c++2a -pthread -g"
-	let compileflag="-o %<.out 2> .%<.err"
-	exec compilecmd." % ".compileflag
-	exec "cfile .%<.err"
+  exec "w"
+  let compilecmd="!gcc -std=c++2a -pthread -g"
+  let compileflag="-o %<.out 2> .%<.err"
+  exec compilecmd." % ".compileflag
+  exec "cfile .%<.err"
 endfunc
 
 func! CompileGpp()
-	exec "w"
-	let compilecmd="!g++ -std=c++2a -pthread -g -fno-elide-constructors"
-	let compileflag="-o %<.out 2> .%<.err"
-	exec compilecmd." % ".compileflag
-	exec "cfile .%<.err"
+  exec "w"
+  let compilecmd="!g++ -std=c++2a -pthread -g -fno-elide-constructors"
+  let compileflag="-o %<.out 2> .%<.err"
+  exec compilecmd." % ".compileflag
+  exec "cfile .%<.err"
 endfunc
 
 func! RunPython()
-	exec "w"
-	exec "!python %"
+  exec "w"
+  exec "!python %"
 endfunc
 
 func! CompileJava()
-	exec "w"
-	exec "!javac %"
+  exec "w"
+  exec "!javac %"
 endfunc
 
 func! RunShell()
-	exec "w"
-	exec "!bash %"
+  exec "w"
+  exec "!bash %"
 endfunc
 
 func! RunLua()
-	exec "w"
-	exec "!lua %"
+  exec "w"
+  exec "!lua %"
 endfunc
 
 func! CompileCode()
-	exec "w"
-	if &filetype == "cpp"
-		exec "call CompileGpp()"
-	elseif &filetype == "cc"
-		exec "call CompileGpp()"
-	elseif &filetype == "c"
-		exec "call CompileGcc()"
-	elseif &filetype == "python"
-		exec "call RunPython()"
-	elseif &filetype == "java"
-		exec "call CompileJava()"
-	elseif &filetype == "sh"
-		exec "call RunShell()"
-	elseif &filetype == "lua"
-		exec "call RunLua()"
-	endif
+  exec "w"
+  if &filetype == "cpp"
+    exec "call CompileGpp()"
+  elseif &filetype == "cc"
+    exec "call CompileGpp()"
+  elseif &filetype == "c"
+    exec "call CompileGcc()"
+  elseif &filetype == "python"
+    exec "call RunPython()"
+  elseif &filetype == "java"
+    exec "call CompileJava()"
+  elseif &filetype == "sh"
+    exec "call RunShell()"
+  elseif &filetype == "lua"
+    exec "call RunLua()"
+  endif
 endfunc
 
 func! RunResult()
-	exec "w"
-	if &filetype == "cpp"
-		exec "! ./%<.out"
-	elseif &filetype == "cc"
-		exec "! ./%<.out"
-	elseif &filetype == "c"
-		exec "! ./%<.out"
-	elseif &filetype == "python"
-		exec "call RunPython()"
-	elseif &filetype == "java"
-		exec "!java %<"
-	elseif &filetype == "sh"
-		exec "call RunShell()"
-	elseif &filetype == "lua"
-		exec "call RunLua()"
-	endif
+  exec "w"
+  if &filetype == "cpp"
+    exec "! ./%<.out"
+  elseif &filetype == "cc"
+    exec "! ./%<.out"
+  elseif &filetype == "c"
+    exec "! ./%<.out"
+  elseif &filetype == "python"
+    exec "call RunPython()"
+  elseif &filetype == "java"
+    exec "!java %<"
+  elseif &filetype == "sh"
+    exec "call RunShell()"
+  elseif &filetype == "lua"
+    exec "call RunLua()"
+  endif
 endfunc
 
 map <Leader>j :call CompileCode()<CR>
@@ -304,7 +326,7 @@ nmap <silent><Leader>f :Files<CR>
 nmap <silent><Leader>b :Buffers<CR>
 
 " 高亮光标所在位置的单词，并使用 Ag 来搜索
-nmap <Leader>s :Ag <C-R>=expand("<cword>")<CR> 
+nmap <Leader>s :Ag <C-R>=expand("<cword>")<CR>
 
 autocmd FileType c,cpp nmap <silent><Leader>a :call CurtineIncSw()<CR>
 autocmd FileType c,cpp imap <silent><Leader>a <ESC><Leader>a
@@ -452,33 +474,25 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 
-
+" coc.nvim c/c++ 头文件跳转
+" llvm 9.0 里 .h/.cpp 文件结构复杂时可能不能正常使用
+" llvm 10.0 修复了这个 bug, 等发布吧
 function! s:EditAlternate()
     let l:alter = CocRequest('clangd', 'textDocument/switchSourceHeader', {'uri': 'file://'.expand("%:p")})
     " remove file:/// from response
-    let l:alter = substitute(l:alter, "file://", "", "")
-    execute 'edit ' . l:alter
+    if l:alter != v:null
+      let l:alter = substitute(l:alter, "file://", "", "")
+      execute 'edit ' . l:alter
+    endif
 endfunction
-autocmd FileType c,cpp nmap <leader>a :call <SID>EditAlternate()<CR>
+autocmd FileType c,cpp nmap <silent> <leader>a :call <SID>EditAlternate()<CR>
 
-
-" vim-airline 配置
-" 设置为双字宽显示，否则无法完整显示如:☆
-" set ambiwidth=double
-" 总是显示状态栏 
-" let laststatus = 2
-let g:airline_powerline_fonts = 1   " 使用powerline打过补丁的字体
-let g:airline_theme="dark"      " 设置主题
-" 开启tabline
-let g:airline#extensions#tabline#enabled = 1      "tabline中当前buffer两端的分隔字符
-let g:airline#extensions#tabline#left_sep = ' '   "tabline中未激活buffer两端的分隔字符
-let g:airline#extensions#tabline#left_alt_sep = '|'      "tabline中buffer显示编号
-let g:airline#extensions#tabline#buffer_nr_show = 1 
-" 映射切换buffer的键位
-nnoremap [b :bp<CR>
-nnoremap ]b :bn<CR>
 
 
 " ag 配置
 " 不自动跳转到第一个搜索结果
 cnoreabbrev Ag Ag!
+
+" vim-commentary 配置
+autocmd FileType c,cpp setlocal commentstring=//%s
+
