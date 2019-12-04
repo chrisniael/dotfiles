@@ -1,0 +1,36 @@
+[user]
+  name = shenyu
+  email = shenyu@shenyu.me
+[color]
+  branch = auto
+  diff = auto
+  grep = auto
+  interactive = auto
+  status = auto
+  showbranch = auto
+  ui = auto
+  decorate = auto
+[core]
+  editor = nvim
+[credential]
+  helper = store
+[alias]
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+	lga = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all --
+[merge]
+	tool = vimdiff
+[mergetool "vimdiff"]
+	path = nvim
+[mergetool]
+  keepBackup = false
+[mergetool]
+  prompt = true
+[diff]
+  tool = vimdiff
+[difftool]
+  prompt = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
