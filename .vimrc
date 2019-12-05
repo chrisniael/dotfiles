@@ -29,6 +29,10 @@ colorscheme default
 set background=light  " 背景使用白色（很多主题颜色会改变背景颜色，建议在 colorscheme 之后修改）
 set number
 
+" 打开 terminal 时关闭行号和符号列, 并自动进入 insert 模式
+" 退出 terminal: <C-\><C-n>
+au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
+
 " 设置Backspace模式
 set backspace=indent,eol,start
 
@@ -457,7 +461,7 @@ if !&diff
 
   " Using CocList
   " Show all diagnostics
-  nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+  nnoremap <silent> <space>a  :<C-u>CocList --normal diagnostics<cr>
   " Manage extensions
   nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
   " Show commands
@@ -485,7 +489,7 @@ if !&diff
       execute 'edit ' . l:alter
     endif
   endfunction
-  autocmd FileType c,cpp nmap <silent> <leader>a :call <SID>EditAlternate()<CR>
+  autocmd FileType c,cpp nmap <silent> <leader>h :call <SID>EditAlternate()<CR>
 
   " coc-lists 配置
   " -A : 自动预览模式
@@ -494,6 +498,40 @@ if !&diff
   " cnoreabbrev CocList CocList --number-select
   nnoremap <silent> <space>f  :<C-u>CocList files<cr>
   nnoremap <silent> <space>b  :<C-u>CocList buffers<cr>
+  nnoremap <space>g  :<C-u>CocList grep 
+  
+  " 在当前 buffer 中搜索光标所在单词
+  nnoremap <silent> <space>w  :exe 'CocList -I --normal --input='.expand('<cword>').' words'<CR> 
+  
+  " 搜索选择的文本
+  vnoremap <leader>g :<C-u>call <SID>GrepFromSelected(visualmode())<CR>
+  nnoremap <leader>g :<C-u>set operatorfunc=<SID>GrepFromSelected<CR>g@
+  function! s:GrepFromSelected(type)
+    let saved_unnamed_register = @@
+    if a:type ==# 'v'
+      normal! `<v`>y
+    elseif a:type ==# 'char'
+      normal! `[v`]y
+    else
+      return
+    endif
+    let word = substitute(@@, '\n$', '', 'g')
+    let word = escape(word, '| ')
+    let @@ = saved_unnamed_register
+    execute 'CocList grep '.word
+  endfunction
+
+  " grep 光标所在单词
+  command! -nargs=+ -complete=custom,s:GrepArgs Rg exe 'CocList grep '.<q-args>
+
+  function! s:GrepArgs(...)
+    let list = ['-S', '-smartcase', '-i', '-ignorecase', '-w', '-word',
+          \ '-e', '-regex', '-u', '-skip-vcs-ignores', '-t', '-extension']
+    return join(list, "\n")
+  endfunction
+
+  " Keymapping for grep word under cursor with interactive mode
+  nnoremap <silent> <Leader>cf :exe 'CocList -I --input='.expand('<cword>').' grep'<CR>
 
   " coc-yank 配置
   nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
