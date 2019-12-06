@@ -8,11 +8,12 @@ if !&diff
 endif
 Plug 'morhetz/gruvbox'
 Plug 'octol/vim-cpp-enhanced-highlight'
-if has("nvim")
-  Plug 'tpope/vim-fugitive'
-  Plug 'vim-airline/vim-airline'
-  Plug 'vim-airline/vim-airline-themes'
-endif
+
+" vim-fugitive, vim-airline, vim-airline-themes 组合安装
+Plug 'tpope/vim-fugitive'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
 Plug 'tpope/vim-commentary'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
@@ -21,12 +22,10 @@ Plug 'MTDL9/vim-log-highlighting'
 " Initialize plugin system
 call plug#end()
 
-"let g:python3_host_prog = '/usr/local/bin/python3'
-
 set t_Co=256
 syntax enable  " 语法高亮
 colorscheme gruvbox 
-" set background=light  " 背景使用白色（很多主题颜色会改变背景颜色，建议在 colorscheme 之后修改）
+set background=dark
 set number
 
 if has("termguicolors")
@@ -46,30 +45,23 @@ if has("nvim")
   au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
 endif
 
-" 设置Backspace模式
+" 设置 Backspace 模式
 set backspace=indent,eol,start
 
 
-if has("nvim")
-  " vim-airline 配置
-  " set laststatus=2  " 底部显示状态栏, 1:不显示, 2:显示
-  let g:airline_powerline_fonts = 1   " 使用 powerline 符号
-  let g:airline_theme="gruvbox"  " 设置主题
-  " 开启tabline
-  let g:airline#extensions#tabline#enabled = 0  " 不显示 buffer 标签页
-  let g:airline#extensions#tabline#left_sep = ' '
-  let g:airline#extensions#tabline#left_alt_sep = '|'
-  let g:airline#extensions#tabline#buffer_nr_show = 1  " 实现 buffer 序号
-  " 映射切换buffer的键位
-  " nnoremap [b :bp<CR>
-  " nnoremap ]b :bn<CR>
-else
-  " powerline 配置
-  let g:powerline_pycmd="py3"
-  set rtp+=/usr/lib/python3.8/site-packages/powerline/bindings/vim
-  " set laststatus=2  " 底部显示状态栏, 1:不显示, 2:显示
-  set showtabline=1  " 顶部显示 bufs 栏, 1:不显示, 2:显示
-  set noshowmode
+" vim-airline 配置
+" set laststatus=2  " 底部显示状态栏, 1:不显示, 2:显示
+let g:airline_powerline_fonts = 1   " 使用 powerline 符号
+let g:airline_theme="gruvbox"  " 设置主题
+" 开启tabline
+let g:airline#extensions#tabline#enabled = 0  " 不显示 buffer 标签页
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#buffer_nr_show = 1  " 实现 buffer 序号
+" 切换 buffer 快捷键, 开启 buffer 标签页才会生效
+if g:airline#extensions#tabline#enabled == 1
+  nnoremap <silent> [b :bp<CR>
+  nnoremap <silent> ]b :bn<CR>
 endif
 
 
