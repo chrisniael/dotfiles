@@ -22,13 +22,14 @@ Plug 'MTDL9/vim-log-highlighting'
 " Initialize plugin system
 call plug#end()
 
-set t_Co=256
+set t_Co=256  " 支持 xterm-256color
 syntax enable  " 语法高亮
 colorscheme gruvbox 
 set background=dark
 set number
 
-if has("termguicolors")
+function! s:enable_true_color()
+  if has("termguicolors")
     " fix bug for vim
     if !has("nvim")
       set t_8f=[38;2;%lu;%lu;%lum
@@ -37,6 +38,19 @@ if has("termguicolors")
 
     " enable true color
     set termguicolors
+  endif
+endfunction
+
+" 不支持 true color 的 terminal : macOS Terminal
+" 支持 true color 的 terminal : iTerm2, Mintty, PuTTY
+" 暂时没有很好的方法判断 terminal 是否支持 true color
+" 暂时这样配置兼容 macOS 上的 Terminal 和 iTerm2
+if has("mac")
+  if $COLORTERM == 'truecolor'
+    call s:enable_true_color()
+  endif
+else
+  call s:enable_true_color()
 endif
 
 if has("nvim")
@@ -51,13 +65,13 @@ set backspace=indent,eol,start
 
 " vim-airline 配置
 " set laststatus=2  " 底部显示状态栏, 1:不显示, 2:显示
-let g:airline_powerline_fonts = 1   " 使用 powerline 符号
+let g:airline_powerline_fonts=1   " 使用 powerline 符号
 let g:airline_theme="gruvbox"  " 设置主题
 " 开启tabline
-let g:airline#extensions#tabline#enabled = 0  " 不显示 buffer 标签页
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline#extensions#tabline#buffer_nr_show = 1  " 实现 buffer 序号
+let g:airline#extensions#tabline#enabled=0  " 不显示 buffer 标签页
+let g:airline#extensions#tabline#left_sep=' '
+let g:airline#extensions#tabline#left_alt_sep='|'
+let g:airline#extensions#tabline#buffer_nr_show=1  " 实现 buffer 序号
 " 切换 buffer 快捷键, 开启 buffer 标签页才会生效
 if g:airline#extensions#tabline#enabled == 1
   nnoremap <silent> [b :bp<CR>
