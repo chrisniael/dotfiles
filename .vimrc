@@ -65,13 +65,13 @@ set backspace=indent,eol,start
 
 " vim-airline 配置
 " set laststatus=2  " 底部显示状态栏, 1:不显示, 2:显示
-let g:airline_powerline_fonts=1   " 使用 powerline 符号
-let g:airline_theme="gruvbox"  " 设置主题
+let g:airline_powerline_fonts = 1   " 使用 powerline 符号
+let g:airline_theme = "gruvbox"  " 设置主题
 " 开启tabline
-let g:airline#extensions#tabline#enabled=0  " 不显示 buffer 标签页
-let g:airline#extensions#tabline#left_sep=' '
-let g:airline#extensions#tabline#left_alt_sep='|'
-let g:airline#extensions#tabline#buffer_nr_show=1  " 实现 buffer 序号
+let g:airline#extensions#tabline#enabled = 0  " 不显示 buffer 标签页
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#buffer_nr_show = 1  " 实现 buffer 序号
 " 切换 buffer 快捷键, 开启 buffer 标签页才会生效
 if g:airline#extensions#tabline#enabled == 1
   nnoremap <silent> [b :bp<CR>
@@ -336,11 +336,15 @@ if !&diff
   " Use <c-space> to trigger completion.
   inoremap <silent><expr> <c-space> coc#refresh()
 
-  " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+  " Use <cr> to confirm completion when you have selected, `<C-g>u` means break undo chain at current position.
   " Coc only does snippet and additional edit on confirm.
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+  inoremap <expr> <cr> pumvisible() && coc#_selected() ? "\<C-y>" : "\<C-g>u\<CR>"
   " Or use `complete_info` if your vim support it, like:
   " inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+
+  " Use <C-n>/<C-p> jump to next/previous placeholder.
+  let g:coc_snippet_next = '<C-n>'
+  let g:coc_snippet_prev = '<C-p>'
 
   " Use `[g` and `]g` to navigate diagnostics
   nmap <silent> [g <Plug>(coc-diagnostic-prev)
