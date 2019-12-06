@@ -15,7 +15,6 @@ endif
 Plug 'tpope/vim-commentary'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
-Plug 'rking/ag.vim'
 Plug 'MTDL9/vim-log-highlighting'
 
 " Initialize plugin system
@@ -29,9 +28,11 @@ colorscheme default
 set background=light  " 背景使用白色（很多主题颜色会改变背景颜色，建议在 colorscheme 之后修改）
 set number
 
-" 打开 terminal 时关闭行号和符号列, 并自动进入 insert 模式
-" 退出 terminal: <C-\><C-n>
-au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
+if has("nvim")
+  " 打开 terminal 时关闭行号和符号列, 并自动进入 insert 模式
+  " 退出 terminal: <C-\><C-n>
+  au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
+endif
 
 " 设置Backspace模式
 set backspace=indent,eol,start
@@ -60,7 +61,7 @@ highlight CursorLineNr cterm=bold ctermfg=250 ctermbg=233
 
 " 选项窗口颜色
 highlight Pmenu ctermfg=0 ctermbg=255
-highlight PmenuSel ctermfg=0 ctermbg=4
+highlight PmenuSel ctermfg=0 ctermbg=33
 highlight PmenuThumb ctermbg=248
 highlight PmenuSbar ctermbg=255
 
@@ -339,9 +340,6 @@ map <Leader>k :call RunResult()<CR>
 " 高亮光标所在位置的单词，并输入全文替换的命令，替换单词代填充
 nmap <Leader>r #<S-N>:%s/<C-R>=expand("<cword>")<CR>//g<Left><Left>
 
-" 高亮光标所在位置的单词，并使用 Ag 来搜索
-nmap <Leader>s :Ag <C-R>=expand("<cword>")<CR>
-
 nmap <silent><Leader>x :bdelete<CR>
 
 
@@ -539,10 +537,6 @@ if !&diff
 
 endif  " if !&vim
 
-
-" ag 配置
-" 不自动跳转到第一个搜索结果
-cnoreabbrev Ag Ag!
 
 " vim-commentary 配置
 autocmd FileType c,cpp setlocal commentstring=//%s
