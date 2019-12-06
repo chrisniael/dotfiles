@@ -41,5 +41,9 @@
         "-background-index"
       ]
     }
-  }
+  },
+  "list.insertMappings": {
+		"<C-n>": "normal:j",
+		"<C-p>": "normal:k"
+	}
 }
