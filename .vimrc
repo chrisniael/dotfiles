@@ -6,6 +6,7 @@ call plug#begin('~/.vim/plugged')
 if !&diff
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
+Plug 'morhetz/gruvbox'
 Plug 'octol/vim-cpp-enhanced-highlight'
 if has("nvim")
   Plug 'tpope/vim-fugitive'
@@ -24,9 +25,20 @@ call plug#end()
 
 set t_Co=256
 syntax enable  " 语法高亮
-colorscheme default
-set background=light  " 背景使用白色（很多主题颜色会改变背景颜色，建议在 colorscheme 之后修改）
+colorscheme gruvbox 
+" set background=light  " 背景使用白色（很多主题颜色会改变背景颜色，建议在 colorscheme 之后修改）
 set number
+
+if has("termguicolors")
+    " fix bug for vim
+    if !has("nvim")
+      set t_8f=[38;2;%lu;%lu;%lum
+      set t_8b=[48;2;%lu;%lu;%lum
+    endif
+
+    " enable true color
+    set termguicolors
+endif
 
 if has("nvim")
   " 打开 terminal 时关闭行号和符号列, 并自动进入 insert 模式
@@ -38,75 +50,11 @@ endif
 set backspace=indent,eol,start
 
 
-" 列标记颜色，与 colorcolumn 配置对应
-highlight ColorColumn cterm=bold ctermbg=233
-
-" 当前光标所在行颜色，与 cursorline 配置对应
-if &diff
-  highlight CursorLine cterm=none ctermbg=none
-else
-  highlight CursorLine cterm=bold ctermbg=233
-endif
-" 当前光标所在列颜色，与 cursorcolum 配置对应
-highlight CursorColumn cterm=bold ctermbg=233
-
-" 搜索高亮的颜色
-highlight Search ctermfg=0 ctermbg=11
-highlight MatchParen ctermfg=0 ctermbg=11
-
-" 其他行号颜
-highlight LineNr ctermfg=240 ctermbg=233
-" 当前行号颜色
-highlight CursorLineNr cterm=bold ctermfg=250 ctermbg=233
-
-" 选项窗口颜色
-highlight Pmenu ctermfg=0 ctermbg=255
-highlight PmenuSel ctermfg=0 ctermbg=33
-highlight PmenuThumb ctermbg=248
-highlight PmenuSbar ctermbg=255
-
-" 错误提示颜色
-highlight Error ctermfg=15 ctermbg=1
-highlight SpellBad ctermfg=255 ctermbg=1
-
-" 与 signcolumn 对应
-highlight SignColumn ctermfg=240 ctermbg=233
-
-" 选择块颜色
-highlight Visual cterm=bold ctermbg=236
-
-" 特殊字符颜色
-highlight NonText ctermfg=240
-highlight SpecialKey ctermfg=240
-
-" 差异比较颜色
-highlight DiffAdd ctermfg=0 ctermbg=81
-highlight DiffChange ctermfg=0 ctermbg=225
-highlight DiffDelete ctermfg=0 ctermbg=236
-highlight DiffText cterm=none ctermfg=0 ctermbg=9
-
-" 折叠框颜色
-highlight Folded ctermfg=0 ctermbg=250
-highlight FoldColumn cterm=bold ctermfg=0 ctermbg=250
-
-" 垂直分隔线颜色
-highlight VertSplit ctermfg=234
-
-
-if !&diff
-  " coc-lists 边栏颜色
-  highlight FoldColumn ctermfg=255 ctermbg=233
-
-  " coc.nvim 高亮当前缓冲区相同的变量
-  highlight CocHighlightText ctermbg=238
-endif
-
-
 if has("nvim")
   " vim-airline 配置
   " set laststatus=2  " 底部显示状态栏, 1:不显示, 2:显示
   let g:airline_powerline_fonts = 1   " 使用 powerline 符号
-  let g:airline_theme="powerlineish"  " 设置主题
+  let g:airline_theme="gruvbox"  " 设置主题
   " 开启tabline
   let g:airline#extensions#tabline#enabled = 0  " 不显示 buffer 标签页
   let g:airline#extensions#tabline#left_sep = ' '
@@ -190,6 +138,7 @@ set smarttab
 
 " GoLang 缩进符用 Tab
 autocmd BufNewFile,BufRead *.go setlocal tabstop=4 shiftwidth=4
+autocmd BufNewFile,BufRead *.json setlocal tabstop=4 shiftwidth=4
 
 " 设置匹配模式，例如当光标位于一个左括号上时，会高亮相应的那个右括号
 set showmatch
