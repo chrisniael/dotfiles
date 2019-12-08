@@ -22,6 +22,9 @@ Plug 'MTDL9/vim-log-highlighting'
 " Initialize plugin system
 call plug#end()
 
+" 设置 gruvbox 主题 contrast 程度 (得放在 colorscheme 设置之前) : soft, medium (default), hard
+let g:gruvbox_contrast_dark = 'hard'
+let g:gruvbox_contrast_light = 'hard'
 set t_Co=256  " 支持 xterm-256color
 syntax enable  " 语法高亮
 colorscheme gruvbox 
