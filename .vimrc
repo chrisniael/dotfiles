@@ -23,11 +23,11 @@ Plug 'MTDL9/vim-log-highlighting'
 call plug#end()
 
 " 设置 gruvbox 主题 contrast 程度 (得放在 colorscheme 设置之前) : soft, medium (default), hard
-let g:gruvbox_contrast_dark = 'hard'
-let g:gruvbox_contrast_light = 'hard'
+" let g:gruvbox_contrast_dark = 'hard'
+" let g:gruvbox_contrast_light = 'hard'
 set t_Co=256  " 支持 xterm-256color
 syntax enable  " 语法高亮
-colorscheme gruvbox 
+colorscheme gruvbox
 set background=dark
 set number
 
@@ -219,7 +219,7 @@ endif
 " 一键编译
 func! CompileGcc()
   exec "w"
-  let compilecmd="!gcc -std=c++2a -pthread -g"
+  let compilecmd="!gcc -std=c++17 -pthread -g"
   let compileflag="-o %<.out 2> .%<.err"
   exec compilecmd." % ".compileflag
   exec "cfile .%<.err"
@@ -227,7 +227,7 @@ endfunc
 
 func! CompileGpp()
   exec "w"
-  let compilecmd="!g++ -std=c++2a -pthread -g -fno-elide-constructors"
+  let compilecmd="!g++ -std=c++17 -pthread -g -fno-elide-constructors"
   let compileflag="-o %<.out 2> .%<.err"
   exec compilecmd." % ".compileflag
   exec "cfile .%<.err"
@@ -458,11 +458,11 @@ if !&diff
   " cnoreabbrev CocList CocList --number-select
   nnoremap <silent> <space>f  :<C-u>CocList files<cr>
   nnoremap <silent> <space>b  :<C-u>CocList buffers<cr>
-  nnoremap <space>g  :<C-u>CocList grep 
-  
+  nnoremap <space>g  :<C-u>CocList grep
+
   " 在当前 buffer 中搜索光标所在单词
-  nnoremap <silent> <space>w  :exe 'CocList -I --normal --input='.expand('<cword>').' words'<CR> 
-  
+  nnoremap <silent> <space>w  :exe 'CocList -I --normal --input='.expand('<cword>').' words'<CR>
+
   " 搜索选择的文本
   vnoremap <leader>g :<C-u>call <SID>GrepFromSelected(visualmode())<CR>
   nnoremap <leader>g :<C-u>set operatorfunc=<SID>GrepFromSelected<CR>g@
