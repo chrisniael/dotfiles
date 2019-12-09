@@ -296,9 +296,9 @@ map <Leader>k :call RunResult()<CR>
 
 
 " 高亮光标所在位置的单词，并输入全文替换的命令，替换单词代填充
-nmap <Leader>r #<S-N>:%s/<C-R>=expand("<cword>")<CR>//g<Left><Left>
+nmap <leader>rp #<S-N>:%s/<C-R>=expand("<cword>")<CR>//g<Left><Left>
 
-nmap <silent><Leader>x :bdelete<CR>
+nmap <silent><leader>x :bdelete<CR>
 
 
 
@@ -378,7 +378,7 @@ if !&diff
 
   " Remap for format selected region
   xmap <leader>f  <Plug>(coc-format-selected)
-  nmap <leader>f  <Plug>(coc-format-selected)
+  nmap <leader>f  :call CocAction('format')<CR>
 
   augroup mygroup
     autocmd!
