@@ -345,9 +345,9 @@ if !&diff
   " Or use `complete_info` if your vim support it, like:
   " inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 
-  " Use <C-n>/<C-p> jump to next/previous placeholder.
-  let g:coc_snippet_next = '<C-n>'
-  let g:coc_snippet_prev = '<C-p>'
+  " Use <C-h>/<C-l> jump to next/previous placeholder.
+  let g:coc_snippet_next = '<C-h>'
+  let g:coc_snippet_prev = '<C-l>'
 
   " Use `[g` and `]g` to navigate diagnostics
   nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -404,8 +404,8 @@ if !&diff
   omap af <Plug>(coc-funcobj-a)
 
   " Use <C-d> for select selections ranges, needs server support, like: coc-tsserver, coc-python
-  nmap <silent> <C-d> <Plug>(coc-range-select)
-  xmap <silent> <C-d> <Plug>(coc-range-select)
+  " nmap <silent> <C-d> <Plug>(coc-range-select)
+  " xmap <silent> <C-d> <Plug>(coc-range-select)
 
   " Use `:Format` to format current buffer
   command! -nargs=0 Format :call CocAction('format')
