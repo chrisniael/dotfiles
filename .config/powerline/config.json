@@ -17,7 +17,7 @@
 			"theme": "default"
 		},
 		"shell": {
-			"colorscheme": "default",
+			"colorscheme": "gruvbox_dark",
 			"theme": "default",
 			"local_themes": {
 				"continuation": "continuation",
