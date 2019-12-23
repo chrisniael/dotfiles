@@ -1,0 +1,4 @@
+# Logitech MX Master 2S thumb button
+"dbus-send --session --type=method_call --dest=org.gnome.Shell /org/gnome/Shell org.gnome.Shell.Eval string:'Main.overview.toggle();'"
+    m:0xc + c:23
+    Control+Alt + Tab
