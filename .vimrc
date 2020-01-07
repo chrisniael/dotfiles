@@ -147,7 +147,7 @@ set smarttab
 
 " GoLang 缩进符用 Tab
 autocmd BufNewFile,BufRead *.go setlocal tabstop=4 shiftwidth=4
-autocmd BufNewFile,BufRead *.json setlocal tabstop=4 shiftwidth=4
+autocmd BufNewFile,BufRead *.json setlocal noexpandtab tabstop=4 shiftwidth=4
 
 " 设置匹配模式，例如当光标位于一个左括号上时，会高亮相应的那个右括号
 set showmatch
@@ -301,6 +301,10 @@ nmap <leader>rp #<S-N>:%s/<C-R>=expand("<cword>")<CR>//g<Left><Left>
 nmap <silent><leader>x :bdelete<CR>
 
 
+
+" 用两个 nvim 打开同一个文件会 coredump，关闭 swapfile 或者启动的时候不启用 coc
+" https://github.com/neoclide/coc.nvim/issues/1383
+set noswapfile
 
 " coc.nvim 配置, vimdiff 模式下不加载
 if !&diff
@@ -502,3 +506,8 @@ endif  " if !&vim
 
 " vim-commentary 配置
 autocmd FileType c,cpp setlocal commentstring=//%s
+
+if has("nvim") && !empty($DISPLAY)
+  " netrw 配置
+  let g:loaded_netrwPlugin = 1  " 关闭 netrw, neovim 使用 X11 forwarding 时会卡顿
+endif
