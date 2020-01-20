@@ -121,9 +121,10 @@ set helplang=cn
 " 缓冲区内容的编码，与系统当前locale相同
 set encoding=utf-8
 " 读取/写入文件的编码
+set fileencoding=utf-8
 set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
-" 输出到终端内容的编码
-set termencoding=utf-8
+" 输出到终端内容的编码，neovim 中被移除了
+" set termencoding=utf-8
 
 " 自动切换工作路径
 "set autochdir
@@ -172,16 +173,6 @@ set hlsearch
 
 " 不产生备份文件
 set nobackup
-
-" 输出到终端的编码方式
-set termencoding=utf-8
-
-" 缓冲区文本的编码方式
-set encoding=utf-8
-
-" 写入文件时采用的编码方式
-set fileencoding=utf-8
-set fileencodings=utf-8
 
 " 使用的换行符类型
 set fileformat=unix
@@ -304,7 +295,7 @@ nmap <silent><leader>x :bdelete<CR>
 
 " 用两个 nvim 打开同一个文件会 coredump，关闭 swapfile 或者启动的时候不启用 coc
 " https://github.com/neoclide/coc.nvim/issues/1383
-set noswapfile
+" set noswapfile
 
 " coc.nvim 配置, vimdiff 模式下不加载
 if !&diff
@@ -350,8 +341,8 @@ if !&diff
   " inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 
   " Use <C-h>/<C-l> jump to next/previous placeholder.
-  let g:coc_snippet_next = '<C-h>'
-  let g:coc_snippet_prev = '<C-l>'
+  let g:coc_snippet_next = '<C-l>'
+  let g:coc_snippet_prev = '<C-h>'
 
   " Use `[g` and `]g` to navigate diagnostics
   nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -507,7 +498,50 @@ endif  " if !&vim
 " vim-commentary 配置
 autocmd FileType c,cpp setlocal commentstring=//%s
 
-if has("nvim") && !empty($DISPLAY)
-  " netrw 配置
-  let g:loaded_netrwPlugin = 1  " 关闭 netrw, neovim 使用 X11 forwarding 时会卡顿
+" 关闭 netrw, neovim 使用 X11 forwarding 时会卡顿
+" neovim 5.0 已经解决这个问题
+" https://github.com/neovim/neovim/issues/6048
+" https://github.com/neovim/neovim/issues/11089
+"
+" if has("nvim") && !empty($DISPLAY)
+"   let g:loaded_netrwPlugin = 1
+" endif
+
+
+" 同步 ssh 连接的 vim 剪切板到本地
+" https://lotabout.me/2019/Integrate-clipboard-with-SSH/
+"
+if has("nvim")
+  " if executable('clipboard-provider')
+  "   let g:clipboard = {
+  "         \ 'name': 'myClipboard',
+  "         \     'copy': {
+  "         \         '+': 'clipboard-provider copy',
+  "         \         '*': 'env COPY_PROVIDERS=tmux clipboard-provider copy',
+  "         \     },
+  "         \     'paste': {
+  "         \         '+': 'clipboard-provider paste',
+  "         \         '*': 'env COPY_PROVIDERS=tmux clipboard-provider paste',
+  "         \     },
+  "         \ }
+  " endif
+
+  " Mac 上 XQuartz 有 bug，不能同步 clipboard，只能同步
+  " primary，所以都配置成走 primary
+	let g:clipboard = {
+				\   'name': 'xsel-primary',
+				\   'copy': {
+				\      '+': 'xsel -i -p',
+				\      '*': 'xsel -i -p',
+				\    },
+				\   'paste': {
+				\      '+': '/bin/xsel -p',
+				\      '*': '/bin/xsel -p',
+				\   },
+				\   'cache_enabled': 0,
+				\ }
+  set clipboard+=unnamedplus
+else
+  " :help clipboard-autoselect
+  set clipboard=unnamed
 endif

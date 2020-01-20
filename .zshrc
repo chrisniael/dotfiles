@@ -9,12 +9,12 @@ export ZSH="/home/shenyu/.oh-my-zsh"
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 # ZSH_THEME="robbyrussell"
-ZSH_THEME="agnoster"
-DEFAULT_USER="shenyu"
+# ZSH_THEME="agnoster"
+# DEFAULT_USER="shenyu"
 
 # 使用 powerline 主题时，注释掉 ZSH_THEME 变量
-# powerline-daemon -q
-# source /usr/lib/python3.8/site-packages/powerline/bindings/zsh/powerline.zsh
+powerline-daemon -q
+source /usr/lib/python3.8/site-packages/powerline/bindings/zsh/powerline.zsh
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -68,7 +68,8 @@ DEFAULT_USER="shenyu"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(zsh-completions docker)
+# plugins=(zsh-completions docker)
+plugins=(docker)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -111,13 +112,21 @@ alias mkdir="mkdir -v"                      #"新建时会提示
 alias ssproxy="export http_proxy=\"http://10.246.34.83:8001\"; export HTTP_PROXY=\"http://10.246.34.83:8001\"; export https_proxy=\"http://10.246.34.83:8001\"; export HTTPS_PROXY=\"http://10.246.34.83:8001\"; curl google.com"
 alias unssproxy="unset http_proxy; unset https_proxy; unset HTTP_PROXY; unset HTTPS_PROXY"
 alias gdb="sudo gdb"
-alias vim="nvim"
+alias vim="/squashfs-root/usr/bin/nvim"
+# exit ssh 连接的时候，关闭 xsel child process，否则 ssh 连接不会关掉
+# exit 的时候如果在 tmux 是最后一个 session 窗口，则关闭 xsel child process 且断开 ssh 连接
+# 不在 tmux 则只关闭 xsel child process 且 exit
+#
+# 关闭 xsel child process 的原因是因为 xsel 会保持和 X Server 的连接，exit 的时候会不能正常关闭 SSH 连接
+alias exit='if [[ -n "$TMUX" ]]; then if [[ $(tmux list-sessions | wc -l) = 1 ]] && [[ $(tmux list-windows | wc -l) = 1 ]] && [[ $(tmux list-panes | wc -l) = 1 ]]; then echo "This is the last pane, you can not close it!"; else exit; fi; else killall xsel >/dev/null 2>&1 ; exit; fi'
 
 export LANG=en_US.UTF-8
 export no_proxy="127.0.0.1, localhost, gitlab.corp.sdo.com"
 
 export GOPATH="$HOME/Documents/go"
 export PATH="$PATH:$GOPATH/bin"
+
+export XAUTHORITY=$HOME/.Xauthority
 
 ulimit -c unlimited
 ulimit -n 20480
@@ -126,12 +135,33 @@ bindkey \^U backward-kill-line
 bindkey '\e[1~' beginning-of-line
 bindkey '\e[4~' end-of-line
 
-# TMUX 启动的时候存在一个 session 则 attach 它，不存在则创建一个新的
-# if [[ -z "$TMUX" ]] ;then
-#     ID="`tmux ls 2>/dev/null | grep -vm1 attached | cut -d: -f1`" # get the id of a deattached session
-#     if [[ -z "$ID" ]] ;then # if not available create a new one
-#         tmux new-session
-#     else
-#         tmux attach-session -t "$ID" # if available attach to it
-#     fi
-# fi
+# TMUX 启动的时候存在 eattached 的session 则 attach 它并剔除所有其他客户端，不存在则创建一个新的
+if [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]] ;then
+    ID="`tmux list-sessions 2>/dev/null | grep -m1 attached | cut -d: -f1`"  # get the id of a deattached session
+    if [[ -z "$ID" ]] ;then  # if not available create a new one
+      if [[ $(tmux list-sessions | wc -l) = 0 ]] ;then
+        tmux new-session
+      else
+        ID="`tmux list-sessions 2>/dev/null | cut -d: -f1`"
+        tmux attach-session -d -x -t "$ID"  # if available attach to it
+      fi
+    else
+      # -d : detach all other clients that attached this session
+      # -x : send SIGHUP to these clients (会导致这些 ssh 连接断开)
+      tmux attach-session -d -x -t "$ID"  # if available attach to it
+    fi
+fi
+
+
+DISABLE_AUTO_TITLE="true"
+if [[ -z "$SSH_CONNECTION" ]] ;then
+  function precmd () {
+    window_title="\033]0;${PWD/#${HOME}/~}\007"
+    echo -ne "$window_title"
+  }
+else
+  function precmd () {
+    window_title="\033]0;${USER}@${HOST}:${PWD/#${HOME}/~}\007"
+    echo -ne "$window_title"
+  }
+fi
