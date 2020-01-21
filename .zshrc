@@ -137,19 +137,16 @@ bindkey '\e[4~' end-of-line
 
 # TMUX 启动的时候存在 eattached 的session 则 attach 它并剔除所有其他客户端，不存在则创建一个新的
 if [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]] ;then
-    ID="`tmux list-sessions 2>/dev/null | grep -m1 attached | cut -d: -f1`"  # get the id of a deattached session
-    if [[ -z "$ID" ]] ;then  # if not available create a new one
-      if [[ $(tmux list-sessions | wc -l) = 0 ]] ;then
-        tmux new-session
-      else
-        ID="`tmux list-sessions 2>/dev/null | cut -d: -f1`"
-        tmux attach-session -d -x -t "$ID"  # if available attach to it
-      fi
+  if [[ $(tmux list-sessions | wc -l) = 0 ]] ;then
+    tmux new-session
+  else
+    ID="$(tmux list-sessions 2>/dev/null | grep -m1 attached | cut -d: -f1)"
+    if [[ -n "$ID" ]] ;then
+      killall xsel >/dev/null 2>&1; tmux attach-session -d -x -t "$ID"
     else
-      # -d : detach all other clients that attached this session
-      # -x : send SIGHUP to these clients (会导致这些 ssh 连接断开)
-      tmux attach-session -d -x -t "$ID"  # if available attach to it
+      killall xsel >/dev/null 2>&1; tmux attach-session -d -x
     fi
+  fi
 fi
 
 
