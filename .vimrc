@@ -81,6 +81,14 @@ if g:airline#extensions#tabline#enabled == 1
   nnoremap <silent> ]b :bn<CR>
 endif
 
+" Windows 部分字体不能显示 Ɇ 这个字符，可以改成 ∄
+" https://github.com/vim-airline/vim-airline/issues/1729
+" https://github.com/vim-airline/vim-airline/issues/1374
+" if !exists('g:airline_symbols')
+"   let g:airline_symbols = {}
+" endif
+" let g:airline_symbols.notexists = '∄'
+
 
 " 设置垂直分隔符号
 set fillchars+=vert:\ 

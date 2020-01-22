@@ -126,6 +126,11 @@ export no_proxy="127.0.0.1, localhost, gitlab.corp.sdo.com"
 export GOPATH="$HOME/Documents/go"
 export PATH="$PATH:$GOPATH/bin"
 
+# XShell 终端类型里没有 xterm-256color 选项，兼容处理
+if [[ "$TERM" = "xterm" ]]; then
+  export TERM=xterm-256color
+fi
+
 export XAUTHORITY=$HOME/.Xauthority
 
 ulimit -c unlimited
