@@ -142,7 +142,7 @@ bindkey '\e[4~' end-of-line
 
 # TMUX 启动的时候存在 eattached 的session 则 attach 它并剔除所有其他客户端，不存在则创建一个新的
 if [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]] ;then
-  if [[ $(tmux list-sessions | wc -l) = 0 ]] ;then
+  if [[ $(tmux list-sessions 2>/dev/null | wc -l) = 0 ]] ;then
     tmux new-session
   else
     ID="$(tmux list-sessions 2>/dev/null | grep -m1 attached | cut -d: -f1)"
