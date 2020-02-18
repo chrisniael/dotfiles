@@ -548,7 +548,7 @@ if has("nvim")
         \   },
         \   'cache_enabled': 0,
         \ }
-  set clipboard+=unnamedplus
+  " set clipboard+=unnamedplus
 else
   " :help clipboard-autoselect
   set clipboard=unnamed
