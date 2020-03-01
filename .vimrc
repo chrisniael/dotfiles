@@ -7,7 +7,7 @@ if !&diff
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
 Plug 'morhetz/gruvbox'
-Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'octol/vim-cpp-enhanced-highlight', {'for': 'cpp'}
 
 " vim-fugitive, vim-airline, vim-airline-themes 组合安装
 Plug 'tpope/vim-fugitive'
@@ -16,7 +16,7 @@ Plug 'vim-airline/vim-airline-themes'
 
 Plug 'tpope/vim-commentary'
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
+Plug 'plasticboy/vim-markdown', {'for': 'md'}
 Plug 'MTDL9/vim-log-highlighting'
 
 " Initialize plugin system
@@ -81,7 +81,7 @@ if g:airline#extensions#tabline#enabled == 1
   nnoremap <silent> ]b :bn<CR>
 endif
 
-" Windows 部分字体不能显示 Ɇ 这个字符，可以改成 ∄
+" Windows 部分字体不能显示 Ɇ 这个字符，可以改成 ∄ Ø
 " https://github.com/vim-airline/vim-airline/issues/1729
 " https://github.com/vim-airline/vim-airline/issues/1374
 " if !exists('g:airline_symbols')
@@ -303,7 +303,8 @@ nmap <silent><leader>x :bdelete<CR>
 
 " 用两个 nvim 打开同一个文件会 coredump，关闭 swapfile 或者启动的时候不启用 coc
 " https://github.com/neoclide/coc.nvim/issues/1383
-" set noswapfile
+let g:coc_start_at_startup = 0
+autocmd VimEnter * if !&diff | execute 'CocStart' | endif
 
 " coc.nvim 配置, vimdiff 模式下不加载
 if !&diff
