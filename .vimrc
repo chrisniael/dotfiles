@@ -203,6 +203,19 @@ augroup end
 map <C-N> :cnext<CR>
 map <C-P> :cprevious<CR>
 
+" 自定义命令 W: 保存文件时不 format 文件
+if !exists(':W')
+  command! W :noautocmd w
+endif
+
+if !exists(':Wq')
+  command! Wq :noautocmd wq
+endif
+
+if !exists(':Wqa')
+  command! Wqa :noautocmd wqa
+endif
+
 " 自定义命令：Ctags 生成 tags 文件
 func! Ctags()
     exec '! ctags -R --c++-kinds=+pxI --fields=+niazS --extras=+q --exclude="*.json" --exclude="*.md" --exclude="*.html" --exclude="*.log" --exclude="*.make" --exclude="*.txt" --exclude="*.cmake" -o .tags'
