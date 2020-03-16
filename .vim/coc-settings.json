@@ -23,7 +23,7 @@
             }
         },
         "clangd": {
-            "enable": false,
+            "enable": true,
             "command": "clangd",
             "filetypes": [
                 "c",
