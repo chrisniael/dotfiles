@@ -112,7 +112,7 @@ alias mkdir="mkdir -v"                      #"新建时会提示
 alias ssproxy="export http_proxy=\"http://10.246.34.83:8001\"; export HTTP_PROXY=\"http://10.246.34.83:8001\"; export https_proxy=\"http://10.246.34.83:8001\"; export HTTPS_PROXY=\"http://10.246.34.83:8001\"; curl google.com"
 alias unssproxy="unset http_proxy; unset https_proxy; unset HTTP_PROXY; unset HTTPS_PROXY"
 alias gdb="sudo gdb"
-alias vim="/squashfs-root/usr/bin/nvim"
+alias vim="nvim"
 # exit ssh 连接的时候，关闭 xsel child process，否则 ssh 连接不会关掉
 # exit 的时候如果在 tmux 是最后一个 session 窗口，则关闭 xsel child process 且断开 ssh 连接
 # 不在 tmux 则只关闭 xsel child process 且 exit
@@ -125,13 +125,19 @@ export no_proxy="127.0.0.1, localhost, gitlab.corp.sdo.com"
 
 export GOPATH="$HOME/Documents/go"
 export PATH="$PATH:$GOPATH/bin"
-
-# XShell 终端类型里没有 xterm-256color 选项，兼容处理
-if [[ "$TERM" = "xterm" ]]; then
-  export TERM=xterm-256color
-fi
+export PATH="/squashfs-root/usr/bin:$PATH"
 
 export XAUTHORITY=$HOME/.Xauthority
+
+
+# 不手动设置这个会影响 tmux 的标题内容
+# XShell 终端类型里没有 xterm-256color 选项，需要手动设置
+if [ -e /usr/share/terminfo/x/xterm-256color ]; then
+    export TERM='xterm-256color'
+else
+    export TERM='xterm-color'
+fi
+
 
 ulimit -c unlimited
 ulimit -n 20480
@@ -154,16 +160,16 @@ if [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]] ;then
   fi
 fi
 
-
-DISABLE_AUTO_TITLE="true"
-if [[ -z "$SSH_CONNECTION" ]] ;then
-  function precmd () {
-    window_title="\033]0;${PWD/#${HOME}/~}\007"
-    echo -ne "$window_title"
-  }
-else
-  function precmd () {
-    window_title="\033]0;${USER}@${HOST}:${PWD/#${HOME}/~}\007"
-    echo -ne "$window_title"
-  }
-fi
+# 自定义 terminal emulator 的标题内容
+# DISABLE_AUTO_TITLE="true"
+# if [[ -z "$SSH_CONNECTION" ]] ;then
+#   function precmd () {
+#     window_title="\033]0;${PWD/#${HOME}/~}\007"
+#     echo -ne "$window_title"
+#   }
+# else
+#   function precmd () {
+#     window_title="\033]0;${USER}@${HOST}:${PWD/#${HOME}/~}\007"
+#     echo -ne "$window_title"
+#   }
+# fi
