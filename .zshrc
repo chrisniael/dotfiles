@@ -109,7 +109,7 @@ alias rm="rm -i"                            #"删除"
 alias cp="cp -i"                            #"复制"
 alias mv="mv -i"                            #"移动"
 alias mkdir="mkdir -v"                      #"新建时会提示
-alias ssproxy="export http_proxy=\"http://10.246.34.83:8001\"; export HTTP_PROXY=\"http://10.246.34.83:8001\"; export https_proxy=\"http://10.246.34.83:8001\"; export HTTPS_PROXY=\"http://10.246.34.83:8001\"; curl google.com"
+alias ssproxy="export http_proxy=\"http://10.246.34.83:10809\"; export HTTP_PROXY=\"http://10.246.34.83:10809\"; export https_proxy=\"http://10.246.34.83:10809\"; export HTTPS_PROXY=\"http://10.246.34.83:10809\"; curl google.com"
 alias unssproxy="unset http_proxy; unset https_proxy; unset HTTP_PROXY; unset HTTPS_PROXY"
 alias gdb="sudo gdb"
 alias vim="nvim"
@@ -130,12 +130,14 @@ export PATH="/squashfs-root/usr/bin:$PATH"
 export XAUTHORITY=$HOME/.Xauthority
 
 
-# 不手动设置这个会影响 tmux 的标题内容
 # XShell 终端类型里没有 xterm-256color 选项，需要手动设置
-if [ -e /usr/share/terminfo/x/xterm-256color ]; then
+# tmux 里不可以手动设置，tmux 本身配置里有对 TERM 设置
+if [[ -z "$TMUX" ]]; then
+  if [ -e /usr/share/terminfo/x/xterm-256color ] || [ -e /usr/share/terminfo/x/xterm+256color ]; then
     export TERM='xterm-256color'
-else
+  else
     export TERM='xterm-color'
+  fi
 fi
 
 
