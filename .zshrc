@@ -185,12 +185,12 @@ alias vim="nvim"
 alias exit='if [[ -n "$TMUX" ]]; then if [[ $(tmux list-sessions | wc -l) = 1 ]] && [[ $(tmux list-windows | wc -l) = 1 ]] && [[ $(tmux list-panes | wc -l) = 1 ]]; then echo "This is the last pane, you can not close it!"; else exit; fi; else killall xsel >/dev/null 2>&1 ; exit; fi'
 
 if [[ "$(uname -r | grep -Eo Microsoft)" == "Microsoft" ]]; then
-  # WSL oh-my-zsh not apply umask correct.
+  # WSL not apply umask corrent.
   if [[ "$(umask)" = "000" ]]; then
     umask 022
   fi
 
-  # WSL local not auto set DISPLAY
+  # WSL local nost auto set DISPLAY variable
   if [[ -z "$SSH_CONNECTION" ]] ;then
     export DISPLAY=:0.0
   fi
