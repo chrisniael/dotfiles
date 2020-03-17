@@ -7,7 +7,7 @@ export ZSH="/home/shenyu/.oh-my-zsh"
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 # ZSH_THEME="robbyrussell"
 # ZSH_THEME="agnoster"
 # DEFAULT_USER="shenyu"
@@ -32,8 +32,14 @@ source /usr/lib/python3.8/site-packages/powerline/bindings/zsh/powerline.zsh
 # Uncomment the following line to disable bi-weekly auto-update checks.
 # DISABLE_AUTO_UPDATE="true"
 
+# Uncomment the following line to automatically update without prompting.
+# DISABLE_UPDATE_PROMPT="true"
+
 # Uncomment the following line to change how often to auto-update (in days).
 # export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS=true
 
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
@@ -90,9 +96,6 @@ source $ZSH/oh-my-zsh.sh
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
-
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -120,6 +123,18 @@ alias vim="nvim"
 # 关闭 xsel child process 的原因是因为 xsel 会保持和 X Server 的连接，exit 的时候会不能正常关闭 SSH 连接
 alias exit='if [[ -n "$TMUX" ]]; then if [[ $(tmux list-sessions | wc -l) = 1 ]] && [[ $(tmux list-windows | wc -l) = 1 ]] && [[ $(tmux list-panes | wc -l) = 1 ]]; then echo "This is the last pane, you can not close it!"; else exit; fi; else killall xsel >/dev/null 2>&1 ; exit; fi'
 
+if [[ "$(uname -r | grep -Eo Microsoft)" == "Microsoft" ]]; then
+  # WSL oh-my-zsh not apply umask correct.
+  if [[ "$(umask)" = "000" ]]; then
+    umask 022
+  fi
+
+  # WSL local not auto set DISPLAY
+  if [[ -z "$SSH_CONNECTION" ]] ;then
+    export DISPLAY=:0.0
+  fi
+fi
+
 export LANG=en_US.UTF-8
 export no_proxy="127.0.0.1, localhost, gitlab.corp.sdo.com"
 
@@ -133,7 +148,7 @@ export XAUTHORITY=$HOME/.Xauthority
 # XShell 终端类型里没有 xterm-256color 选项，需要手动设置
 # tmux 里不可以手动设置，tmux 本身配置里有对 TERM 设置
 if [[ -z "$TMUX" ]]; then
-  if [ -e /usr/share/terminfo/x/xterm-256color ] || [ -e /usr/share/terminfo/x/xterm+256color ]; then
+  if [[ -e /usr/share/terminfo/x/xterm-256color ]] || [[ -e /usr/share/terminfo/x/xterm+256color ]]; then
     export TERM='xterm-256color'
   else
     export TERM='xterm-color'
