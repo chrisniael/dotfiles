@@ -1,9 +1,20 @@
+" neovim config
+" ln -s ~/.vim ~/.config/nvim
+" ln -s ~/.vimrc ~/.config/nvim/init.vim
+
 " Specify a directory for plugins
 " - For Neovim: stdpath('data') . '/plugged'
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
 
 if !&diff
+  " :CocInstall coc-yank
+  " :CocInstall coc-lists
+  " pip3 install pynvim
+  " npm install -g neovim
+  " pacman -S ripgrep
+  " pacman -S clangd
+  " npm install -g bash-language-server
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
 Plug 'morhetz/gruvbox'
@@ -164,7 +175,7 @@ set showmatch
 " 去除GUI版本中的toolbar
 "set guioptions=T
 
-" 关闭错误响声
+" 关闭闪烁和错误响声
 set vb t_vb=
 
 " 在编辑过程中，在右下角显示光标位置的状态行
@@ -231,38 +242,62 @@ endif
 " 一键编译
 func! CompileGcc()
   exec "w"
-  let compilecmd="!gcc -std=c++17 -pthread -g"
-  let compileflag="-o %<.out 2> .%<.err"
-  exec compilecmd." % ".compileflag
-  exec "cfile .%<.err"
+  let vimshellcmd="!"
+  if has("nvim")
+    let vimshellcmd="belowright 10split | terminal"
+  endif
+  let compilecmd="gcc"
+  let compileflag="-std=c17 -pthread -g"
+  let compileout="-o %<.out"
+  exec vimshellcmd." ".compilecmd." ".compileflag." % ".compileout
 endfunc
 
 func! CompileGpp()
   exec "w"
-  let compilecmd="!g++ -std=c++17 -pthread -g -fno-elide-constructors"
-  let compileflag="-o %<.out 2> .%<.err"
-  exec compilecmd." % ".compileflag
-  exec "cfile .%<.err"
+  let vimshellcmd="!"
+  if has("nvim")
+    let vimshellcmd="belowright 10split | terminal"
+  endif
+  let compilecmd="g++"
+  let compileflag="-std=c++17 -pthread -g -fno-elide-constructors"
+  let compileout="-o %<.out"
+  exec vimshellcmd." ".compilecmd." ".compileflag." % ".compileout
 endfunc
 
 func! RunPython()
   exec "w"
-  exec "!python %"
+  let vimshellcmd="!"
+  if has("nvim")
+    let vimshellcmd="belowright 10split | terminal"
+  endif
+  exec vimshellcmd." python %"
 endfunc
 
 func! CompileJava()
   exec "w"
-  exec "!javac %"
+  let vimshellcmd="!"
+  if has("nvim")
+    let vimshellcmd="belowright 10split | terminal"
+  endif
+  exec vimshellcmd." javac %"
 endfunc
 
 func! RunShell()
   exec "w"
-  exec "!bash %"
+  let vimshellcmd="!"
+  if has("nvim")
+    let vimshellcmd="belowright 10split | terminal"
+  endif
+  exec vimshellcmd." bash %"
 endfunc
 
 func! RunLua()
   exec "w"
-  exec "!lua %"
+  let vimshellcmd="!"
+  if has("nvim")
+    let vimshellcmd="belowright 10split | terminal"
+  endif
+  exec vimshellcmd." lua %"
 endfunc
 
 func! CompileCode()
@@ -286,16 +321,22 @@ endfunc
 
 func! RunResult()
   exec "w"
+
+  let vimshellcmd="!"
+  if has("nvim")
+    let vimshellcmd="belowright 10split | terminal"
+  endif
+
   if &filetype == "cpp"
-    exec "! ./%<.out"
+    exec vimshellcmd." ./%<.out"
   elseif &filetype == "cc"
-    exec "! ./%<.out"
+    exec vimshellcmd." ./%<.out"
   elseif &filetype == "c"
-    exec "! ./%<.out"
+    exec vimshellcmd." ./%<.out"
   elseif &filetype == "python"
     exec "call RunPython()"
   elseif &filetype == "java"
-    exec "!java %<"
+    exec vimshellcmd." java %<"
   elseif &filetype == "sh"
     exec "call RunShell()"
   elseif &filetype == "lua"
