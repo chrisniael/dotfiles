@@ -126,16 +126,56 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-alias ls="ls -Fh --color"
-alias ll="ls -lF --color"
-alias la="ls -laFh --color"
+if [[ "${OS}" == "Darwin" ]]; then
+  alias ls="ls -FhOT"
+  alias ll="ls -lFhOT"
+  alias la="ls -laFhOT"
+  alias lldb="PATH=/usr/bin /usr/bin/lldb"
+  alias ssh-over-ss="ssh -o ProxyCommand='nc -x 127.0.0.1:1081 %h %p'"
+
+  export CLICOLOR=1
+  export LSCOLORS=exfxcxdxbxegedabagacad
+
+  export HOMEBREW_GITHUB_API_TOKEN=1774f442649116c2160cb4c7515223ab1a3d62a6
+
+  # export PATH="/usr/local/opt/openssl/bin:$PATH"
+  # export PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+  export PATH="/usr/local/opt/sqlite/bin:$PATH"
+  export PATH="/usr/local/opt/sphinx-doc/bin:$PATH"
+
+  # export MANPATH="/usr/local/opt/make/libexec/gnuman:$MANPATH"
+  export PATH=$PATH:/usr/local/opt/llvm/bin
+  export GOPATH="/Users/shenyu/Documents/go"
+  export PATH=$PATH:$GOPATH/bin
+
+  bindkey \^U backward-kill-line
+  bindkey '\e[1~' beginning-of-line
+  bindkey '\e[4~' end-of-line
+else
+  alias ls="ls -Fh --color"
+  alias ll="ls -lF --color"
+  alias la="ls -laFh --color"
+
+  if [[ "${OS}" == "Linux" ]]; then
+    source /etc/os-release
+    case "${ID}" in
+      arch)
+        alias gdb="sudo gdb"
+        ;;
+      ubuntu)
+        ;;
+      *)
+        ;;
+    esac
+  fi
+fi
+
 alias rm="rm -i"                            #"删除"
 alias cp="cp -i"                            #"复制"
 alias mv="mv -i"                            #"移动"
 alias mkdir="mkdir -v"                      #"新建时会提示
 alias ssproxy="export http_proxy=\"http://10.246.34.83:10809\"; export HTTP_PROXY=\"http://10.246.34.83:10809\"; export https_proxy=\"http://10.246.34.83:10809\"; export HTTPS_PROXY=\"http://10.246.34.83:10809\"; curl myip.ipip.net"
 alias unssproxy="unset http_proxy; unset https_proxy; unset HTTP_PROXY; unset HTTPS_PROXY"
-alias gdb="sudo gdb"
 alias vim="nvim"
 # exit ssh 连接的时候，关闭 xsel child process，否则 ssh 连接不会关掉
 # exit 的时候如果在 tmux 是最后一个 session 窗口，则关闭 xsel child process 且断开 ssh 连接
