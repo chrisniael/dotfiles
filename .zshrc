@@ -136,6 +136,7 @@ if [[ "${OS}" == "Darwin" ]]; then
   export CLICOLOR=1
   export LSCOLORS=exfxcxdxbxegedabagacad
 
+  # Fix GitHub API rate limit exceeded
   export HOMEBREW_GITHUB_API_TOKEN=1774f442649116c2160cb4c7515223ab1a3d62a6
 
   # export PATH="/usr/local/opt/openssl/bin:$PATH"
