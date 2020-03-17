@@ -133,7 +133,7 @@ alias rm="rm -i"                            #"删除"
 alias cp="cp -i"                            #"复制"
 alias mv="mv -i"                            #"移动"
 alias mkdir="mkdir -v"                      #"新建时会提示
-alias ssproxy="export http_proxy=\"http://10.246.34.83:10809\"; export HTTP_PROXY=\"http://10.246.34.83:10809\"; export https_proxy=\"http://10.246.34.83:10809\"; export HTTPS_PROXY=\"http://10.246.34.83:10809\"; curl google.com"
+alias ssproxy="export http_proxy=\"http://10.246.34.83:10809\"; export HTTP_PROXY=\"http://10.246.34.83:10809\"; export https_proxy=\"http://10.246.34.83:10809\"; export HTTPS_PROXY=\"http://10.246.34.83:10809\"; curl myip.ipip.net"
 alias unssproxy="unset http_proxy; unset https_proxy; unset HTTP_PROXY; unset HTTPS_PROXY"
 alias gdb="sudo gdb"
 alias vim="nvim"
