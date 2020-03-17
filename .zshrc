@@ -9,12 +9,33 @@ export ZSH="/home/shenyu/.oh-my-zsh"
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 # ZSH_THEME="robbyrussell"
-# ZSH_THEME="agnoster"
-# DEFAULT_USER="shenyu"
 
-# 使用 powerline 主题时，注释掉 ZSH_THEME 变量
-powerline-daemon -q
-source /usr/lib/python3.8/site-packages/powerline/bindings/zsh/powerline.zsh
+# 使用 powerline 主题时，注释掉 ZSH_THEME 和 DEFAULT_USER 变量
+# pip install powerline-status
+OS=$(uname -s)
+if [[ "${OS}" == "Darwin" ]]; then
+  powerline-daemon -q
+  source /usr/local/lib/python3.7/site-packages/powerline/bindings/zsh/powerline.zsh
+elif [[ "${OS}" == "Linux" ]]; then
+  source /etc/os-release
+  case "${ID}" in
+    arch)
+      powerline-daemon -q
+      source /usr/lib/python3.8/site-packages/powerline/bindings/zsh/powerline.zsh
+      ;;
+    ubuntu)
+      powerline-daemon -q
+      source /usr/local/lib/python3.7/dist-packages/powerline/bindings/zsh/powerline.zsh
+      ;;
+    *)
+      DEFAULT_USER="shenyu"
+      ZSH_THEME="agnoster"
+      ;;
+  esac
+else
+  DEFAULT_USER="shenyu"
+  ZSH_THEME="agnoster"
+fi
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
