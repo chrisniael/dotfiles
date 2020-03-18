@@ -183,7 +183,7 @@ alias vim="nvim"
 # 不在 tmux 则只关闭 xsel child process 且 exit
 #
 # 关闭 xsel child process 的原因是因为 xsel 会保持和 X Server 的连接，exit 的时候会不能正常关闭 SSH 连接
-alias exit='if [[ -n "$TMUX" ]]; then if [[ $(tmux list-sessions | wc -l) = 1 ]] && [[ $(tmux list-windows | wc -l) = 1 ]] && [[ $(tmux list-panes | wc -l) = 1 ]]; then echo "This is the last pane, you can not close it!"; else exit; fi; else killall xsel >/dev/null 2>&1 ; exit; fi'
+alias exit='if [[ -n "$TMUX" ]]; then if [[ $(tmux list-sessions | wc -l) = 1 ]] && [[ $(tmux list-windows | wc -l) = 1 ]] && [[ $(tmux list-panes | wc -l) = 1 ]]; then echo -n ""; else exit; fi; else killall xsel >/dev/null 2>&1 ; exit; fi'
 
 if [[ "$(uname -r | grep -Eo Microsoft)" == "Microsoft" ]]; then
   # WSL not apply umask corrent.
@@ -192,7 +192,7 @@ if [[ "$(uname -r | grep -Eo Microsoft)" == "Microsoft" ]]; then
   fi
 
   # WSL local nost auto set DISPLAY variable
-  if [[ -z "$SSH_CONNECTION" ]] ;then
+  if [[ -z "$SSH_CONNECTION" ]]; then
     export DISPLAY=:0.0
   fi
 fi
@@ -225,16 +225,20 @@ bindkey \^U backward-kill-line
 bindkey '\e[1~' beginning-of-line
 bindkey '\e[4~' end-of-line
 
-# TMUX 启动的时候存在 eattached 的session 则 attach 它并剔除所有其他客户端，不存在则创建一个新的
-if [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]] ;then
-  if [[ $(tmux list-sessions 2>/dev/null | wc -l) = 0 ]] ;then
-    tmux new-session
-  else
-    ID="$(tmux list-sessions 2>/dev/null | grep -m1 attached | cut -d: -f1)"
-    if [[ -n "$ID" ]] ;then
-      killall xsel >/dev/null 2>&1; tmux attach-session -d -x -t "$ID"
+# tmux 启动的时候存在 attached 的 session 则 attach 它并剔除所有其他客户端，不存在则创建一个新的
+# ssh 连接或者本地默认方式启动都自动启动 tmux
+# 从本地某个目录启动不自动启动 tmux
+if [[ -z "$TMUX" ]]; then
+  if [[ -n "$SSH_CONNECTION" ]] || [[ "$(pwd)" == "${HOME}" ]]; then
+    if [[ $(tmux list-sessions 2>/dev/null | wc -l) = 0 ]]; then
+      tmux new-session
     else
-      killall xsel >/dev/null 2>&1; tmux attach-session -d -x
+      ID="$(tmux list-sessions 2>/dev/null | grep -m1 attached | cut -d: -f1)"
+      if [[ -n "$ID" ]]; then
+        killall xsel >/dev/null 2>&1; tmux attach-session -d -x -t "$ID"
+      else
+        killall xsel >/dev/null 2>&1; tmux attach-session -d -x
+      fi
     fi
   fi
 fi
