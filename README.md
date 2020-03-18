@@ -33,7 +33,7 @@ Install the newest tmux mannually in Ubuntu.
 
 ```bash
 # Ubuntu
-apt install autoconf automake pkgconf  libevent libncurses-dev bison
+apt install autoconf automake pkgconf libevent-dev libncurses-dev bison
 git clone https://github.com/tmux/tmux.git
 # git checkout 3.1
 ./autogen.sh
