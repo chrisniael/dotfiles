@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/shenyu/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -14,8 +14,14 @@ export ZSH="/home/shenyu/.oh-my-zsh"
 # pip install powerline-status
 OS=$(uname -s)
 if [[ "${OS}" == "Darwin" ]]; then
-  powerline-daemon -q
-  source /usr/local/lib/python3.7/site-packages/powerline/bindings/zsh/powerline.zsh
+  # 当终端是 Apple Terminal 时，不使用 powerline，powerline 暂时不能自动判断终端类型来关闭 true color
+  if [[ "$TERM_PROGRAM" = "Apple_Terminal" ]]
+  then
+    ZSH_THEME="robbyrussell"
+  else
+    powerline-daemon -q
+    source /usr/local/lib/python3.7/site-packages/powerline/bindings/zsh/powerline.zsh
+  fi
 elif [[ "${OS}" == "Linux" ]]; then
   source /etc/os-release
   case "${ID}" in
@@ -132,6 +138,7 @@ if [[ "${OS}" == "Darwin" ]]; then
   alias la="ls -laFhOT"
   alias lldb="PATH=/usr/bin /usr/bin/lldb"
   alias ssh-over-ss="ssh -o ProxyCommand='nc -x 127.0.0.1:1081 %h %p'"
+  alias brew-cask-upgrade="brew cask upgrade \$(brew cask outdated --greedy --verbose | grep -v latest | awk -F ' ' '{print \$1}' | tr '\n' ' ')"
 
   export CLICOLOR=1
   export LSCOLORS=exfxcxdxbxegedabagacad
@@ -139,15 +146,19 @@ if [[ "${OS}" == "Darwin" ]]; then
   # Fix GitHub API rate limit exceeded
   export HOMEBREW_GITHUB_API_TOKEN=1774f442649116c2160cb4c7515223ab1a3d62a6
 
-  # export PATH="/usr/local/opt/openssl/bin:$PATH"
-  # export PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+  export PATH="/usr/local/sbin:$PATH"
+  export PATH="/usr/local/opt/ruby/bin:$PATH"
+  export PATH="/usr/local/opt/openssl/bin:$PATH"
   export PATH="/usr/local/opt/sqlite/bin:$PATH"
   export PATH="/usr/local/opt/sphinx-doc/bin:$PATH"
 
-  # export MANPATH="/usr/local/opt/make/libexec/gnuman:$MANPATH"
+  export MANPATH="/usr/local/opt/make/libexec/gnuman:$MANPATH"
+  export PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
   export PATH=$PATH:/usr/local/opt/llvm/bin
   export GOPATH="/Users/shenyu/Documents/go"
   export PATH=$PATH:$GOPATH/bin
+  export PATH="$HOME/.gem/ruby/2.4.0/bin:$PATH"
+  export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 
   bindkey \^U backward-kill-line
   bindkey '\e[1~' beginning-of-line
@@ -210,11 +221,7 @@ export XAUTHORITY=$HOME/.Xauthority
 # XShell 终端类型里没有 xterm-256color 选项，需要手动设置
 # tmux 里不可以手动设置，tmux 本身配置里有对 TERM 设置
 if [[ -z "$TMUX" ]]; then
-  if [[ -e /usr/share/terminfo/x/xterm-256color ]] || [[ -e /usr/share/terminfo/x/xterm+256color ]]; then
-    export TERM='xterm-256color'
-  else
-    export TERM='xterm-color'
-  fi
+  export TERM='xterm-256color'
 fi
 
 
@@ -230,7 +237,8 @@ bindkey '\e[4~' end-of-line
 # 从本地某个目录启动不自动启动 tmux
 if [[ -z "$TMUX" ]]; then
   if [[ -n "$SSH_CONNECTION" ]] || [[ "$(pwd)" == "${HOME}" ]]; then
-    if [[ $(tmux list-sessions 2>/dev/null | wc -l) = 0 ]]; then
+    # 用 eval 是去除前后的空格， mac 上的 wc 命令与 linux 不太一样，会输出一些空格
+    if [[ $(eval echo $(tmux list-sessions 2>/dev/null | wc -l)) = 0 ]]; then
       tmux new-session
     else
       ID="$(tmux list-sessions 2>/dev/null | grep -m1 attached | cut -d: -f1)"
