@@ -151,14 +151,15 @@ if [[ "${OS}" == "Darwin" ]]; then
   export PATH="/usr/local/opt/openssl/bin:$PATH"
   export PATH="/usr/local/opt/sqlite/bin:$PATH"
   export PATH="/usr/local/opt/sphinx-doc/bin:$PATH"
-
   export MANPATH="/usr/local/opt/make/libexec/gnuman:$MANPATH"
   export PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
   export PATH=$PATH:/usr/local/opt/llvm/bin
   export GOPATH="/Users/shenyu/Documents/go"
   export PATH=$PATH:$GOPATH/bin
   export PATH="$HOME/.gem/ruby/2.4.0/bin:$PATH"
-  export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+  # 这个命令会让 zsh 启动变特别慢, 直接指定路径加速启动
+  # export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+  export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/usr/local/opt/openssl@1.1"
 
   bindkey \^U backward-kill-line
   bindkey '\e[1~' beginning-of-line
@@ -217,14 +218,6 @@ export PATH="/squashfs-root/usr/bin:$PATH"
 
 export XAUTHORITY=$HOME/.Xauthority
 
-
-# XShell 终端类型里没有 xterm-256color 选项，需要手动设置
-# tmux 里不可以手动设置，tmux 本身配置里有对 TERM 设置
-if [[ -z "$TMUX" ]]; then
-  export TERM='xterm-256color'
-fi
-
-
 ulimit -c unlimited
 ulimit -n 20480
 
@@ -236,6 +229,10 @@ bindkey '\e[4~' end-of-line
 # ssh 连接或者本地默认方式启动都自动启动 tmux
 # 从本地某个目录启动不自动启动 tmux
 if [[ -z "$TMUX" ]]; then
+  # XShell 终端类型里没有 xterm-256color 选项，需要手动设置
+  # tmux 里不可以手动设置，tmux 本身配置里有对 TERM 设置
+  export TERM='xterm-256color'
+
   if [[ -n "$SSH_CONNECTION" ]] || [[ "$(pwd)" == "${HOME}" ]]; then
     # 用 eval 是去除前后的空格， mac 上的 wc 命令与 linux 不太一样，会输出一些空格
     if [[ $(eval echo $(tmux list-sessions 2>/dev/null | wc -l)) = 0 ]]; then
