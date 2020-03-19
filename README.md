@@ -1,13 +1,13 @@
 # dotfiles-arch
 
-Arch Linux dotfiles.
+My dotfiles. 
 
-Compatiable with Arch, Ubuntu 19.10, macOS.
+Compatiable with Arch, Ubuntu 19.10 and macOS.
 
 
 ## powerline-status
 
-* python
+* python >= 3.7
 * pip
 
 ```bash
@@ -15,6 +15,13 @@ Compatiable with Arch, Ubuntu 19.10, macOS.
 su -
 apt install python3 python3-pip
 pip3 install powerline-status
+```
+
+```bash
+# Arch
+su -
+pacman -S python python-pip
+pip install powerline-status
 ```
 
 
@@ -29,10 +36,9 @@ pip3 install powerline-status
 * tmux > 3.0
 * tmp
 
-Install the newest tmux mannually in Ubuntu.
-
 ```bash
 # Ubuntu
+# Install the newest tmux mannually in Ubuntu.
 apt install autoconf automake pkgconf libevent-dev libncurses-dev bison
 git clone https://github.com/tmux/tmux.git
 cd tmux
@@ -41,6 +47,17 @@ cd tmux
 ./configure
 make
 make install
+```
+
+```bash
+# Arch
+pacman -S tmux
+```
+
+Install tpm.
+
+```bash
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ```
 
 ## vim
@@ -72,12 +89,20 @@ mv squashfs-root /
 
 Then just put `/squashfs-root/usr/bin` in user's `PATH` environment variable.
 
-Install dependency using root in Ubuntu.
+Install dependency using root.
 
 ```bash
 # Ubuntu
 su -
 apt install clang-format nodejs npm ripgrep xsel
+pip3 install pynvim
+npm install -g neovim
+npm install -g bash-language-server
+```
+
+```bash
+# Arch
+pacman -S clang nodejs npm ripgrep xsel
 pip3 install pynvim
 npm install -g neovim
 npm install -g bash-language-server
@@ -95,7 +120,7 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 ln -s ~/.vim ~/.config/nvim
 ln -s ~/.vimrc ~/.config/nvim/init.vim
 
-nvim +PluginUpdate +qa
-nvim "+CocStart" "+CocInstall coc-lists" +qa
-nvim "+CocStart" "+CocInstall coc-yank" +qa"
+nvim +PluginUpdate  # not working, just open vim and run :PluginUpdate
+nvim "+CocStart" "+CocInstall coc-lists"
+nvim "+CocStart" "+CocInstall coc-yank"
 ```
