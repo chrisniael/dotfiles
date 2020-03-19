@@ -594,18 +594,20 @@ if has("nvim")
 
   " Mac 上 XQuartz 有 bug，不能同步 clipboard，只能同步
   " primary，所以配置成都走 primary
-  let g:clipboard = {
-        \   'name': 'xsel-primary',
-        \   'copy': {
-        \      '+': 'xsel -i -p',
-        \      '*': 'xsel -i -p',
-        \    },
-        \   'paste': {
-        \      '+': 'xsel -o -p',
-        \      '*': 'xsel -o -p',
-        \   },
-        \   'cache_enabled': 0,
-        \ }
+  if !has("macunix")
+    let g:clipboard = {
+          \   'name': 'xsel-primary',
+          \   'copy': {
+          \      '+': 'xsel -i -p',
+          \      '*': 'xsel -i -p',
+          \    },
+          \   'paste': {
+          \      '+': 'xsel -o -p',
+          \      '*': 'xsel -o -p',
+          \   },
+          \   'cache_enabled': 0,
+          \ }
+  endif
   " set clipboard+=unnamedplus
 else
   " :help clipboard-autoselect
