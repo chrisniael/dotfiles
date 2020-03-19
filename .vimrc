@@ -41,7 +41,8 @@ call plug#end()
 " let g:gruvbox_contrast_light = 'hard'
 set t_Co=256  " 支持 xterm-256color
 syntax enable  " 语法高亮
-colorscheme gruvbox
+" 为了在没有安装 gruvbox 插件的时候不报错
+silent! colorscheme gruvbox
 set background=dark
 set number
 
@@ -361,7 +362,8 @@ nmap <silent><leader>x :bdelete<CR>
 " 用两个 nvim 打开同一个文件会 coredump，关闭 swapfile 或者启动的时候不启用 coc
 " https://github.com/neoclide/coc.nvim/issues/1383
 let g:coc_start_at_startup = 0
-autocmd VimEnter * if !&diff | execute 'CocStart' | endif
+" 判断 exists 是为了在没有安装 Coc 的时候不报错
+autocmd VimEnter * if !&diff && exists(':CocStart') | execute 'CocStart' | endif
 
 " coc.nvim 配置, vimdiff 模式下不加载
 if !&diff
@@ -432,7 +434,7 @@ if !&diff
   endfunction
 
   " Highlight symbol under cursor on CursorHold
-  autocmd CursorHold * silent call CocActionAsync('highlight')
+  autocmd CursorHold * silent! call CocActionAsync('highlight')
 
   " Remap for rename current word
   nmap <leader>rn <Plug>(coc-rename)
@@ -478,7 +480,7 @@ if !&diff
   command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
   " Add status line support, for integration with other plugin, checkout `:h coc-status`
-  set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+  "set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
   " Using CocList
   " Show all diagnostics
