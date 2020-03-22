@@ -160,6 +160,7 @@ if [[ "${OS}" == "Darwin" ]]; then
   # 这个命令会让 zsh 启动变特别慢, 直接指定路径加速启动
   # export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
   export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/usr/local/opt/openssl@1.1"
+  export HOMEBREW_NO_AUTO_UPDATE=true
 
   bindkey \^U backward-kill-line
   bindkey '\e[1~' beginning-of-line
@@ -228,7 +229,7 @@ bindkey '\e[4~' end-of-line
 # tmux 启动的时候存在 attached 的 session 则 attach 它并剔除所有其他客户端，不存在则创建一个新的
 # ssh 连接或者本地默认方式启动都自动启动 tmux
 # 从本地某个目录启动不自动启动 tmux
-if [[ -z "$TMUX" ]]; then
+if [[ -z "$TMUX" ]] && [[ "$TERM_PROGRAM" != "Apple_Terminal" ]]; then
   # XShell 终端类型里没有 xterm-256color 选项，需要手动设置
   # tmux 里不可以手动设置，tmux 本身配置里有对 TERM 设置
   export TERM='xterm-256color'
