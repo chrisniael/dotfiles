@@ -157,6 +157,9 @@ if [[ "${OS}" == "Darwin" ]]; then
   export GOPATH="/Users/shenyu/Documents/go"
   export PATH=$PATH:$GOPATH/bin
   export PATH="$HOME/.gem/ruby/2.4.0/bin:$PATH"
+  # 手动安装最新版本的 neivom
+  # https://github.com/neovim/neovim/releases
+  export PATH="/usr/local/Cellar/nvim-osx64/bin:$PATH"
   # 这个命令会让 zsh 启动变特别慢, 直接指定路径加速启动
   # export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
   export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/usr/local/opt/openssl@1.1"
