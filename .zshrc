@@ -235,6 +235,7 @@ bindkey '\e[4~' end-of-line
 if [[ -z "$TMUX" ]] && [[ "$TERM_PROGRAM" != "Apple_Terminal" ]]; then
   # XShell 终端类型里没有 xterm-256color 选项，需要手动设置
   # tmux 里不可以手动设置，tmux 本身配置里有对 TERM 设置
+  # TERM 会影响 ohmyzsh 的 ATUO_TITLE 功能
   export TERM='xterm-256color'
 
   if [[ -n "$SSH_CONNECTION" ]] || [[ "$(pwd)" == "${HOME}" ]]; then
@@ -251,17 +252,3 @@ if [[ -z "$TMUX" ]] && [[ "$TERM_PROGRAM" != "Apple_Terminal" ]]; then
     fi
   fi
 fi
-
-# 自定义 terminal emulator 的标题内容
-# DISABLE_AUTO_TITLE="true"
-# if [[ -z "$SSH_CONNECTION" ]] ;then
-#   function precmd () {
-#     window_title="\033]0;${PWD/#${HOME}/~}\007"
-#     echo -ne "$window_title"
-#   }
-# else
-#   function precmd () {
-#     window_title="\033]0;${USER}@${HOST}:${PWD/#${HOME}/~}\007"
-#     echo -ne "$window_title"
-#   }
-# fi
