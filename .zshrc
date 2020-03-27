@@ -199,7 +199,8 @@ alias vim="nvim"
 # 不在 tmux 则只关闭 xsel child process 且 exit
 #
 # 关闭 xsel child process 的原因是因为 xsel 会保持和 X Server 的连接，exit 的时候会不能正常关闭 SSH 连接
-alias exit='if [[ -n "$TMUX" ]]; then if [[ $(tmux list-sessions | wc -l) = 1 ]] && [[ $(tmux list-windows | wc -l) = 1 ]] && [[ $(tmux list-panes | wc -l) = 1 ]]; then echo -n ""; else exit; fi; else killall xsel >/dev/null 2>&1 ; exit; fi'
+# 用 eval 是去除前后的空格， mac 上的 wc 命令与 linux 不太一样，会输出一些空格
+alias exit='if [[ -n "$TMUX" ]]; then if [[ $(eval echo $(tmux list-sessions | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-windows | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-panes | wc -l)) = 1 ]]; then echo -n ""; else exit; fi; else killall xsel >/dev/null 2>&1 ; exit; fi'
 
 if [[ "$(uname -r | grep -Eo Microsoft)" == "Microsoft" ]]; then
   # WSL not apply umask corrent.
