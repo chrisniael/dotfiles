@@ -132,6 +132,17 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# 确保 source ~/.zshrc 的时候不会重复追加 PATH 的值
+if [[ -z "$TMUX" ]]; then
+  if [[ -z "$ORIGIN_PATH" ]]; then
+    export ORIGIN_PATH=$PATH
+  else
+    export PATH=$ORIGIN_PATH
+  fi
+else
+  export PATH=$ORIGIN_PATH
+fi
+
 if [[ "${OS}" == "Darwin" ]]; then
   alias ls="ls -FhOT"
   alias ll="ls -lFhOT"
@@ -146,6 +157,8 @@ if [[ "${OS}" == "Darwin" ]]; then
   # Fix GitHub API rate limit exceeded
   export HOMEBREW_GITHUB_API_TOKEN=1774f442649116c2160cb4c7515223ab1a3d62a6
 
+  export GOPATH="/Users/shenyu/Documents/go"
+
   export PATH="/usr/local/sbin:$PATH"
   export PATH="/usr/local/opt/ruby/bin:$PATH"
   export PATH="/usr/local/opt/openssl/bin:$PATH"
@@ -154,7 +167,6 @@ if [[ "${OS}" == "Darwin" ]]; then
   export MANPATH="/usr/local/opt/make/libexec/gnuman:$MANPATH"
   export PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
   export PATH=$PATH:/usr/local/opt/llvm/bin
-  export GOPATH="/Users/shenyu/Documents/go"
   export PATH=$PATH:$GOPATH/bin
   export PATH="$HOME/.gem/ruby/2.4.0/bin:$PATH"
   # 手动安装最新版本的 neivom
@@ -178,6 +190,11 @@ else
     case "${ID}" in
       arch)
         alias gdb="sudo gdb"
+
+        export GOPATH="$HOME/Documents/go"
+
+        export PATH="$PATH:$GOPATH/bin"
+        export PATH="/squashfs-root/usr/bin:$PATH"
         ;;
       ubuntu)
         ;;
@@ -215,11 +232,6 @@ if [[ "$(uname -r | grep -Eo Microsoft)" == "Microsoft" ]]; then
 fi
 
 export LANG=en_US.UTF-8
-export no_proxy="127.0.0.1, localhost, gitlab.corp.sdo.com"
-
-export GOPATH="$HOME/Documents/go"
-export PATH="$PATH:$GOPATH/bin"
-export PATH="/squashfs-root/usr/bin:$PATH"
 
 export XAUTHORITY=$HOME/.Xauthority
 
