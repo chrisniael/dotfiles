@@ -209,9 +209,28 @@ alias rm="rm -i"                            #"删除"
 alias cp="cp -i"                            #"复制"
 alias mv="mv -i"                            #"移动"
 alias mkdir="mkdir -v"                      #"新建时会提示
-alias ssproxy="export http_proxy=\"http://10.246.34.83:10809\"; export HTTP_PROXY=\"http://10.246.34.83:10809\"; export https_proxy=\"http://10.246.34.83:10809\"; export HTTPS_PROXY=\"http://10.246.34.83:10809\"; curl -s ipinfo.io"
-alias unssproxy="unset http_proxy; unset https_proxy; unset HTTP_PROXY; unset HTTPS_PROXY"
 alias vim="nvim"
+
+function unssproxy() {
+  unset http_proxy
+  unset https_proxy
+}
+
+function ssproxy() {
+  unssproxy
+  # ~/.ssproxy : 代理的 ip 和 port, 格式:
+  # HTTP_PROXY_IP=127.0.0.1
+  # HTTP_PROXY_PORT=7890
+  if [[ -f $HOME/.ssproxy ]]; then
+    source $HOME/.ssproxy
+    if [[ -n "$HTTP_PROXY_IP" ]] && [[ -n "$HTTP_PROXY_PORT" ]]; then
+      export http_proxy="http://${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}"
+      export https_proxy="http://${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}"
+      curl -s ipinfo.io
+    fi
+  fi
+}
+
 # exit ssh 连接的时候，关闭 xsel child process，否则 ssh 连接不会关掉
 # exit 的时候如果在 tmux 是最后一个 session 窗口，则关闭 xsel child process 且断开 ssh 连接
 # 不在 tmux 则只关闭 xsel child process 且 exit
