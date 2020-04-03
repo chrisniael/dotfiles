@@ -103,7 +103,7 @@ npm install -g bash-language-server
 ```bash
 # Arch
 pacman -S clang nodejs npm ripgrep xsel
-pip3 install pynvim
+pip install pynvim
 npm install -g neovim
 npm install -g bash-language-server
 ```
