@@ -159,6 +159,7 @@ if [[ "${OS}" == "Darwin" ]]; then
 
   export GOPATH="/Users/shenyu/Documents/go"
 
+  export EDITOR="vim"
   export PATH="/usr/local/sbin:$PATH"
   export PATH="/usr/local/opt/ruby/bin:$PATH"
   export PATH="/usr/local/opt/openssl/bin:$PATH"
