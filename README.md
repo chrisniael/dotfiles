@@ -1,4 +1,4 @@
-# dotfiles-arch
+# Dotfiles
 
 My dotfiles. 
 
