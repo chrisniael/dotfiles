@@ -149,7 +149,13 @@ if [[ "${OS}" == "Darwin" ]]; then
   alias la="ls -laFhOT"
   alias lldb="PATH=/usr/bin /usr/bin/lldb"
   alias ssh-over-ss="ssh -o ProxyCommand='nc -x 127.0.0.1:1081 %h %p'"
-  alias brew-cask-upgrade="brew cask upgrade \$(brew cask outdated --greedy --verbose | grep -v latest | awk -F ' ' '{print \$1}' | tr '\n' ' ')"
+
+  # 更新所有 cask
+  function brew-cask-upgrade() {
+    # 去除末尾的空格
+    local cask_list=$(eval echo $(brew cask outdated --greedy --verbose | grep -v '!= latest' | awk -F ' ' '{print $1}' | tr '\n' ' '))
+    brew cask upgrade $cask_list
+  }
 
   export CLICOLOR=1
   export LSCOLORS=exfxcxdxbxegedabagacad
@@ -159,7 +165,6 @@ if [[ "${OS}" == "Darwin" ]]; then
 
   export GOPATH="/Users/shenyu/Documents/go"
 
-  export EDITOR="vim"
   export PATH="/usr/local/sbin:$PATH"
   export PATH="/usr/local/opt/ruby/bin:$PATH"
   export PATH="/usr/local/opt/openssl/bin:$PATH"
@@ -253,8 +258,8 @@ if [[ "$(uname -r | grep -Eo Microsoft)" == "Microsoft" ]]; then
 fi
 
 export LANG=en_US.UTF-8
-
 export XAUTHORITY=$HOME/.Xauthority
+export EDITOR="vim"
 
 ulimit -c unlimited
 ulimit -n 20480
