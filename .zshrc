@@ -154,7 +154,8 @@ if [[ "${OS}" == "Darwin" ]]; then
   function brew-cask-upgrade() {
     # 去除末尾的空格
     local cask_list=$(eval echo $(brew cask outdated --greedy --verbose | grep -v '!= latest' | awk -F ' ' '{print $1}' | tr '\n' ' '))
-    brew cask upgrade $cask_list
+    # 不用 eval 会导致多个 token 的时候不被当成多参数
+    eval brew cask upgrade $cask_list
   }
 
   export CLICOLOR=1
