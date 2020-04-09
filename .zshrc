@@ -176,7 +176,6 @@ if [[ "${OS}" == "Darwin" ]]; then
   export PATH="/usr/local/opt/ncurses/bin:$PATH"
   export PATH=$PATH:/usr/local/opt/llvm/bin
   export PATH=$PATH:$GOPATH/bin
-  export PATH="$HOME/.gem/ruby/2.4.0/bin:$PATH"
   # 手动安装最新版本的 neivom
   # https://github.com/neovim/neovim/releases
   export PATH="/usr/local/Cellar/nvim-osx64/bin:$PATH"
