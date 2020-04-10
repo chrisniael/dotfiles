@@ -1,9 +1,8 @@
 # Dotfiles
 
-My dotfiles. 
+My dotfiles.
 
 Compatiable with Arch, Ubuntu 19.10 and macOS.
-
 
 ## powerline-status
 
@@ -24,12 +23,10 @@ pacman -S python python-pip
 pip install powerline-status
 ```
 
-
 ## zsh
 
-* zsh >= 4.3.9 
+* zsh >= 4.3.9
 * ohmyzsh
-
 
 ## tmux
 
