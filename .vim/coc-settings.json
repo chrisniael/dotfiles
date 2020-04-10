@@ -53,5 +53,9 @@
         "<C-n>": "normal:j",
         "<C-p>": "normal:k"
     },
-    "coc.preferences.formatOnSaveFiletypes": ["c", "cpp"]
+    "coc.preferences.formatOnSaveFiletypes": ["c", "cpp"],
+    "markdownlint.config": {
+        "default": true,
+        "line_length": false
+    }
 }
