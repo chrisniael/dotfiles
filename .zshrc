@@ -202,6 +202,8 @@ else
 
         export PATH="$PATH:$GOPATH/bin"
         export PATH="/squashfs-root/usr/bin:$PATH"
+        export PATH="$HOME/.gem/ruby/2.7.0/bin:$PATH"
+        ;
         ;;
       ubuntu)
         ;;
