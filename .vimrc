@@ -30,7 +30,6 @@ Plug 'vim-airline/vim-airline-themes'
 
 Plug 'tpope/vim-commentary'
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown', {'for': 'md'}
 Plug 'MTDL9/vim-log-highlighting'
 
 " Initialize plugin system
