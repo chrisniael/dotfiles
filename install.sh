@@ -42,7 +42,6 @@ function ln_file() {
 function ln_dir() {
   ORI_DIR=$1
   DST_DIR=$2
-  echo $ORI_DIR $DST_DIR
   if [ -L ${DST_DIR} ]
   then
     /bin/rm -f ${DST_DIR}
