@@ -222,6 +222,11 @@ alias vim="nvim"
 function unssproxy() {
   unset http_proxy
   unset https_proxy
+  unset HTTP_PROXY
+  unset HTTPS_PROXY
+  unset ELECTRON_GET_USE_PROXY
+  unset GLOBAL_AGENT_HTTP_PROXY
+  unset GLOBAL_AGENT_HTTPS_PROXY
 }
 
 function ssproxy() {
@@ -234,6 +239,13 @@ function ssproxy() {
     if [[ -n "$HTTP_PROXY_IP" ]] && [[ -n "$HTTP_PROXY_PORT" ]]; then
       export http_proxy="http://${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}"
       export https_proxy="http://${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}"
+      export HTTP_PROXY="http://${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}"
+      export HTTPS_PROXY="http://${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}"
+      # electron 代理配置
+      # https://rabbitfeet.net/archives/npm安装Electron慢的解决方案
+      export ELECTRON_GET_USE_PROXY=1
+      export GLOBAL_AGENT_HTTP_PROXY="http://${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}"
+      export GLOBAL_AGENT_HTTPS_PROXY="http://${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}"
       curl -s ipinfo.io
     fi
   fi
