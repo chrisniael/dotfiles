@@ -505,7 +505,7 @@ if !&diff
 
   " coc.nvim c/c++ 头文件跳转
   " llvm 9.0 里 .h/.cpp 文件结构复杂时可能不能正常使用
-  " llvm 10.0 修复了这个 bug, 等发布吧
+  " llvm 10.0 修复了这个 bug
   function! s:EditAlternate()
     let l:alter = CocRequest('clangd', 'textDocument/switchSourceHeader', {'uri': 'file://'.expand("%:p")})
     " remove file:/// from response
