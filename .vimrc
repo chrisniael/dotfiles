@@ -173,7 +173,7 @@ set smarttab
 
 " GoLang 缩进符用 Tab
 autocmd BufNewFile,BufRead *.go setlocal tabstop=4 shiftwidth=4
-autocmd BufNewFile,BufRead *.json setlocal noexpandtab tabstop=4 shiftwidth=4
+autocmd BufNewFile,BufRead *.json setlocal tabstop=2 shiftwidth=2
 
 " 设置匹配模式，例如当光标位于一个左括号上时，会高亮相应的那个右括号
 set showmatch
