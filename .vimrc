@@ -461,6 +461,7 @@ if !&diff
   nmap <leader>ac  <Plug>(coc-codeaction)
   " Fix autofix problem of current line
   nmap <leader>qf  <Plug>(coc-fix-current)
+  autocmd FileType markdown nmap <leader>qf :CocCommand markdownlint.fixAll<CR>
 
   " Create mappings for function text object, requires document symbols feature of languageserver.
   xmap if <Plug>(coc-funcobj-i)
