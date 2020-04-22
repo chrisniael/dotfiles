@@ -21,7 +21,7 @@ if !&diff
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
 Plug 'morhetz/gruvbox'
-Plug 'octol/vim-cpp-enhanced-highlight', {'for': 'cpp'}
+Plug 'jackguo380/vim-lsp-cxx-highlight'
 
 " vim-fugitive, vim-airline, vim-airline-themes 组合安装
 Plug 'tpope/vim-fugitive'
@@ -36,7 +36,7 @@ Plug 'MTDL9/vim-log-highlighting'
 call plug#end()
 
 " coc.nvim 的插件
-let g:coc_global_extensions = ['coc-yank', 'coc-pairs', 'coc-lists', 'coc-markdownlint']
+let g:coc_global_extensions = ['coc-yank', 'coc-pairs', 'coc-lists', 'coc-markdownlint', 'coc-clangd']
 
 " 设置 gruvbox 主题 contrast 程度 (得放在 colorscheme 设置之前) : soft, medium (default), hard
 " let g:gruvbox_contrast_dark = 'hard'

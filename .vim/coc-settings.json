@@ -22,25 +22,6 @@
                 }
             }
         },
-        "clangd": {
-            "enable": true,
-            "command": "clangd",
-            "filetypes": [
-                "c",
-                "cpp",
-                "objc",
-                "objcpp"
-            ],
-            "rootPatterns": [
-                "compile_commands.json",
-                ".vim/",
-                ".git/",
-                ".hg/"
-            ],
-            "args": [
-                "-background-index"
-            ]
-        },
         "bash": {
             "enable": true,
             "command": "bash-language-server",
@@ -57,5 +38,10 @@
     "markdownlint.config": {
         "default": true,
         "line_length": false
+    },
+    "clangd": {
+      "enabled": true,
+      "disableDiagnostics": false,
+      "semanticHighlighting": true
     }
 }
