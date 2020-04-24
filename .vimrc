@@ -622,5 +622,6 @@ else
 endif
 
 " 命令行模式下，进入 popup menu 补全选择时，使用 enter 进行选择，而不是直接执行
+" nvim 5.0 Pre-release <C-e> 快捷键在 Mac 上有 bug，表现与 Linux 上不一致
 cnoremap <expr> <cr> pumvisible() ? "\<C-e>" : "\<CR>"
 " TODO: <C-c> 取消 popup menu 选择，不适用任何一个补全
