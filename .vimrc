@@ -31,6 +31,8 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-commentary'
 Plug 'godlygeek/tabular'
 Plug 'MTDL9/vim-log-highlighting'
+" 可选替代 vim-husk
+Plug 'tpope/vim-rsi'
 
 " Initialize plugin system
 call plug#end()
@@ -618,3 +620,7 @@ else
   " :help clipboard-autoselect
   set clipboard=unnamed
 endif
+
+" 命令行模式下，进入 popup menu 补全选择时，使用 enter 进行选择，而不是直接执行
+cnoremap <expr> <cr> pumvisible() ? "\<C-e>" : "\<CR>"
+" TODO: <C-c> 取消 popup menu 选择，不适用任何一个补全
