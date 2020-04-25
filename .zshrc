@@ -171,14 +171,10 @@ if [[ "${OS}" == "Darwin" ]]; then
   export PATH="/usr/local/opt/openssl/bin:$PATH"
   export PATH="/usr/local/opt/sqlite/bin:$PATH"
   export PATH="/usr/local/opt/sphinx-doc/bin:$PATH"
-  export MANPATH="/usr/local/opt/make/libexec/gnuman:$MANPATH"
   export PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
   export PATH="/usr/local/opt/ncurses/bin:$PATH"
   export PATH=$PATH:/usr/local/opt/llvm/bin
   export PATH=$PATH:$GOPATH/bin
-  # 手动安装最新版本的 neivom
-  # https://github.com/neovim/neovim/releases
-  export PATH="/usr/local/Cellar/nvim-osx64/bin:$PATH"
   # 这个命令会让 zsh 启动变特别慢, 直接指定路径加速启动
   # export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
   export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/usr/local/opt/openssl@1.1"
