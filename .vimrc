@@ -30,6 +30,7 @@ Plug 'vim-airline/vim-airline-themes'
 
 Plug 'tpope/vim-commentary'
 Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 Plug 'MTDL9/vim-log-highlighting'
 " 可选替代 vim-husk
 Plug 'tpope/vim-rsi'
@@ -517,7 +518,7 @@ if !&diff
       execute 'edit ' . l:alter
     endif
   endfunction
-  autocmd FileType c,cpp nmap <silent> <leader>h :call <SID>EditAlternate()<CR>
+  autocmd FileType c,cpp nmap <silent> <space>h :call <SID>EditAlternate()<CR>
 
   " coc-lists 配置
   " -A : 自动预览模式
