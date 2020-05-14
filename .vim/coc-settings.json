@@ -43,5 +43,8 @@
       "enabled": true,
       "disableDiagnostics": false,
       "semanticHighlighting": true
+    },
+    "yank": {
+      "enableCompletion": false
     }
 }
