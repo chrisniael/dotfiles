@@ -102,7 +102,7 @@ fi
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(zsh-completions docker)
-plugins=(docker)
+plugins=(docker cargo rust)
 
 source $ZSH/oh-my-zsh.sh
 
