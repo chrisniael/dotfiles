@@ -39,7 +39,7 @@ Plug 'tpope/vim-rsi'
 call plug#end()
 
 " coc.nvim 的插件
-let g:coc_global_extensions = ['coc-yank', 'coc-pairs', 'coc-lists', 'coc-markdownlint', 'coc-clangd', 'coc-cmake']
+let g:coc_global_extensions = ['coc-yank', 'coc-pairs', 'coc-lists', 'coc-markdownlint', 'coc-clangd', 'coc-cmake', 'coc-rust-analyzer']
 
 " 设置 gruvbox 主题 contrast 程度 (得放在 colorscheme 设置之前) : soft, medium (default), hard
 " let g:gruvbox_contrast_dark = 'hard'

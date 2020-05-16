@@ -209,6 +209,8 @@ else
   fi
 fi
 
+export PATH="$HOME/.config/bin:$PATH"
+
 alias rm="rm -i"                            #"删除"
 alias cp="cp -i"                            #"复制"
 alias mv="mv -i"                            #"移动"
