@@ -24,7 +24,7 @@ Plug 'morhetz/gruvbox'
 Plug 'jackguo380/vim-lsp-cxx-highlight'
 
 " vim-fugitive, vim-airline, vim-airline-themes 组合安装
-Plug 'tpope/vim-fugitive'
+" Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
@@ -34,6 +34,8 @@ Plug 'plasticboy/vim-markdown'
 Plug 'MTDL9/vim-log-highlighting'
 " 可选替代 vim-husk
 Plug 'tpope/vim-rsi'
+Plug 'airblade/vim-gitgutter'
+
 
 " Initialize plugin system
 call plug#end()
