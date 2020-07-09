@@ -628,3 +628,5 @@ endif
 " nvim 5.0 Pre-release <C-e> 快捷键在 Mac 上有 bug，表现与 Linux 上不一致
 cnoremap <expr> <cr> pumvisible() ? "\<C-e>" : "\<CR>"
 " TODO: <C-c> 取消 popup menu 选择，不适用任何一个补全
+
+autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
