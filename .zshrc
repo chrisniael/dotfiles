@@ -20,7 +20,7 @@ if [[ "${OS}" == "Darwin" ]]; then
     ZSH_THEME="robbyrussell"
   else
     powerline-daemon -q
-    source /usr/local/lib/python3.7/site-packages/powerline/bindings/zsh/powerline.zsh
+    source /usr/local/lib/python3.8/site-packages/powerline/bindings/zsh/powerline.zsh
   fi
 elif [[ "${OS}" == "Linux" ]]; then
   source /etc/os-release
