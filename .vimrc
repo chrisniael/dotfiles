@@ -50,6 +50,10 @@ set t_Co=256  " 支持 xterm-256color
 syntax enable  " 语法高亮
 " 为了在没有安装 gruvbox 插件的时候不报错
 silent! colorscheme gruvbox
+" changing coc highlight color cause light grey is invisible
+" BUT is overwritten by scheme so defining it in an autocmd after colorscheme change
+" https://github.com/neoclide/coc-highlight/issues/6
+autocmd ColorScheme * highlight CocHighlightText gui=None guibg=#665c54
 set background=dark
 set number
 
