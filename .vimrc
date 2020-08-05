@@ -492,25 +492,25 @@ if !&diff
   command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
   " Add status line support, for integration with other plugin, checkout `:h coc-status`
-  "set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+  " set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
-  " Using CocList
-  " Show all diagnostics
-  nnoremap <silent> <space>a  :<C-u>CocList --normal diagnostics<cr>
-  " Manage extensions
-  " nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
-  " Show commands
-  " nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
-  " Find symbol of current document
-  " nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-  " Search workspace symbols
-  " nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+  " Mappings for CoCList
+  " Show all diagnostics.
+  nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+  " Manage extensions.
+  " nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+  " Show commands.
+  " nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+  " Find symbol of current document.
+  nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+  " Search workspace symbols.
+  nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
   " Do default action for next item.
-  nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+  nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
   " Do default action for previous item.
-  nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
-  " Resume latest coc list
-  nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+  nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+  " Resume latest coc list.
+  nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
 
   " coc.nvim c/c++ 头文件跳转
