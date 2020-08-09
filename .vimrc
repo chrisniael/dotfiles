@@ -11,8 +11,6 @@
 call plug#begin('~/.vim/plugged')
 
 if !&diff
-  " :CocInstall coc-yank
-  " :CocInstall coc-lists
   " pip3 install pynvim
   " npm install -g neovim
   " pacman -S ripgrep
@@ -27,7 +25,6 @@ Plug 'jackguo380/vim-lsp-cxx-highlight'
 " Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-
 Plug 'tpope/vim-commentary'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
@@ -411,13 +408,22 @@ if !&diff
   endfunction
 
   " Use <c-space> to trigger completion.
-  inoremap <silent><expr> <c-space> coc#refresh()
+  if has('nvim')
+    " inoremap <silent><expr> <c-space> coc#refresh()
+    inoremap <silent><expr> <c-q> coc#refresh()
+  else
+    inoremap <silent><expr> <c-@> coc#refresh()
+  endif
 
-  " Use <cr> to confirm completion when you have selected, `<C-g>u` means break undo chain at current position.
-  " Coc only does snippet and additional edit on confirm.
-  inoremap <expr> <cr> pumvisible() && coc#_selected() ? "\<C-y>" : "\<C-g>u\<CR>"
-  " Or use `complete_info` if your vim support it, like:
-  " inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+  " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+  " position. Coc only does snippet and additional edit on confirm.
+  " <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+  if exists('*complete_info')
+    inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+  else
+    " inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+    inoremap <expr> <cr> pumvisible() && coc#_selected() ? "\<C-y>" : "\<C-g>u\<CR>"
+  endif
 
   " Use <C-h>/<C-l> jump to next/previous placeholder.
   let g:coc_snippet_next = '<C-l>'
@@ -524,7 +530,8 @@ if !&diff
       execute 'edit ' . l:alter
     endif
   endfunction
-  autocmd FileType c,cpp nmap <silent> <space>h :call <SID>EditAlternate()<CR>
+  " autocmd FileType c,cpp nmap <silent> <space>h :call <SID>EditAlternate()<CR>
+  autocmd FileType c,cpp nmap <silent> <space>h :CocCommand clangd.switchSourceHeader<CR>
 
   " coc-lists 配置
   " -A : 自动预览模式
