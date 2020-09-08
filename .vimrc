@@ -22,7 +22,7 @@ Plug 'morhetz/gruvbox'
 Plug 'jackguo380/vim-lsp-cxx-highlight'
 
 " vim-fugitive, vim-airline, vim-airline-themes 组合安装
-" Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-commentary'
@@ -120,13 +120,11 @@ set fillchars+=vert:\
 if &diff
   set nocursorline
   set colorcolumn=
-  set signcolumn=no
   set cmdheight=1
-  set laststatus=2
+  set laststatus=1
 else
   set cursorline
   autocmd FileType c,cpp set colorcolumn=81
-  set signcolumn=yes
   set cmdheight=2
   set laststatus=2
 endif
@@ -356,8 +354,8 @@ func! RunResult()
   endif
 endfunc
 
-map <Leader>j :call CompileCode()<CR>
-map <Leader>k :call RunResult()<CR>
+map <leader>j :call CompileCode()<CR>
+map <leader>k :call RunResult()<CR>
 
 
 " 高亮光标所在位置的单词，并输入全文替换的命令，替换单词代填充
@@ -391,8 +389,14 @@ if !&diff
   " don't give |ins-completion-menu| messages.
   set shortmess+=c
 
-  " always show signcolumns
-  " set signcolumn=yes
+  " Always show the signcolumn, otherwise it would shift the text each time
+  " diagnostics appear/become resolved.
+  if has("patch-8.1.1564")
+    " Recently vim can merge signcolumn and number column into one
+    set signcolumn=number
+  else
+    set signcolumn=yes
+  endif
 
   " Use tab for trigger completion with characters ahead and navigate.
   " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -457,8 +461,8 @@ if !&diff
   nmap <leader>rn <Plug>(coc-rename)
 
   " Remap for format selected region
-  xmap <leader>f  <Plug>(coc-format-selected)
-  nmap <leader>f  :call CocAction('format')<CR>
+  xmap <silent> <leader>f  <Plug>(coc-format-selected)
+  nmap <silent> <leader>f  :call CocAction('format')<CR>
 
   augroup mygroup
     autocmd!
@@ -480,9 +484,13 @@ if !&diff
 
   " Create mappings for function text object, requires document symbols feature of languageserver.
   xmap if <Plug>(coc-funcobj-i)
-  xmap af <Plug>(coc-funcobj-a)
   omap if <Plug>(coc-funcobj-i)
+  xmap af <Plug>(coc-funcobj-a)
   omap af <Plug>(coc-funcobj-a)
+  xmap ic <Plug>(coc-classobj-i)
+  omap ic <Plug>(coc-classobj-i)
+  xmap ac <Plug>(coc-classobj-a)
+  omap ac <Plug>(coc-classobj-a)
 
   " Use <C-d> for select selections ranges, needs server support, like: coc-tsserver, coc-python
   " nmap <silent> <C-d> <Plug>(coc-range-select)
@@ -518,7 +526,6 @@ if !&diff
   " Resume latest coc list.
   nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
-
   " coc.nvim c/c++ 头文件跳转
   " llvm 9.0 里 .h/.cpp 文件结构复杂时可能不能正常使用
   " llvm 10.0 修复了这个 bug
@@ -537,17 +544,72 @@ if !&diff
   " -A : 自动预览模式
   " --number-select : 显示行号, 也可以用行号选择
   " --normal : normal 模式
+  " -I : interactive 模式
   " cnoreabbrev CocList CocList --number-select
-  nnoremap <silent> <space>f  :<C-u>CocList files<cr>
-  nnoremap <silent> <space>b  :<C-u>CocList buffers<cr>
-  nnoremap <space>g  :<C-u>CocList grep
 
   " 在当前 buffer 中搜索光标所在单词
-  nnoremap <silent> <space>w  :exe 'CocList -I --normal --input='.expand('<cword>').' words'<CR>
+  command! -nargs=+ -complete=custom,s:WordsArgs CocListWords call CocListWordsOpt(<q-args>)
 
-  " 搜索选择的文本
+  function! CocListWordsOpt(...)
+    if a:0 <= 0  " 参数个数
+      return
+    endif
+    let arg_list = split(a:1)
+    let i = 0
+    let options = ''
+    if len(arg_list) <= 0
+      return
+    endif
+    while i < len(arg_list) - 1
+      let arg = arg_list[i]
+      let options .= arg . ' '
+      let i += 1
+    endwhile
+    exe 'CocList --normal '.options.' --input='.arg_list[i].' words'
+  endfunction
+
+  function! s:WordsArgs(...)
+    let list = ['--ignore-case']
+    return join(list, "\n")
+  endfunction
+
+  " nnoremap <space>W :CocList --normal --ignore-case --input=<C-R>=expand('<cword>')<CR> words<Left><Left><Left><Left><Left><Left>
+  nnoremap <space>w :<C-u>CocList -I words<CR> 
+  nnoremap <space>W :<C-u>CocList -I --ignore-case words<CR> 
+  " 在当前 buffer 中搜索光标所在单词
+  nnoremap <leader>w :<C-u>CocListWords <C-R>=expand('<cword>')<CR> 
+  " 在当前 buffer 中搜索 visual 模式选择的文本
+  vnoremap <leader>w :<C-u>call <SID>WordsFromSelected(visualmode())<CR>
+
+  function! s:WordsFromSelected(type)
+    let saved_unnamed_register = @@
+    if a:type ==# 'v'
+      normal! `<v`>y
+    elseif a:type ==# 'char'
+      normal! `[v`]y
+    else
+      return
+    endif
+    let word = substitute(@@, '\n$', '', 'g')
+    let word = escape(word, '| ')
+    let @@ = saved_unnamed_register
+    execute 'CocList --normal --input='.word.' words'
+  endfunction
+
+  " 文件列表
+  nnoremap <silent> <space>f :<C-u>CocList files<cr>
+  " Buffer 列表
+  nnoremap <silent> <space>b :<C-u>CocList buffers<cr>
+
+  " 自定义的 grep 命令，支持目录补全
+  command! -nargs=+ -complete=dir CocListGrep exe 'CocList --normal grep '.<q-args>
+  nnoremap <space>g :<C-u>CocListGrep 
+  nnoremap <space>G :<C-u>CocListGrep -i 
+  " Grep 光标所在单词
+  nnoremap <leader>g :<C-u>CocListGrep <C-R>=expand('<cword>')<CR> 
+  " Grep visual 模式选择的文本
   vnoremap <leader>g :<C-u>call <SID>GrepFromSelected(visualmode())<CR>
-  nnoremap <leader>g :<C-u>set operatorfunc=<SID>GrepFromSelected<CR>g@
+
   function! s:GrepFromSelected(type)
     let saved_unnamed_register = @@
     if a:type ==# 'v'
@@ -560,25 +622,11 @@ if !&diff
     let word = substitute(@@, '\n$', '', 'g')
     let word = escape(word, '| ')
     let @@ = saved_unnamed_register
-    execute 'CocList grep '.word
+    execute 'CocList --normal grep '.word
   endfunction
 
-  " grep 光标所在单词
-  command! -nargs=+ -complete=custom,s:GrepArgs Rg exe 'CocList grep '.<q-args>
-
-  function! s:GrepArgs(...)
-    let list = ['-S', '-smartcase', '-i', '-ignorecase', '-w', '-word',
-          \ '-e', '-regex', '-u', '-skip-vcs-ignores', '-t', '-extension']
-    return join(list, "\n")
-  endfunction
-
-  " Keymapping for grep word under cursor with interactive mode
-  nnoremap <silent> <Leader>cf :exe 'CocList -I --normal --input='.expand('<cword>').' grep'<CR>
-
-  " coc-yank 配置
+  " 历史剪切板列表
   nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
-
-
 endif  " if !&vim
 
 
@@ -638,6 +686,18 @@ endif
 " 命令行模式下，进入 popup menu 补全选择时，使用 enter 进行选择，而不是直接执行
 " nvim 5.0 Pre-release <C-e> 快捷键在 Mac 上有 bug，表现与 Linux 上不一致
 cnoremap <expr> <cr> pumvisible() ? "\<C-e>" : "\<CR>"
-" TODO: <C-c> 取消 popup menu 选择，不适用任何一个补全
+" TODO: <C-c> 取消 popup menu 选择，不使用任何一个补全
+" TODO: <C-k> 删除光标后面的所有字符
 
 autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
+
+" vim-cpp-enhanced-highlight 配置
+if &diff
+  let g:cpp_class_scope_highlight = 1
+  let g:cpp_member_variable_highlight = 1
+  let g:cpp_class_decl_highlight = 1
+  let g:cpp_posix_standard = 1
+  let g:cpp_experimental_simple_template_highlight = 1
+  " let g:cpp_experimental_template_highlight = 1
+  let g:cpp_concepts_highlight = 1
+endif
