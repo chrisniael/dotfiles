@@ -574,10 +574,10 @@ if !&diff
   endfunction
 
   " nnoremap <space>W :CocList --normal --ignore-case --input=<C-R>=expand('<cword>')<CR> words<Left><Left><Left><Left><Left><Left>
-  nnoremap <space>w :<C-u>CocList -I words<CR> 
-  nnoremap <space>W :<C-u>CocList -I --ignore-case words<CR> 
+  nnoremap <space>w :<C-u>CocList -I words<CR>
+  nnoremap <space>W :<C-u>CocList -I --ignore-case words<CR>
   " 在当前 buffer 中搜索光标所在单词
-  nnoremap <leader>w :<C-u>CocListWords <C-R>=expand('<cword>')<CR> 
+  nnoremap <leader>w :<C-u>CocListWords <C-R>=expand('<cword>')<CR>
   " 在当前 buffer 中搜索 visual 模式选择的文本
   vnoremap <leader>w :<C-u>call <SID>WordsFromSelected(visualmode())<CR>
 
