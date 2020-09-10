@@ -516,7 +516,7 @@ if !&diff
   " Show commands.
   " nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
   " Find symbol of current document.
-  nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+  nnoremap <silent><nowait> <space>o  :<C-u>CocList --normal outline<cr>
   " Search workspace symbols.
   nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
   " Do default action for next item.
@@ -537,8 +537,8 @@ if !&diff
       execute 'edit ' . l:alter
     endif
   endfunction
-  " autocmd FileType c,cpp nmap <silent> <space>h :call <SID>EditAlternate()<CR>
-  autocmd FileType c,cpp nmap <silent> <space>h :CocCommand clangd.switchSourceHeader<CR>
+  " autocmd FileType c,cpp nmap <silent> gh :call <SID>EditAlternate()<CR>
+  autocmd FileType c,cpp nmap <silent> gh :CocCommand clangd.switchSourceHeader<CR>
 
   " coc-lists 配置
   " -A : 自动预览模式
