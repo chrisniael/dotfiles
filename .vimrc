@@ -57,6 +57,7 @@ set number
 function! s:enable_true_color()
   if has("termguicolors")
     " fix bug for vim
+    " vim --version 查看是否有 +termguicolors，否则并不能启动 true color
     if !has("nvim")
       set t_8f=[38;2;%lu;%lu;%lum
       set t_8b=[48;2;%lu;%lu;%lum
