@@ -256,13 +256,13 @@ function ssproxy() {
   fi
 }
 
-# exit ssh 连接的时候，关闭 xsel child process，否则 ssh 连接不会关掉
-# exit 的时候如果在 tmux 是最后一个 session 窗口，则关闭 xsel child process 且断开 ssh 连接
-# 不在 tmux 则只关闭 xsel child process 且 exit
+# exit ssh 连接的时候，关闭 xclip child process，否则 ssh 连接不会关掉
+# exit 的时候如果在 tmux 是最后一个 session 窗口，则关闭 xclip child process 且断开 ssh 连接
+# 不在 tmux 则只关闭 xclip child process 且 exit
 #
-# 关闭 xsel child process 的原因是因为 xsel 会保持和 X Server 的连接，exit 的时候会不能正常关闭 SSH 连接
+# 关闭 xclip child process 的原因是因为 xclip 会保持和 X Server 的连接，exit 的时候会不能正常关闭 SSH 连接
 # 用 eval 是去除前后的空格， mac 上的 wc 命令与 linux 不太一样，会输出一些空格
-alias exit='if [[ -n "$TMUX" ]]; then if [[ $(eval echo $(tmux list-sessions | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-windows | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-panes | wc -l)) = 1 ]]; then echo -n ""; else exit; fi; else killall xsel >/dev/null 2>&1 ; exit; fi'
+alias exit='if [[ -n "$TMUX" ]]; then if [[ $(eval echo $(tmux list-sessions | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-windows | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-panes | wc -l)) = 1 ]]; then echo -n ""; else exit; fi; else killall xclip >/dev/null 2>&1 ; exit; fi'
 
 if [[ "$(uname -r | grep -Eo Microsoft)" == "Microsoft" ]]; then
   # WSL not apply umask corrent.
@@ -302,9 +302,9 @@ if [[ -z "$TMUX" ]] && [[ "$TERM_PROGRAM" != "Apple_Terminal" ]]; then
     else
       ID="$(tmux list-sessions 2>/dev/null | grep -m1 attached | cut -d: -f1)"
       if [[ -n "$ID" ]]; then
-        killall xsel >/dev/null 2>&1; tmux attach-session -d -x -t "$ID"
+        killall xclip >/dev/null 2>&1; tmux attach-session -d -x -t "$ID"
       else
-        killall xsel >/dev/null 2>&1; tmux attach-session -d -x
+        killall xclip >/dev/null 2>&1; tmux attach-session -d -x
       fi
     fi
   fi
