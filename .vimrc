@@ -10,16 +10,18 @@
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
 
-if !&diff
+if &diff
+  Plug 'octol/vim-cpp-enhanced-highlight'
+else
   " pip3 install pynvim
   " npm install -g neovim
   " pacman -S ripgrep
   " pacman -S clangd
   " npm install -g bash-language-server
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  Plug 'jackguo380/vim-lsp-cxx-highlight'
 endif
 Plug 'morhetz/gruvbox'
-Plug 'jackguo380/vim-lsp-cxx-highlight'
 
 " vim-fugitive, vim-airline, vim-airline-themes 组合安装
 Plug 'tpope/vim-fugitive'
@@ -127,7 +129,7 @@ if &diff
   set laststatus=1
 else
   set cursorline
-  autocmd FileType c,cpp set colorcolumn=81
+  autocmd FileType c,cpp set colorcolumn=
   set cmdheight=2
   set laststatus=2
 endif
@@ -181,6 +183,11 @@ set smarttab
 " GoLang 缩进符用 Tab
 autocmd BufNewFile,BufRead *.go setlocal tabstop=4 shiftwidth=4
 autocmd BufNewFile,BufRead *.json setlocal tabstop=2 shiftwidth=2
+
+" RO lua 配置文件识别为 lua
+autocmd! BufNewFile,BufRead *.txt set filetype=lua
+" RO 日志文件识别为 log 文件类型
+autocmd! BufNewFile,BufRead *.log.[0-9][0-9][0-9][0-9][0-1][0-9][0-3][0-9]-[0-2][0-9] set filetype=log
 
 " 设置匹配模式，例如当光标位于一个左括号上时，会高亮相应的那个右括号
 set showmatch
@@ -260,7 +267,7 @@ func! CompileGcc()
     let vimshellcmd="belowright 10split | terminal"
   endif
   let compilecmd="gcc"
-  let compileflag="-std=c17 -pthread -g"
+  let compileflag="-std=c11 -pthread -g"
   let compileout="-o %<.out"
   exec vimshellcmd." ".compilecmd." ".compileflag." % ".compileout
 endfunc
@@ -272,7 +279,7 @@ func! CompileGpp()
     let vimshellcmd="belowright 10split | terminal"
   endif
   let compilecmd="g++"
-  let compileflag="-std=c++17 -pthread -g -fno-elide-constructors"
+  let compileflag="-std=c++11 -pthread -g -fno-elide-constructors"
   let compileout="-o %<.out"
   exec vimshellcmd." ".compilecmd." ".compileflag." % ".compileout
 endfunc

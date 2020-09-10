@@ -209,6 +209,10 @@ else
         ;;
       centos)
         export PATH="$PATH:/squashfs-root/usr/bin"
+        export CC="ccache distcc gcc"
+        export CPP="ccache distcc cpp"
+        export CXX="ccache distcc g++"
+        alias ro="cd /data/rogame/server"
         ;;
       *)
         ;;
