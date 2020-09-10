@@ -71,13 +71,15 @@ endfunction
 " 支持 true color 的 terminal : iTerm2, Mintty, PuTTY
 " 暂时没有很好的方法判断 terminal 是否支持 true color
 " 暂时这样配置兼容 macOS 上的 Terminal 和 iTerm2
-if has("mac")
-  if $COLORTERM == 'truecolor'
-    call s:enable_true_color()
-  endif
-else
-  call s:enable_true_color()
-endif
+" remote ssh 至 macOS 时，不存在 COLORTERM 这个环境变量
+" if has("mac")
+"   if $COLORTERM == 'truecolor'
+"     call s:enable_true_color()
+"   endif
+" else
+"   call s:enable_true_color()
+" endif
+call s:enable_true_color()
 
 if has("nvim")
   " 打开 terminal 时关闭行号和符号列, 并自动进入 insert 模式
@@ -516,7 +518,7 @@ if !&diff
   " Show commands.
   " nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
   " Find symbol of current document.
-  nnoremap <silent><nowait> <space>o  :<C-u>CocList --normal outline<cr>
+  nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
   " Search workspace symbols.
   nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
   " Do default action for next item.
