@@ -293,13 +293,12 @@ bindkey '\e[4~' end-of-line
 # tmux 启动的时候存在 attached 的 session 则 attach 它并剔除所有其他客户端，不存在则创建一个新的
 # ssh 连接或者本地默认方式启动都自动启动 tmux
 # 从本地某个目录启动不自动启动 tmux
-if [[ -z "$TMUX" ]] && [[ "$TERM_PROGRAM" != "Apple_Terminal" ]]; then
+if [[ -z "$TMUX" ]]; then
   # XShell 终端类型里没有 xterm-256color 选项，需要手动设置
   # tmux 里不可以手动设置，tmux 本身配置里有对 TERM 设置
   # TERM 会影响 ohmyzsh 的 ATUO_TITLE 功能
   export TERM='xterm-256color'
-
-  if [[ -n "$SSH_CONNECTION" ]] || [[ "$(pwd)" == "${HOME}" ]]; then
+  if [[ "$TERM_PROGRAM" != "Apple_Terminal" ]] && ([[ -n "$SSH_CONNECTION" ]] || [[ "$(pwd)" == "${HOME}" ]]); then
     # 用 eval 是去除前后的空格， mac 上的 wc 命令与 linux 不太一样，会输出一些空格
     if [[ $(eval echo $(tmux list-sessions 2>/dev/null | wc -l)) = 0 ]]; then
       tmux new-session
@@ -312,4 +311,10 @@ if [[ -z "$TMUX" ]] && [[ "$TERM_PROGRAM" != "Apple_Terminal" ]]; then
       fi
     fi
   fi
+else
+  # 手动更新 tmux session 的 zsh 环境变量
+  # https://babushk.in/posts/renew-environment-tmux.html
+  function preexec {
+    eval "$(tmux show-environment -s)"
+  }
 fi
