@@ -32,6 +32,7 @@ Plug 'MTDL9/vim-log-highlighting'
 " 可选替代 vim-husk
 Plug 'tpope/vim-rsi'
 Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-obsession'
 
 
 " Initialize plugin system
