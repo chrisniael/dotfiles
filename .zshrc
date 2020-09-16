@@ -294,7 +294,9 @@ if [[ -z "$TMUX" ]]; then
   # tmux 里不可以手动设置，tmux 本身配置里有对 TERM 设置
   # TERM 会影响 ohmyzsh 的 ATUO_TITLE 功能
   export TERM='xterm-256color'
-  if [[ "$TERM_PROGRAM" == "iTerm.app" ]] && [[ "$(pwd)" == "${HOME}" ]]; then
+  if ([[ "${OS}" == "Darwin" ]] && [[ -z "$SSH_CONNECTION" ]] && [[ "$TERM_PROGRAM" == "iTerm.app" ]] && [[ "$(pwd)" == "${HOME}" ]]) ||
+     ([[ "${OS}" == "Darwin" ]] && [[ -n "$SSH_CONNECTION" ]]) ||
+     ([[ "${OS}" != "Darwin" ]] && [[ "$(pwd)" == "${HOME}" ]]); then
     # 用 eval 是去除前后的空格， mac 上的 wc 命令与 linux 不太一样，会输出一些空格
     if [[ $(eval echo $(tmux list-sessions 2>/dev/null | wc -l)) = 0 ]]; then
       tmux new-session
