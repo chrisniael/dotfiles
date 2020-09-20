@@ -17,9 +17,10 @@ if !&diff
   " pacman -S clangd
   " npm install -g bash-language-server
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  Plug 'jackguo380/vim-lsp-cxx-highlight'
+  Plug 'airblade/vim-gitgutter'
 endif
 Plug 'morhetz/gruvbox'
-Plug 'jackguo380/vim-lsp-cxx-highlight'
 
 " vim-fugitive, vim-airline, vim-airline-themes 组合安装
 Plug 'tpope/vim-fugitive'
@@ -31,19 +32,28 @@ Plug 'plasticboy/vim-markdown'
 Plug 'MTDL9/vim-log-highlighting'
 " 可选替代 vim-husk
 Plug 'tpope/vim-rsi'
-Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-obsession'
-
+Plug 'voldikss/vim-floaterm'
+Plug 'liuchengxu/vim-clap'
+" The bang version will try to download the prebuilt binary if cargo does not exist.
+Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
+Plug 'vn-ki/coc-clap'
 
 " Initialize plugin system
 call plug#end()
 
+
 " coc.nvim 的插件
-let g:coc_global_extensions = ['coc-yank', 'coc-pairs', 'coc-lists', 'coc-markdownlint', 'coc-clangd', 'coc-cmake', 'coc-rust-analyzer']
+let g:coc_global_extensions = ['coc-yank', 'coc-pairs', 'coc-lists', 'coc-markdownlint', 'coc-clangd', 'coc-cmake', 'coc-rust-analyzer', 'coc-floaterm']
+
 
 " 设置 gruvbox 主题 contrast 程度 (得放在 colorscheme 设置之前) : soft, medium (default), hard
-" let g:gruvbox_contrast_dark = 'hard'
-" let g:gruvbox_contrast_light = 'hard'
+" let g:gruvbox_contrast_dark = 'medium'
+" let g:gruvbox_contrast_light = 'medium'
+" 设置 grubbox 主题支持粗体与斜体
+let g:gruvbox_bold = 1
+" https://github.com/neovim/neovim/issues/3461#issuecomment-268640486
+let g:gruvbox_italic = 1
 set t_Co=256  " 支持 xterm-256color
 syntax enable  " 语法高亮
 " 为了在没有安装 gruvbox 插件的时候不报错
@@ -706,3 +716,16 @@ if &diff
   " let g:cpp_experimental_template_highlight = 1
   let g:cpp_concepts_highlight = 1
 endif
+
+" vim-floaterm 配置
+let g:floaterm_autoclose = 1
+" 浮动窗口透明度
+let g:floaterm_winblend = 10
+
+" vim-clap 配置
+" 搜索框前后的 glyphs 字符
+let g:clap_search_box_border_style = 'nil'
+" let g:clap_theme = 'material_design_dark'
+
+" terminal 模式快捷键
+tnoremap <leader>h <C-\><C-N>:hide<CR>
