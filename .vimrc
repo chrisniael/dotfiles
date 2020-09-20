@@ -46,13 +46,17 @@ call plug#end()
 " coc.nvim 的插件
 let g:coc_global_extensions = ['coc-yank', 'coc-pairs', 'coc-lists', 'coc-markdownlint', 'coc-clangd', 'coc-cmake', 'coc-rust-analyzer', 'coc-floaterm']
 
+" vim 支持显示粗体与斜体
+if !has("nvim")
+  set t_ZH=[3m
+  set t_ZR=[23m
+endif
 
 " 设置 gruvbox 主题 contrast 程度 (得放在 colorscheme 设置之前) : soft, medium (default), hard
 " let g:gruvbox_contrast_dark = 'medium'
 " let g:gruvbox_contrast_light = 'medium'
-" 设置 grubbox 主题支持粗体与斜体
+" 设置 grubbox 主题支持粗体与斜体 (https://github.com/neovim/neovim/issues/3461#issuecomment-268640486)
 let g:gruvbox_bold = 1
-" https://github.com/neovim/neovim/issues/3461#issuecomment-268640486
 let g:gruvbox_italic = 1
 set t_Co=256  " 支持 xterm-256color
 syntax enable  " 语法高亮
