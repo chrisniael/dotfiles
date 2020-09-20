@@ -182,7 +182,7 @@ if [[ "${OS}" == "Darwin" ]]; then
   # 这个命令会让 zsh 启动变特别慢, 直接指定路径加速启动
   # export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
   export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/usr/local/opt/openssl@1.1"
-  export HOMEBREW_NO_AUTO_UPDATE=true
+  # export HOMEBREW_NO_AUTO_UPDATE=true
 
   bindkey \^U backward-kill-line
   bindkey '\e[1~' beginning-of-line
@@ -260,14 +260,6 @@ function ssproxy() {
   fi
 }
 
-# exit ssh 连接的时候，关闭 xclip child process，否则 ssh 连接不会关掉
-# exit 的时候如果在 tmux 是最后一个 session 窗口，则关闭 xclip child process 且断开 ssh 连接
-# 不在 tmux 则只关闭 xclip child process 且 exit
-#
-# 关闭 xclip child process 的原因是因为 xclip 会保持和 X Server 的连接，exit 的时候会不能正常关闭 SSH 连接
-# 用 eval 是去除前后的空格， mac 上的 wc 命令与 linux 不太一样，会输出一些空格
-alias exit='if [[ -n "$TMUX" ]]; then if [[ $(eval echo $(tmux list-sessions | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-windows | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-panes | wc -l)) = 1 ]]; then echo -n ""; else exit; fi; else killall xclip >/dev/null 2>&1 ; exit; fi'
-
 if [[ "$(uname -r | grep -Eo Microsoft)" == "Microsoft" ]]; then
   # WSL not apply umask corrent.
   if [[ "$(umask)" = "000" ]]; then
@@ -294,6 +286,10 @@ bindkey '\e[4~' end-of-line
 # 通过 iTerm2 启动的终端都自动启动 tmux
 # 从本地某个目录启动不自动启动 tmux
 if [[ -z "$TMUX" ]]; then
+  # 不是 vim/neovim 的 terminal 启动的 zsh
+  if [[ -z "$NVIM_LISTEN_ADDRESS" ]]; then
+    alias exit='killall xclip >/dev/null 2>&1 ; exit'
+  fi
   # XShell 终端类型里没有 xterm-256color 选项，需要手动设置
   # tmux 里不可以手动设置，tmux 本身配置里有对 TERM 设置
   # TERM 会影响 ohmyzsh 的 ATUO_TITLE 功能
@@ -314,6 +310,16 @@ if [[ -z "$TMUX" ]]; then
     fi
   fi
 else
+  # exit ssh 连接的时候，关闭 xclip child process，否则 ssh 连接不会关掉
+  # exit 的时候如果在 tmux 是最后一个 session 窗口，则关闭 xclip child process 且断开 ssh 连接
+  # 不在 tmux 则只关闭 xclip child process 且 exit
+  #
+  # 关闭 xclip child process 的原因是因为 xclip 会保持和 X Server 的连接，exit 的时候会不能正常关闭 SSH 连接
+  # 用 eval 是去除前后的空格， mac 上的 wc 命令与 linux 不太一样，会输出一些空格
+  if [[ -z "$NVIM_LISTEN_ADDRESS" ]]; then
+    alias exit='if [[ $(eval echo $(tmux list-sessions | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-windows | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-panes | wc -l)) = 1 ]]; then echo -n ""; else exit; fi'
+  fi
+
   # 手动更新 tmux session 的 zsh 环境变量
   # https://babushk.in/posts/renew-environment-tmux.html
   function preexec {
