@@ -42,6 +42,9 @@
         "<C-n>": "normal:j",
         "<C-p>": "normal:k"
     },
+    "list.normalMappings": {
+      "<C-o>": "insert:<C-o>"
+    },
     "coc.preferences.formatOnSaveFiletypes": ["c", "cpp"],
     "markdownlint.config": {
         "default": true,
