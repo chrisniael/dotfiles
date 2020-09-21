@@ -36,10 +36,9 @@ Plug 'MTDL9/vim-log-highlighting'
 Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-obsession'
 Plug 'voldikss/vim-floaterm'
-Plug 'liuchengxu/vim-clap'
 " The bang version will try to download the prebuilt binary if cargo does not exist.
 Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
-Plug 'vn-ki/coc-clap'
+" Plug 'vn-ki/coc-clap'
 
 " Initialize plugin system
 call plug#end()
