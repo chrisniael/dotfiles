@@ -10,9 +10,8 @@
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
 
-if &diff
-  Plug 'octol/vim-cpp-enhanced-highlight'
-else
+" diff 模式下不加载
+if !&diff
   " pip3 install pynvim
   " npm install -g neovim
   " pacman -S ripgrep
@@ -23,6 +22,7 @@ else
   Plug 'airblade/vim-gitgutter'
 endif
 Plug 'morhetz/gruvbox'
+Plug 'octol/vim-cpp-enhanced-highlight'
 
 " vim-fugitive, vim-airline, vim-airline-themes 组合安装
 Plug 'tpope/vim-fugitive'
@@ -98,11 +98,11 @@ endfunction
 " endif
 call s:enable_true_color()
 
-if has("nvim")
-  " 打开 terminal 时关闭行号和符号列, 并自动进入 insert 模式
-  " 退出 terminal: <C-\><C-n>
-  au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
-endif
+" if has("nvim")
+"   " 打开 terminal 时关闭行号和符号列, 并自动进入 insert 模式
+"   " 退出 terminal: <C-\><C-n>
+"   au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
+" endif
 
 " 设置 Backspace 模式
 set backspace=indent,eol,start
@@ -335,7 +335,6 @@ func! RunLua()
 endfunc
 
 func! CompileCode()
-  exec "w"
   if &filetype == "cpp"
     exec "call CompileGpp()"
   elseif &filetype == "cc"
@@ -354,8 +353,6 @@ func! CompileCode()
 endfunc
 
 func! RunResult()
-  exec "w"
-
   let vimshellcmd="!"
   if has("nvim")
     let vimshellcmd="belowright 10split | terminal"
@@ -378,8 +375,8 @@ func! RunResult()
   endif
 endfunc
 
-map <leader>j :call CompileCode()<CR>
-map <leader>k :call RunResult()<CR>
+map <silent> <leader>j :call CompileCode()<CR>
+map <silent> <leader>k :call RunResult()<CR>
 
 
 " 高亮光标所在位置的单词，并输入全文替换的命令，替换单词代填充
@@ -728,9 +725,13 @@ if &diff
 endif
 
 " vim-floaterm 配置
-let g:floaterm_autoclose = 1
+let g:floaterm_autoclose = 0
 " 浮动窗口透明度
-let g:floaterm_winblend = 10
+let g:floaterm_winblend = 20
+let g:floaterm_autoinsert = 0
+let g:floaterm_width = 0.8
+let g:floaterm_height = 0.8
+let g:floaterm_gitcommit = 'split'
 
 " vim-clap 配置
 " 搜索框前后的 glyphs 字符
@@ -738,4 +739,87 @@ let g:clap_search_box_border_style = 'nil'
 " let g:clap_theme = 'material_design_dark'
 
 " terminal 模式快捷键
-tnoremap <leader>h <C-\><C-N>:hide<CR>
+" nnoremap <silent> <leader>h :<C-u>FloatermHide<CR>
+" nnoremap <silent> <leader>t :<C-u>FloatermToggleOrNew --name=float_terminal<CR>i
+
+" tnoremap <A-p> <C-\><C-N>:<C-u>FloatermPrev<CR>
+" tnoremap <A-n> <C-\><C-N>:<C-u>FloatermNext<CR>
+" inoremap <A-p> <C-\><C-N>:<C-u>FloatermPrev<CR>
+" inoremap <A-n> <C-\><C-N>:<C-u>FloatermNext<CR>
+" nnoremap <A-p> :<C-u>FloatermPrev<CR>
+" nnoremap <A-n> :<C-u>FloatermNext<CR>
+
+tnoremap <C-o> <C-\><C-N>
+tnoremap <silent> <Esc> <C-\><C-N>:<C-u>FloatermHide<CR>
+nnoremap <silent> <Esc> :<C-u>FloatermHide<CR>
+
+" tnoremap <A-h> <C-\><C-N><C-w>h
+" tnoremap <A-j> <C-\><C-N><C-w>j
+" tnoremap <A-k> <C-\><C-N><C-w>k
+" tnoremap <A-l> <C-\><C-N><C-w>l
+" inoremap <A-h> <C-\><C-N><C-w>h
+" inoremap <A-j> <C-\><C-N><C-w>j
+" inoremap <A-k> <C-\><C-N><C-w>k
+" inoremap <A-l> <C-\><C-N><C-w>l
+" nnoremap <A-h> <C-w>h
+" nnoremap <A-j> <C-w>j
+" nnoremap <A-k> <C-w>k
+" nnoremap <A-l> <C-w>l
+
+
+" Toggle 不存在时则创建
+" https://github.com/voldikss/vim-floaterm/issues/149
+function! s:floaterm_toggle_or_new(bang, argstr) abort
+  let [cmd, opts] = floaterm#cmdline#parse(split(a:argstr))
+  let name = get(opts, 'name', '')
+  if !empty(name)
+    let bufnr = floaterm#terminal#get_bufnr(name)
+    if bufnr == -1
+      call floaterm#new(a:bang, cmd, {}, opts)
+    else
+      call floaterm#toggle(a:bang, 0, name)
+    endif
+  else
+    call floaterm#util#show_msg('Name is empty', 'error')
+  endif
+endfunction
+
+command! -nargs=? -bang -complete=customlist,floaterm#cmdline#floaterm_names
+      \ FloatermToggleOrNew call s:floaterm_toggle_or_new(<bang>0, <q-args>)
+
+" 编译特定服务器
+command! -nargs=* -complete=custom,s:RoCompileArgs RoCompile exe 'FloatermToggleOrNew --name=ro_compile make cmake && cd cmake_build/debug && make '.<q-args>|$
+function! s:RoCompileArgs(...)
+  let list = ['-j',
+        \ 'AuctionServer', 'DataServer', 'GateServer', 'GDataServer', 'GGuildServer', 'GlobalServer', 'GProxyServer', 'GRecordServer', 'GTeamServer',
+        \ 'GuildServer', 'GZoneServer', 'MatchServer', 'ProxyServer', 'RecordServer', 'Robots', 'SceneServer', 'SessionServer', 'SocialServer', 'StatServer',
+        \ 'SuperServer', 'TeamServer', 'WeddingServer']
+  return join(list, "\n")
+endfunction
+" G 的作用是为了让 terminal 自动滚动输出
+" nnoremap <silent> <leader>b :<C-u>RoCompile j148<cr><C-\><C-n>G<C-\><C-n><C-w><C-w>
+nnoremap <silent> <leader>c :<C-u>RoCompile -j148<cr>
+
+" 构建整个项目
+command! -nargs=* -complete=custom,s:RoBuildArgs RoBuild exe 'FloatermToggleOrNew --name=ro_build make trunk2019 '.<q-args>|$
+function! s:RoBuildArgs(...)
+  let list = ['-j']
+  return join(list, "\n")
+endfunction
+nnoremap <silent> <leader>b :<C-u>RoBuild -j148<cr>
+
+" 重启服务器
+command! -nargs=0 RoRestart exe 'FloatermToggleOrNew --name=ro_restart cd bin/Debug && ./restart'|$
+nnoremap <silent> <leader>s :<C-u>RoRestart<cr>
+
+" 关闭服务器
+command! -nargs=0 RoStop exe 'FloatermToggleOrNew --name=ro_stop cd bin/Debug && ./stop'|$
+nnoremap <silent> <leader>e :<C-u>RoStop<cr>
+
+" 更新配置
+command! -nargs=0 RoUpdateConfig exe 'FloatermToggleOrNew --name=ro_update_config ./update_resource.sh Debug client-trunk2019'|$
+nnoremap <silent> <leader>u :<C-u>RoUpdateConfig<cr>
+
+" 重建 compile_commands.json
+command! -nargs=0 RoIndex exe 'FloatermToggleOrNew --name=ro_index make cmake'|$
+nnoremap <silent> <leader>i :<C-u>RoIndex<cr>

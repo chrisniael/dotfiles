@@ -272,6 +272,12 @@ if [[ "$(uname -r | grep -Eo Microsoft)" == "Microsoft" ]]; then
   fi
 fi
 
+
+if [[ -n "$NVIM_LISTEN_ADDRESS" ]]; then
+  export PATH="$HOME/.vim/plugged/vim-floaterm/bin:$PATH"
+  alias vim="floaterm"
+fi
+
 export LANG=en_US.UTF-8
 export XAUTHORITY=$HOME/.Xauthority
 
