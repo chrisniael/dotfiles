@@ -798,7 +798,7 @@ function! s:RoCompileArgs(...)
 endfunction
 " G 的作用是为了让 terminal 自动滚动输出
 " nnoremap <silent> <leader>b :<C-u>RoCompile j148<cr><C-\><C-n>G<C-\><C-n><C-w><C-w>
-nnoremap <silent> <leader>c :<C-u>RoCompile -j148<cr>
+nnoremap <silent> <leader>rc :<C-u>RoCompile -j148<cr>
 
 " 构建整个项目
 command! -nargs=* -complete=custom,s:RoBuildArgs RoBuild exe 'FloatermToggleOrNew --name=ro_build make trunk2019 '.<q-args>|$
@@ -806,20 +806,20 @@ function! s:RoBuildArgs(...)
   let list = ['-j']
   return join(list, "\n")
 endfunction
-nnoremap <silent> <leader>b :<C-u>RoBuild -j148<cr>
+nnoremap <silent> <leader>rb :<C-u>RoBuild -j148<cr>
 
 " 重启服务器
 command! -nargs=0 RoRestart exe 'FloatermToggleOrNew --name=ro_restart cd bin/Debug && ./restart'|$
-nnoremap <silent> <leader>s :<C-u>RoRestart<cr>
+nnoremap <silent> <leader>rs :<C-u>RoRestart<cr>
 
 " 关闭服务器
 command! -nargs=0 RoStop exe 'FloatermToggleOrNew --name=ro_stop cd bin/Debug && ./stop'|$
-nnoremap <silent> <leader>e :<C-u>RoStop<cr>
+nnoremap <silent> <leader>re :<C-u>RoStop<cr>
 
 " 更新配置
 command! -nargs=0 RoUpdateConfig exe 'FloatermToggleOrNew --name=ro_update_config ./update_resource.sh Debug client-trunk2019'|$
-nnoremap <silent> <leader>u :<C-u>RoUpdateConfig<cr>
+nnoremap <silent> <leader>ru :<C-u>RoUpdateConfig<cr>
 
 " 重建 compile_commands.json
 command! -nargs=0 RoIndex exe 'FloatermToggleOrNew --name=ro_index make cmake'|$
-nnoremap <silent> <leader>i :<C-u>RoIndex<cr>
+nnoremap <silent> <leader>ri :<C-u>RoIndex<cr>
