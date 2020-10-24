@@ -726,11 +726,12 @@ endif
 
 " vim-floaterm 配置
 let g:floaterm_autoclose = 0
-" 浮动窗口透明度
-let g:floaterm_winblend = 20
+let g:floaterm_wintype = 'normal'
+let g:floaterm_position = 'top'
+let g:floaterm_width = 1.0
+let g:floaterm_height = 10
+let g:floaterm_winblend = 30  " 浮动窗口透明度
 let g:floaterm_autoinsert = 0
-let g:floaterm_width = 0.8
-let g:floaterm_height = 0.8
 let g:floaterm_gitcommit = 'split'
 
 " vim-clap 配置
@@ -801,12 +802,12 @@ endfunction
 nnoremap <silent> <leader>rc :<C-u>RoCompile -j148<cr>
 
 " 构建整个项目
-command! -nargs=* -complete=custom,s:RoBuildArgs RoBuild exe 'FloatermToggleOrNew --name=ro_build make trunk2019 '.<q-args>|$
-function! s:RoBuildArgs(...)
-  let list = ['-j']
-  return join(list, "\n")
-endfunction
-nnoremap <silent> <leader>rb :<C-u>RoBuild -j148<cr>
+" command! -nargs=* -complete=custom,s:RoBuildArgs RoBuild exe 'FloatermToggleOrNew --name=ro_build make trunk2019 '.<q-args>|$
+" function! s:RoBuildArgs(...)
+"   let list = ['-j']
+"   return join(list, "\n")
+" endfunction
+" nnoremap <silent> <leader>rb :<C-u>RoBuild -j148<cr>
 
 " 重启服务器
 command! -nargs=0 RoRestart exe 'FloatermToggleOrNew --name=ro_restart cd bin/Debug && ./restart'|$
@@ -821,5 +822,18 @@ command! -nargs=0 RoUpdateConfig exe 'FloatermToggleOrNew --name=ro_update_confi
 nnoremap <silent> <leader>ru :<C-u>RoUpdateConfig<cr>
 
 " 重建 compile_commands.json
-command! -nargs=0 RoIndex exe 'FloatermToggleOrNew --name=ro_index make cmake'|$
+command! -nargs=0 RoIndex exe 'FloatermToggleOrNew --name=ro_index --wintype=normal --height=10 --width=1.0 --position=top make cmake'|$
 nnoremap <silent> <leader>ri :<C-u>RoIndex<cr>
+
+" 生成 proto
+command! -nargs=0 RoProto exe 'FloatermToggleOrNew --name=ro_proto ./protobuf'|$
+nnoremap <silent> <leader>ro :<C-u>RoProto<cr>
+
+" https://github.com/neovim/neovim/issues/3712
+" if &buftype ==# 'terminal'
+" endif
+
+" floaterm 窗口一些特殊外观设置
+if has("nvim")
+  au TermOpen * if &filetype == 'floaterm' | setlocal nonumber nocursorline signcolumn=no | endif
+endif

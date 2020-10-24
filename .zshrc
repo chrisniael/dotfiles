@@ -212,8 +212,9 @@ else
         export CC="ccache distcc gcc"
         export CPP="ccache distcc cpp"
         export CXX="ccache distcc g++"
-        alias ro="cd /data/rogame/server"
-        alias rolog="cd /data/rogame/server/bin/Debug/log"
+        alias ro_server="cd /data/rogame/server"
+        alias ro_log="cd /data/rogame/server/bin/Debug/log"
+        alias ro_bin="cd /data/rogame/server/bin/Debug"
         ;;
       *)
         ;;
