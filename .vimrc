@@ -136,6 +136,13 @@ endif
 " 设置垂直分隔符号
 set fillchars+=vert:\ 
 
+" make vim highlight the current line on only the active buffer
+" https://stackoverflow.com/a/12018552
+augroup CursorLine
+  au!
+  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  au WinLeave * setlocal nocursorline
+augroup END
 
 if &diff
   set nocursorline
@@ -730,14 +737,6 @@ let g:asyncrun_open = 10
 let g:asyncrun_rootmarks = ['.git', '.svn', '.root', '.project', '.hg']
 
 " au FileType qf setlocal signcolumn=no  " quickfix 窗口不显示符号列
-
-" make vim highlight the current line on only the active buffer
-" https://stackoverflow.com/a/12018552
-augroup CursorLine
-  au!
-  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-  au WinLeave * setlocal nocursorline
-augroup END
 
 " https://vi.stackexchange.com/a/15699
 " let g:asyncrun_status = 'stopped' 
