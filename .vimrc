@@ -35,17 +35,18 @@ Plug 'MTDL9/vim-log-highlighting'
 " 可选替代 vim-husk
 Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-obsession'
-Plug 'voldikss/vim-floaterm'
-" The bang version will try to download the prebuilt binary if cargo does not exist.
-Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
-" Plug 'vn-ki/coc-clap'
+Plug 'skywind3000/asynctasks.vim'
+Plug 'skywind3000/asyncrun.vim'
 
 " Initialize plugin system
 call plug#end()
 
 
 " coc.nvim 的插件
-let g:coc_global_extensions = ['coc-yank', 'coc-pairs', 'coc-lists', 'coc-markdownlint', 'coc-clangd', 'coc-cmake', 'coc-rust-analyzer', 'coc-floaterm']
+let g:coc_global_extensions = [
+    \ 'coc-yank', 'coc-pairs', 'coc-lists', 'coc-markdownlint',
+    \ 'coc-clangd', 'coc-cmake', 'coc-rust-analyzer', 'coc-floaterm',
+    \ 'coc-tasks']
 
 " vim 支持显示粗体与斜体
 if !has("nvim")
@@ -142,7 +143,7 @@ if &diff
   set cmdheight=1
   set laststatus=1
 else
-  set cursorline
+  " set cursorline
   autocmd FileType c,cpp set colorcolumn=
   set cmdheight=2
   set laststatus=2
@@ -724,116 +725,26 @@ if &diff
   let g:cpp_concepts_highlight = 1
 endif
 
-" vim-floaterm 配置
-let g:floaterm_autoclose = 0
-let g:floaterm_wintype = 'normal'
-let g:floaterm_position = 'top'
-let g:floaterm_width = 1.0
-let g:floaterm_height = 10
-let g:floaterm_winblend = 30  " 浮动窗口透明度
-let g:floaterm_autoinsert = 0
-let g:floaterm_gitcommit = 'split'
+let g:asynctasks_config_name = '.git/tasks.ini'
+let g:asyncrun_open = 10
+let g:asyncrun_rootmarks = ['.git', '.svn', '.root', '.project', '.hg']
 
-" vim-clap 配置
-" 搜索框前后的 glyphs 字符
-let g:clap_search_box_border_style = 'nil'
-" let g:clap_theme = 'material_design_dark'
+" au FileType qf setlocal signcolumn=no  " quickfix 窗口不显示符号列
 
-" terminal 模式快捷键
-" nnoremap <silent> <leader>h :<C-u>FloatermHide<CR>
-" nnoremap <silent> <leader>t :<C-u>FloatermToggleOrNew --name=float_terminal<CR>i
+" make vim highlight the current line on only the active buffer
+" https://stackoverflow.com/a/12018552
+augroup CursorLine
+  au!
+  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  au WinLeave * setlocal nocursorline
+augroup END
 
-" tnoremap <A-p> <C-\><C-N>:<C-u>FloatermPrev<CR>
-" tnoremap <A-n> <C-\><C-N>:<C-u>FloatermNext<CR>
-" inoremap <A-p> <C-\><C-N>:<C-u>FloatermPrev<CR>
-" inoremap <A-n> <C-\><C-N>:<C-u>FloatermNext<CR>
-" nnoremap <A-p> :<C-u>FloatermPrev<CR>
-" nnoremap <A-n> :<C-u>FloatermNext<CR>
-
-tnoremap <C-o> <C-\><C-N>
-tnoremap <silent> <Esc> <C-\><C-N>:<C-u>FloatermHide<CR>
-nnoremap <silent> <Esc> :<C-u>FloatermHide<CR>
-
-" tnoremap <A-h> <C-\><C-N><C-w>h
-" tnoremap <A-j> <C-\><C-N><C-w>j
-" tnoremap <A-k> <C-\><C-N><C-w>k
-" tnoremap <A-l> <C-\><C-N><C-w>l
-" inoremap <A-h> <C-\><C-N><C-w>h
-" inoremap <A-j> <C-\><C-N><C-w>j
-" inoremap <A-k> <C-\><C-N><C-w>k
-" inoremap <A-l> <C-\><C-N><C-w>l
-" nnoremap <A-h> <C-w>h
-" nnoremap <A-j> <C-w>j
-" nnoremap <A-k> <C-w>k
-" nnoremap <A-l> <C-w>l
-
-
-" Toggle 不存在时则创建
-" https://github.com/voldikss/vim-floaterm/issues/149
-function! s:floaterm_toggle_or_new(bang, argstr) abort
-  let [cmd, opts] = floaterm#cmdline#parse(split(a:argstr))
-  let name = get(opts, 'name', '')
-  if !empty(name)
-    let bufnr = floaterm#terminal#get_bufnr(name)
-    if bufnr == -1
-      call floaterm#new(a:bang, cmd, {}, opts)
-    else
-      call floaterm#toggle(a:bang, 0, name)
-    endif
-  else
-    call floaterm#util#show_msg('Name is empty', 'error')
-  endif
-endfunction
-
-command! -nargs=? -bang -complete=customlist,floaterm#cmdline#floaterm_names
-      \ FloatermToggleOrNew call s:floaterm_toggle_or_new(<bang>0, <q-args>)
-
-" 编译特定服务器
-command! -nargs=* -complete=custom,s:RoCompileArgs RoCompile exe 'FloatermToggleOrNew --name=ro_compile make cmake && cd cmake_build/debug && make '.<q-args>|$
-function! s:RoCompileArgs(...)
-  let list = ['-j',
-        \ 'AuctionServer', 'DataServer', 'GateServer', 'GDataServer', 'GGuildServer', 'GlobalServer', 'GProxyServer', 'GRecordServer', 'GTeamServer',
-        \ 'GuildServer', 'GZoneServer', 'MatchServer', 'ProxyServer', 'RecordServer', 'Robots', 'SceneServer', 'SessionServer', 'SocialServer', 'StatServer',
-        \ 'SuperServer', 'TeamServer', 'WeddingServer']
-  return join(list, "\n")
-endfunction
-" G 的作用是为了让 terminal 自动滚动输出
-" nnoremap <silent> <leader>b :<C-u>RoCompile j148<cr><C-\><C-n>G<C-\><C-n><C-w><C-w>
-nnoremap <silent> <leader>rc :<C-u>RoCompile -j148<cr>
-
-" 构建整个项目
-" command! -nargs=* -complete=custom,s:RoBuildArgs RoBuild exe 'FloatermToggleOrNew --name=ro_build make trunk2019 '.<q-args>|$
-" function! s:RoBuildArgs(...)
-"   let list = ['-j']
-"   return join(list, "\n")
+" https://vi.stackexchange.com/a/15699
+" let g:asyncrun_status = 'stopped' 
+" function! AsyncrunGetStatus() abort
+"   return get(g:, 'asyncrun_status', '')
 " endfunction
-" nnoremap <silent> <leader>rb :<C-u>RoBuild -j148<cr>
+" call airline#parts#define_function('asyncrun_status', 'AsyncrunGetStatus')
+" let g:airline_section_c = airline#section#create(['%<', 'file', g:airline_symbols.space, 'readonly', 'asyncrun_status', 'coc_status'])
 
-" 重启服务器
-command! -nargs=0 RoRestart exe 'FloatermToggleOrNew --name=ro_restart cd bin/Debug && ./restart'|$
-nnoremap <silent> <leader>rs :<C-u>RoRestart<cr>
-
-" 关闭服务器
-command! -nargs=0 RoStop exe 'FloatermToggleOrNew --name=ro_stop cd bin/Debug && ./stop'|$
-nnoremap <silent> <leader>re :<C-u>RoStop<cr>
-
-" 更新配置
-command! -nargs=0 RoUpdateConfig exe 'FloatermToggleOrNew --name=ro_update_config ./update_resource.sh Debug client-trunk2019'|$
-nnoremap <silent> <leader>ru :<C-u>RoUpdateConfig<cr>
-
-" 重建 compile_commands.json
-command! -nargs=0 RoIndex exe 'FloatermToggleOrNew --name=ro_index --wintype=normal --height=10 --width=1.0 --position=top make cmake'|$
-nnoremap <silent> <leader>ri :<C-u>RoIndex<cr>
-
-" 生成 proto
-command! -nargs=0 RoProto exe 'FloatermToggleOrNew --name=ro_proto ./protobuf'|$
-nnoremap <silent> <leader>ro :<C-u>RoProto<cr>
-
-" https://github.com/neovim/neovim/issues/3712
-" if &buftype ==# 'terminal'
-" endif
-
-" floaterm 窗口一些特殊外观设置
-if has("nvim")
-  au TermOpen * if &filetype == 'floaterm' | setlocal nonumber nocursorline signcolumn=no | endif
-endif
+nnoremap <silent> <space>t  :<C-u>CocList tasks<cr>

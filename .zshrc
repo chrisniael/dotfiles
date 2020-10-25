@@ -224,6 +224,11 @@ fi
 
 export PATH="$HOME/.config/bin:$PATH"
 
+if [ -d $HOME/.vim/plugged/asynctasks.vim/bin ]; then
+  export PATH="$HOME/.vim/plugged/asynctasks.vim/bin:$PATH"
+  alias asynctask='asynctask -f'
+fi
+
 alias rm="rm -i"                            #"删除"
 alias cp="cp -i"                            #"复制"
 alias mv="mv -i"                            #"移动"
@@ -276,8 +281,10 @@ fi
 
 
 if [[ -n "$NVIM_LISTEN_ADDRESS" ]]; then
-  export PATH="$HOME/.vim/plugged/vim-floaterm/bin:$PATH"
-  alias vim="floaterm"
+  if [ -d $HOME/.vim/plugged/vim-floaterm/bin ]; then
+    export PATH="$HOME/.vim/plugged/vim-floaterm/bin:$PATH"
+    alias vim="floaterm"
+  fi
 fi
 
 export LANG=en_US.UTF-8
