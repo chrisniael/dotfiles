@@ -45,8 +45,8 @@ call plug#end()
 " coc.nvim 的插件
 let g:coc_global_extensions = [
     \ 'coc-yank', 'coc-pairs', 'coc-lists', 'coc-markdownlint',
-    \ 'coc-clangd', 'coc-cmake', 'coc-rust-analyzer', 'coc-floaterm',
-    \ 'coc-tasks']
+    \ 'coc-clangd', 'coc-cmake', 'coc-rust-analyzer', 'coc-tasks'
+    \ ]
 
 " vim 支持显示粗体与斜体
 if !has("nvim")
