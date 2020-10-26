@@ -99,11 +99,11 @@ endfunction
 " endif
 call s:enable_true_color()
 
-" if has("nvim")
-"   " 打开 terminal 时关闭行号和符号列, 并自动进入 insert 模式
-"   " 退出 terminal: <C-\><C-n>
-"   au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
-" endif
+if has("nvim")
+  " 打开 terminal 时关闭行号和符号列, 并自动进入 insert 模式
+  " 退出 terminal: <C-\><C-n>
+  au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
+endif
 
 " 设置 Backspace 模式
 set backspace=indent,eol,start
