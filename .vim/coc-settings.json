@@ -45,8 +45,8 @@
     "list.normalMappings": {
       "<C-o>": "insert:<C-o>"
     },
-    "list.source.files.args": ["--color", "never", "--files", "--glob", "*", "--glob", "!.git/", "--glob", "!.svn/", "--glob", "!log/", "--glob", "!.cache/", "--glob", "!cmake_build", "--glob", "!.clangd/", "--glob", "!CMakeFiles", "--glob", "!trade", "--glob", "!*.pb.h", "--glob", "!*.pb.cc"],
-    "list.source.grep.args": ["--glob", "*", "--glob", "!.git/", "--glob", "!.svn/", "--glob", "!log/", "--glob", "!.cache/", "--glob", "!cmake_build", "--glob", "!.clangd/", "--glob", "!CMakeFiles", "--glob", "!trade", "--glob", "!*.pb.h", "--glob", "!*.pb.cc"],
+    "list.source.files.args": ["--color", "never", "--files", "--glob", "*", "--glob", "!.git/", "--glob", "!.svn/", "--glob", "!log/", "--glob", "!.cache/", "--glob", "!cmake_build", "--glob", "!.clangd/", "--glob", "!CMakeFiles", "--glob", "!trade", "--glob", "!*.pb.h", "--glob", "!*.pb.cc", "--glob", "!Proto/client/"],
+    "list.source.grep.args": ["--glob", "*", "--glob", "!.git/", "--glob", "!.svn/", "--glob", "!log/", "--glob", "!.cache/", "--glob", "!cmake_build", "--glob", "!.clangd/", "--glob", "!CMakeFiles", "--glob", "!trade", "--glob", "!*.pb.h", "--glob", "!*.pb.cc", "--glob", "!Proto/client/"],
     "coc.preferences.formatOnSaveFiletypes": ["c", "cpp"],
     "markdownlint.config": {
         "default": true,

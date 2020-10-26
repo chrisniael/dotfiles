@@ -732,6 +732,7 @@ if &diff
   let g:cpp_concepts_highlight = 1
 endif
 
+" asynctasks 配置
 let g:asynctasks_config_name = '.git/tasks.ini'
 let g:asyncrun_open = 10
 let g:asyncrun_rootmarks = ['.git', '.svn', '.root', '.project', '.hg']
