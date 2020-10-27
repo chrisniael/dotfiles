@@ -10,6 +10,7 @@
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
 
+" diff 模式下不加载
 if !&diff
   " pip3 install pynvim
   " npm install -g neovim
@@ -21,6 +22,7 @@ if !&diff
   Plug 'airblade/vim-gitgutter'
 endif
 Plug 'morhetz/gruvbox'
+Plug 'octol/vim-cpp-enhanced-highlight'
 
 " vim-fugitive, vim-airline, vim-airline-themes 组合安装
 Plug 'tpope/vim-fugitive'
@@ -33,17 +35,16 @@ Plug 'MTDL9/vim-log-highlighting'
 " 可选替代 vim-husk
 Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-obsession'
-Plug 'voldikss/vim-floaterm'
-" The bang version will try to download the prebuilt binary if cargo does not exist.
-Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
-" Plug 'vn-ki/coc-clap'
+Plug 'skywind3000/asynctasks.vim'
+Plug 'skywind3000/asyncrun.vim'
 
 " Initialize plugin system
 call plug#end()
 
 
 " coc.nvim 的插件
-let g:coc_global_extensions = ['coc-yank', 'coc-pairs', 'coc-lists', 'coc-markdownlint', 'coc-clangd', 'coc-cmake', 'coc-rust-analyzer', 'coc-floaterm']
+let g:coc_global_extensions = ['coc-yank', 'coc-pairs', 'coc-lists', 'coc-markdownlint', 'coc-clangd', 'coc-cmake', 'coc-rust-analyzer', 'coc-tasks']
+
 
 " vim 支持显示粗体与斜体
 if !has("nvim")
@@ -133,6 +134,13 @@ endif
 " 设置垂直分隔符号
 set fillchars+=vert:\ 
 
+" make vim highlight the current line on only the active buffer
+" https://stackoverflow.com/a/12018552
+augroup CursorLine
+  au!
+  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  au WinLeave * setlocal nocursorline
+augroup END
 
 if &diff
   set nocursorline
@@ -140,7 +148,7 @@ if &diff
   set cmdheight=1
   set laststatus=1
 else
-  set cursorline
+  " set cursorline
   autocmd FileType c,cpp set colorcolumn=81
   set cmdheight=2
   set laststatus=2
@@ -264,116 +272,6 @@ set tags=./.tags;,.tags
 if !exists(':Ctags')
     command! Ctags call Ctags()
 endif
-
-
-" 一键编译
-func! CompileGcc()
-  exec "w"
-  let vimshellcmd="!"
-  if has("nvim")
-    let vimshellcmd="belowright 10split | terminal"
-  endif
-  let compilecmd="gcc"
-  let compileflag="-std=c17 -pthread -g"
-  let compileout="-o %<.out"
-  exec vimshellcmd." ".compilecmd." ".compileflag." % ".compileout
-endfunc
-
-func! CompileGpp()
-  exec "w"
-  let vimshellcmd="!"
-  if has("nvim")
-    let vimshellcmd="belowright 10split | terminal"
-  endif
-  let compilecmd="g++"
-  let compileflag="-std=c++17 -pthread -g -fno-elide-constructors"
-  let compileout="-o %<.out"
-  exec vimshellcmd." ".compilecmd." ".compileflag." % ".compileout
-endfunc
-
-func! RunPython()
-  exec "w"
-  let vimshellcmd="!"
-  if has("nvim")
-    let vimshellcmd="belowright 10split | terminal"
-  endif
-  exec vimshellcmd." python %"
-endfunc
-
-func! CompileJava()
-  exec "w"
-  let vimshellcmd="!"
-  if has("nvim")
-    let vimshellcmd="belowright 10split | terminal"
-  endif
-  exec vimshellcmd." javac %"
-endfunc
-
-func! RunShell()
-  exec "w"
-  let vimshellcmd="!"
-  if has("nvim")
-    let vimshellcmd="belowright 10split | terminal"
-  endif
-  exec vimshellcmd." bash %"
-endfunc
-
-func! RunLua()
-  exec "w"
-  let vimshellcmd="!"
-  if has("nvim")
-    let vimshellcmd="belowright 10split | terminal"
-  endif
-  exec vimshellcmd." lua %"
-endfunc
-
-func! CompileCode()
-  exec "w"
-  if &filetype == "cpp"
-    exec "call CompileGpp()"
-  elseif &filetype == "cc"
-    exec "call CompileGpp()"
-  elseif &filetype == "c"
-    exec "call CompileGcc()"
-  elseif &filetype == "python"
-    exec "call RunPython()"
-  elseif &filetype == "java"
-    exec "call CompileJava()"
-  elseif &filetype == "sh"
-    exec "call RunShell()"
-  elseif &filetype == "lua"
-    exec "call RunLua()"
-  endif
-endfunc
-
-func! RunResult()
-  exec "w"
-
-  let vimshellcmd="!"
-  if has("nvim")
-    let vimshellcmd="belowright 10split | terminal"
-  endif
-
-  if &filetype == "cpp"
-    exec vimshellcmd." ./%<.out"
-  elseif &filetype == "cc"
-    exec vimshellcmd." ./%<.out"
-  elseif &filetype == "c"
-    exec vimshellcmd." ./%<.out"
-  elseif &filetype == "python"
-    exec "call RunPython()"
-  elseif &filetype == "java"
-    exec vimshellcmd." java %<"
-  elseif &filetype == "sh"
-    exec "call RunShell()"
-  elseif &filetype == "lua"
-    exec "call RunLua()"
-  endif
-endfunc
-
-map <leader>j :call CompileCode()<CR>
-map <leader>k :call RunResult()<CR>
-
 
 " 高亮光标所在位置的单词，并输入全文替换的命令，替换单词代填充
 nmap <leader>rp #<S-N>:%s/<C-R>=expand("<cword>")<CR>//g<Left><Left>
@@ -720,15 +618,11 @@ if &diff
   let g:cpp_concepts_highlight = 1
 endif
 
-" vim-floaterm 配置
-let g:floaterm_autoclose = 1
-" 浮动窗口透明度
-let g:floaterm_winblend = 10
+" asynctasks 配置
+let g:asynctasks_config_name = '.git/tasks.ini'
+let g:asyncrun_open = 10
+let g:asyncrun_rootmarks = ['.git', '.svn', '.root', '.project', '.hg']
 
-" vim-clap 配置
-" 搜索框前后的 glyphs 字符
-let g:clap_search_box_border_style = 'nil'
-" let g:clap_theme = 'material_design_dark'
+" au FileType qf setlocal signcolumn=no  " quickfix 窗口不显示符号列
 
-" terminal 模式快捷键
-tnoremap <leader>h <C-\><C-N>:hide<CR>
+nnoremap <silent> <space>t  :<C-u>CocList tasks<cr>
