@@ -8,7 +8,7 @@
 		"window:divider":       {"fg": "gray4",                     "bg": "gruvbox:dark1",    "attrs": []},
 		"window:current":       {"fg": "gruvbox:dark1",        "bg": "gruvbox:bright_yellow", "attrs": []},
 		"window_name":          {"fg": "gruvbox:dark1",        "bg": "gruvbox:bright_yellow", "attrs": ["bold"]},
-		"session":              {"fg": "gruvbox:dark1",        "bg": "gruvbox:light0_hard",   "attrs": ["bold"]},
+		"session":              {"fg": "gruvbox:dark1",        "bg": "gruvbox:light0",   "attrs": ["bold"]},
 		"session:prefix":       {"fg": "gruvbox:dark1",        "bg": "gruvbox:bright_yellow", "attrs": ["bold"]}
 	}
 }
