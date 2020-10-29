@@ -33,6 +33,10 @@ elif [[ "${OS}" == "Linux" ]]; then
       powerline-daemon -q
       source /usr/local/lib/python3.7/dist-packages/powerline/bindings/zsh/powerline.zsh
       ;;
+    centos)
+      powerline-daemon -q
+      source /usr/local/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh
+      ;;
     *)
       DEFAULT_USER="shenyu"
       ZSH_THEME="agnoster"
@@ -202,6 +206,9 @@ else
         ;
         ;;
       ubuntu)
+        ;;
+      centos)
+        export PATH="$PATH:/squashfs-root/usr/bin"
         ;;
       *)
         ;;
