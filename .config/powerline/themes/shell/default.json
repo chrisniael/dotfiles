@@ -2,7 +2,13 @@
 	"segments": {
 		"left": [
 			{
-				"function": "powerline.segments.shell.mode"
+				"function": "powerline.segments.shell.mode",
+				"args":{
+					"override": {
+						"vicmd": "N",
+						"viins": "I"
+          }
+        }
 			},
 			{
 				"function": "powerline.segments.common.net.hostname",

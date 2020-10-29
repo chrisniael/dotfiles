@@ -21,7 +21,7 @@
 		"email_alert":                "warning:regular",
 		"email_alert_gradient":       { "fg": "white", "bg": "yellow_orange_red", "attrs": ["bold"] },
 
-		"hostname":                   { "fg": "gruvbox:dark1", "bg": "gruvbox:light0_hard", "attrs": ["bold"] },
+		"hostname":                   { "fg": "gruvbox:dark1", "bg": "gruvbox:light0", "attrs": ["bold"] },
 		"weather":                    { "fg": "gray8", "bg": "gruvbox:dark1", "attrs": [] },
 		"weather_temp_gradient":      { "fg": "blue_red", "bg": "gruvbox:dark1", "attrs": [] },
 		"weather_condition_hot":      { "fg": "khaki1", "bg": "gruvbox:dark1", "attrs": [] },
@@ -52,7 +52,7 @@
 		"player":                     { "fg": "gray10", "bg": "black", "attrs": [] },
 		"user":                       { "fg": "gruvbox:dark1", "bg": "gruvbox:neutral_blue", "attrs": ["bold"] },
 		"branch":                     { "fg": "gruvbox:light3", "bg": "gruvbox:dark1", "attrs": [] },
-		"branch_dirty":               { "fg": "gruvbox:dark1", "bg": "gruvbox:bright_yellow", "attrs": [] },
+		"branch_dirty":               { "fg": "gruvbox:dark1", "bg": "gruvbox:bright_purple", "attrs": [] },
 		"branch_clean":               { "fg": "gruvbox:light3", "bg": "gruvbox:dark1", "attrs": [] },
 		"branch:divider":             { "fg": "gray7", "bg": "gray2", "attrs": [] },
 		"stash":                      "branch_dirty",

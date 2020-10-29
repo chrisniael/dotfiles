@@ -106,7 +106,15 @@ fi
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(zsh-completions docker)
-plugins=(docker cargo rust golang)
+
+# zsh-vim-mode 安装
+# cd $ZSH_CUSTOM/plugins
+# git clone https://github.com/softmoth/zsh-vim-mode.git
+if [ -d $HOME/.oh-my-zsh/custom/plugins/zsh-vim-mode ]; then
+  plugins=(docker cargo rust golang zsh-vim-mode)
+else
+  plugins=(docker cargo rust golang)
+fi
 
 source $ZSH/oh-my-zsh.sh
 

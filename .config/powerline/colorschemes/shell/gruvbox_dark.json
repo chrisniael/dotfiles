@@ -1,19 +1,19 @@
 {
 	"name": "Default color scheme for shell prompts",
 	"groups": {
-		"hostname":         { "fg": "gruvbox:dark1", "bg": "gruvbox:light0_hard", "attrs": ["bold"] },
+		"hostname":         { "fg": "gruvbox:dark1", "bg": "gruvbox:light0", "attrs": ["bold"] },
 		"environment":      { "fg": "white", "bg": "darkestgreen", "attrs": [] },
-		"mode":             { "fg": "darkestgreen", "bg": "brightgreen", "attrs": ["bold"] },
+		"mode":             { "fg": "gruvbox:dark1", "bg": "gruvbox:bright_green", "attrs": ["bold"] },
 		"attached_clients": { "fg": "white", "bg": "darkestgreen", "attrs": [] },
 		"exit_fail":        { "fg": "gruvbox:dark1", "bg": "gruvbox:bright_red", "attrs": [] },
 		"exit_success":     { "fg": "gruvbox:dark1", "bg": "gruvbox:bright_green", "attrs": [] },
-		"jobnum":           { "fg": "gruvbox:dark1", "bg": "gruvbox:bright_yellow", "attrs": [] }
+		"jobnum":           { "fg": "gruvbox:dark1", "bg": "gruvbox:bright_aqua", "attrs": [] }
 
 	},
 	"mode_translations": {
 		"vicmd": {
 			"groups": {
-				"mode": {"fg": "darkestcyan", "bg": "white", "attrs": ["bold"]}
+				"mode": {"fg": "gruvbox:dark1", "bg": "gruvbox:bright_blue", "attrs": ["bold"]}
 			}
 		}
 	}
