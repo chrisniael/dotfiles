@@ -10,7 +10,7 @@
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
 
-" diff 模式下不加载
+" 加快 git difftool 打开速度
 if !&diff
   " pip3 install pynvim
   " npm install -g neovim
@@ -20,34 +20,28 @@ if !&diff
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   Plug 'jackguo380/vim-lsp-cxx-highlight'
   Plug 'airblade/vim-gitgutter'
+  " vim-fugitive, vim-airline, vim-airline-themes 组合安装
+  Plug 'tpope/vim-fugitive'
+  Plug 'vim-airline/vim-airline'
+  Plug 'vim-airline/vim-airline-themes'
+  Plug 'tpope/vim-commentary'
+  Plug 'godlygeek/tabular'
+  Plug 'plasticboy/vim-markdown'
+  Plug 'MTDL9/vim-log-highlighting'
+  " 可选替代 vim-husk
+  Plug 'tpope/vim-rsi'
+  Plug 'tpope/vim-obsession'
+  Plug 'skywind3000/asynctasks.vim'
+  Plug 'skywind3000/asyncrun.vim'
 endif
 Plug 'morhetz/gruvbox'
-Plug 'octol/vim-cpp-enhanced-highlight'
-
-" vim-fugitive, vim-airline, vim-airline-themes 组合安装
-Plug 'tpope/vim-fugitive'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'tpope/vim-commentary'
-Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
-Plug 'MTDL9/vim-log-highlighting'
-" 可选替代 vim-husk
-Plug 'tpope/vim-rsi'
-Plug 'tpope/vim-obsession'
-Plug 'skywind3000/asynctasks.vim'
-Plug 'skywind3000/asyncrun.vim'
+" Plug 'octol/vim-cpp-enhanced-highlight'
 
 " Initialize plugin system
 call plug#end()
 
 
-" coc.nvim 的插件
-let g:coc_global_extensions = [
-    \ 'coc-yank', 'coc-pairs', 'coc-lists', 'coc-markdownlint',
-    \ 'coc-clangd', 'coc-cmake', 'coc-rust-analyzer', 'coc-tasks'
-    \ ]
-
+" 适用于所有场景的配置
 " vim 支持显示粗体与斜体
 " https://github.com/neovim/neovim/issues/3461#issuecomment-268640486
 " https://github.com/tmux/tmux/issues/2262#issuecomment-640166755
@@ -102,40 +96,6 @@ endfunction
 " endif
 call s:enable_true_color()
 
-if has("nvim")
-  " 打开 terminal 时关闭行号和符号列, 并自动进入 insert 模式
-  " 退出 terminal: <C-\><C-n>
-  au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
-endif
-
-" 设置 Backspace 模式
-set backspace=indent,eol,start
-
-
-" vim-airline 配置
-" set laststatus=2  " 底部显示状态栏, 1:不显示, 2:显示
-let g:airline_powerline_fonts = 1   " 使用 powerline 符号
-let g:airline_theme = "gruvbox"  " 设置主题
-" 开启tabline
-let g:airline#extensions#tabline#enabled = 0  " 不显示 buffer 标签页
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline#extensions#tabline#buffer_nr_show = 1  " 实现 buffer 序号
-" 切换 buffer 快捷键, 开启 buffer 标签页才会生效
-if g:airline#extensions#tabline#enabled == 1
-  nnoremap <silent> [b :bp<CR>
-  nnoremap <silent> ]b :bn<CR>
-endif
-
-" Windows 部分字体不能显示 Ɇ 这个字符，可以改成 ∄ Ø
-" https://github.com/vim-airline/vim-airline/issues/1729
-" https://github.com/vim-airline/vim-airline/issues/1374
-" if !exists('g:airline_symbols')
-"   let g:airline_symbols = {}
-" endif
-" let g:airline_symbols.notexists = '∄'
-
-
 " 设置垂直分隔符号
 set fillchars+=vert:\ 
 
@@ -146,23 +106,6 @@ augroup CursorLine
   au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
   au WinLeave * setlocal nocursorline
 augroup END
-
-if &diff
-  set nocursorline
-  set colorcolumn=
-  set cmdheight=1
-  set laststatus=1
-else
-  " set cursorline
-  autocmd FileType c,cpp set colorcolumn=
-  set cmdheight=2
-  set laststatus=2
-endif
-
-" vimdiff 折行
-au VimEnter * if &diff | execute 'windo set wrap' | endif
-" 折行
-set wrap
 
 " 设置Backspace模式
 set backspace=indent,eol,start
@@ -256,48 +199,109 @@ augroup filetype
   autocmd! BufRead,BufNewFile *.proto setfiletype proto
 augroup end
 
-map <C-N> :cnext<CR>
-map <C-P> :cprevious<CR>
 
-" 自定义命令 W: 保存文件时不 format 文件
-if !exists(':W')
-  command! W :noautocmd w
-endif
+" 仅仅适用于 diff 模式的配置
+if &diff
+  set nocursorline
+  set colorcolumn=
+  set cmdheight=1
+  set laststatus=1
 
-if !exists(':Wq')
-  command! Wq :noautocmd wq
-endif
+  " vimdiff 折行
+  au VimEnter * if &diff | execute 'windo set wrap' | endif
 
-if !exists(':Wqa')
-  command! Wqa :noautocmd wqa
-endif
+  " " vim-cpp-enhanced-highlight 配置
+  " let g:cpp_class_scope_highlight = 1
+  " let g:cpp_member_variable_highlight = 1
+  " let g:cpp_class_decl_highlight = 1
+  " let g:cpp_posix_standard = 1
+  " let g:cpp_experimental_simple_template_highlight = 1
+  " " let g:cpp_experimental_template_highlight = 1
+  " let g:cpp_concepts_highlight = 1
+else
+  " 仅仅适用于 !diff 模式的配置
+  autocmd FileType c,cpp set colorcolumn=
+  set cmdheight=2
+  set laststatus=2
+  " 折行
+  set wrap
 
-" 自定义命令：Ctags 生成 tags 文件
-func! Ctags()
+  if has("nvim")
+    " 打开 terminal 时关闭行号和符号列, 并自动进入 insert 模式
+    " 退出 terminal: <C-\><C-n>
+    au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
+  endif
+
+  " coc.nvim 的插件
+  let g:coc_global_extensions = [
+        \ 'coc-yank', 'coc-pairs', 'coc-lists', 'coc-markdownlint',
+        \ 'coc-clangd', 'coc-cmake', 'coc-rust-analyzer', 'coc-tasks'
+        \ ] 
+
+  " vim-airline 配置
+  " set laststatus=2  " 底部显示状态栏, 1:不显示, 2:显示
+  let g:airline_powerline_fonts = 1   " 使用 powerline 符号
+  let g:airline_theme = "gruvbox"  " 设置主题
+  " 开启tabline
+  let g:airline#extensions#tabline#enabled = 0  " 不显示 buffer 标签页
+  let g:airline#extensions#tabline#left_sep = ' '
+  let g:airline#extensions#tabline#left_alt_sep = '|'
+  let g:airline#extensions#tabline#buffer_nr_show = 1  " 实现 buffer 序号
+  " 切换 buffer 快捷键, 开启 buffer 标签页才会生效
+  if g:airline#extensions#tabline#enabled == 1
+    nnoremap <silent> [b :bp<CR>
+    nnoremap <silent> ]b :bn<CR>
+  endif
+
+  " Windows 部分字体不能显示 Ɇ 这个字符，可以改成 ∄ Ø
+  " https://github.com/vim-airline/vim-airline/issues/1729
+  " https://github.com/vim-airline/vim-airline/issues/1374
+  " if !exists('g:airline_symbols')
+  "   let g:airline_symbols = {}
+  " endif
+  " let g:airline_symbols.notexists = '∄'
+
+  map <C-N> :cnext<CR>
+  map <C-P> :cprevious<CR>
+
+  " 自定义命令 W: 保存文件时不 format 文件
+  if !exists(':W')
+    command! W :noautocmd w
+  endif
+
+  if !exists(':Wq')
+    command! Wq :noautocmd wq
+  endif
+
+  if !exists(':Wqa')
+    command! Wqa :noautocmd wqa
+  endif
+
+  " 自定义命令：Ctags 生成 tags 文件
+  func! Ctags()
     exec '! ctags -R --c++-kinds=+pxI --fields=+niazS --extras=+q --exclude="*.json" --exclude="*.md" --exclude="*.html" --exclude="*.log" --exclude="*.make" --exclude="*.txt" --exclude="*.cmake" -o .tags'
-endfunc
+  endfunc
 
-set cscopetag     " 如果 tags 跳转存在多个选项，则显示列表，无则直接跳转
-set tags=./.tags;,.tags
-if !exists(':Ctags')
+  set cscopetag     " 如果 tags 跳转存在多个选项，则显示列表，无则直接跳转
+  set tags=./.tags;,.tags
+  if !exists(':Ctags')
     command! Ctags call Ctags()
-endif
+  endif
 
-" 高亮光标所在位置的单词，并输入全文替换的命令，替换单词代填充
-nmap <leader>rp #<S-N>:%s/<C-R>=expand("<cword>")<CR>//g<Left><Left>
+  " 高亮光标所在位置的单词，并输入全文替换的命令，替换单词代填充
+  nmap <leader>rp #<S-N>:%s/<C-R>=expand("<cword>")<CR>//g<Left><Left>
 
-nmap <silent><leader>x :bdelete<CR>
+  nmap <silent><leader>x :bdelete<CR>
 
 
 
-" 用两个 nvim 打开同一个文件会 coredump，关闭 swapfile 或者启动的时候不启用 coc
-" https://github.com/neoclide/coc.nvim/issues/1383
-let g:coc_start_at_startup = 0
-" 判断 exists 是为了在没有安装 Coc 的时候不报错
-autocmd VimEnter * if !&diff && exists(':CocStart') | execute 'CocStart' | endif
+  " 用两个 nvim 打开同一个文件会 coredump，关闭 swapfile 或者启动的时候不启用 coc
+  " https://github.com/neoclide/coc.nvim/issues/1383
+  let g:coc_start_at_startup = 0
+  " 判断 exists 是为了在没有安装 Coc 的时候不报错
+  autocmd VimEnter * if exists(':CocStart') | execute 'CocStart' | endif
 
-" coc.nvim 配置, vimdiff 模式下不加载
-if !&diff
+  " coc.nvim 配置, vimdiff 模式下不加载
   " if hidden is not set, TextEdit might fail.
   set hidden
 
@@ -569,95 +573,84 @@ if !&diff
 
   " 历史剪切板列表
   nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
-endif  " if !&vim
 
 
-" vim-commentary 配置
-autocmd FileType c,cpp setlocal commentstring=//%s
+  " vim-commentary 配置
+  autocmd FileType c,cpp setlocal commentstring=//%s
 
-" 关闭 netrw, neovim 使用 X11 forwarding 时会卡顿
-" neovim 5.0 已经解决这个问题
-" https://github.com/neovim/neovim/issues/6048
-" https://github.com/neovim/neovim/issues/11089
-"
-" if has("nvim") && !empty($DISPLAY)
-"   let g:loaded_netrwPlugin = 1
-" endif
-
-
-" 同步 ssh 连接的 vim 剪切板到本地
-" https://lotabout.me/2019/Integrate-clipboard-with-SSH/
-"
-if has("nvim")
-  " if executable('clipboard-provider')
-  "   let g:clipboard = {
-  "         \ 'name': 'myClipboard',
-  "         \     'copy': {
-  "         \         '+': 'clipboard-provider copy',
-  "         \         '*': 'env COPY_PROVIDERS=tmux clipboard-provider copy',
-  "         \     },
-  "         \     'paste': {
-  "         \         '+': 'clipboard-provider paste',
-  "         \         '*': 'env COPY_PROVIDERS=tmux clipboard-provider paste',
-  "         \     },
-  "         \ }
+  " 关闭 netrw, neovim 使用 X11 forwarding 时会卡顿
+  " neovim 5.0 已经解决这个问题
+  " https://github.com/neovim/neovim/issues/6048
+  " https://github.com/neovim/neovim/issues/11089
+  "
+  " if has("nvim") && !empty($DISPLAY)
+  "   let g:loaded_netrwPlugin = 1
   " endif
 
-  " Mac 上 XQuartz 有 bug，不能同步 clipboard，只能同步
-  " primary，所以配置成都走 primary
-  let g:clipboard = {
-        \   'name': 'xclip-primary',
-        \   'copy': {
-        \      '+': 'xclip -i -selection primary',
-        \      '*': 'xclip -i -selection primary',
-        \    },
-        \   'paste': {
-        \      '+': 'xclip -o -selection primary',
-        \      '*': 'xclip -o -selection primary',
-        \   },
-        \   'cache_enabled': 0,
-        \ }
-  " 所有赋值操作都同步至 primary 剪切板
-  " set clipboard+=unnamedplus
-else
-  " :help clipboard-autoselect
-  set clipboard=unnamed
+
+  " 同步 ssh 连接的 vim 剪切板到本地
+  " https://lotabout.me/2019/Integrate-clipboard-with-SSH/
+  "
+  if has("nvim")
+    " if executable('clipboard-provider')
+    "   let g:clipboard = {
+    "         \ 'name': 'myClipboard',
+    "         \     'copy': {
+    "         \         '+': 'clipboard-provider copy',
+    "         \         '*': 'env COPY_PROVIDERS=tmux clipboard-provider copy',
+    "         \     },
+    "         \     'paste': {
+    "         \         '+': 'clipboard-provider paste',
+    "         \         '*': 'env COPY_PROVIDERS=tmux clipboard-provider paste',
+    "         \     },
+    "         \ }
+    " endif
+
+    " Mac 上 XQuartz 有 bug，不能同步 clipboard，只能同步
+    " primary，所以配置成都走 primary
+    let g:clipboard = {
+          \   'name': 'xclip-primary',
+          \   'copy': {
+          \      '+': 'xclip -i -selection primary',
+          \      '*': 'xclip -i -selection primary',
+          \    },
+          \   'paste': {
+          \      '+': 'xclip -o -selection primary',
+          \      '*': 'xclip -o -selection primary',
+          \   },
+          \   'cache_enabled': 0,
+          \ }
+    " 所有赋值操作都同步至 primary 剪切板
+    " set clipboard+=unnamedplus
+  else
+    " :help clipboard-autoselect
+    set clipboard=unnamed
+  endif
+
+  " 命令行模式下，进入 popup menu 补全选择时，使用 enter 进行选择，而不是直接执行
+  " nvim 5.0 Pre-release <C-e> 快捷键在 Mac 上有 bug，表现与 Linux 上不一致
+  cnoremap <expr> <cr> pumvisible() ? "\<C-e>" : "\<CR>"
+  " TODO: <C-c> 取消 popup menu 选择，不使用任何一个补全
+  " <C-k> 删除光标后面的所有字符
+  " https://stackoverflow.com/a/26310522
+  cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
+
+  autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
+
+  " asynctasks 配置
+  let g:asynctasks_config_name = '.git/tasks.ini'
+  let g:asyncrun_open = 10
+  let g:asyncrun_rootmarks = ['.git', '.svn', '.root', '.project', '.hg']
+
+  " au FileType qf setlocal signcolumn=no  " quickfix 窗口不显示符号列
+
+  " https://vi.stackexchange.com/a/15699
+  " let g:asyncrun_status = 'stopped' 
+  " function! AsyncrunGetStatus() abort
+  "   return get(g:, 'asyncrun_status', '')
+  " endfunction
+  " call airline#parts#define_function('asyncrun_status', 'AsyncrunGetStatus')
+  " let g:airline_section_c = airline#section#create(['%<', 'file', g:airline_symbols.space, 'readonly', 'asyncrun_status', 'coc_status'])
+
+  nnoremap <silent> <space>t  :<C-u>CocList tasks<cr>
 endif
-
-" 命令行模式下，进入 popup menu 补全选择时，使用 enter 进行选择，而不是直接执行
-" nvim 5.0 Pre-release <C-e> 快捷键在 Mac 上有 bug，表现与 Linux 上不一致
-cnoremap <expr> <cr> pumvisible() ? "\<C-e>" : "\<CR>"
-" TODO: <C-c> 取消 popup menu 选择，不使用任何一个补全
-" <C-k> 删除光标后面的所有字符
-" https://stackoverflow.com/a/26310522
-cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
-
-autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
-
-" vim-cpp-enhanced-highlight 配置
-if &diff
-  let g:cpp_class_scope_highlight = 1
-  let g:cpp_member_variable_highlight = 1
-  let g:cpp_class_decl_highlight = 1
-  let g:cpp_posix_standard = 1
-  let g:cpp_experimental_simple_template_highlight = 1
-  " let g:cpp_experimental_template_highlight = 1
-  let g:cpp_concepts_highlight = 1
-endif
-
-" asynctasks 配置
-let g:asynctasks_config_name = '.git/tasks.ini'
-let g:asyncrun_open = 10
-let g:asyncrun_rootmarks = ['.git', '.svn', '.root', '.project', '.hg']
-
-" au FileType qf setlocal signcolumn=no  " quickfix 窗口不显示符号列
-
-" https://vi.stackexchange.com/a/15699
-" let g:asyncrun_status = 'stopped' 
-" function! AsyncrunGetStatus() abort
-"   return get(g:, 'asyncrun_status', '')
-" endfunction
-" call airline#parts#define_function('asyncrun_status', 'AsyncrunGetStatus')
-" let g:airline_section_c = airline#section#create(['%<', 'file', g:airline_symbols.space, 'readonly', 'asyncrun_status', 'coc_status'])
-
-nnoremap <silent> <space>t  :<C-u>CocList tasks<cr>
