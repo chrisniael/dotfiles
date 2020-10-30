@@ -40,7 +40,8 @@
     },
     "list.insertMappings": {
         "<C-n>": "normal:j",
-        "<C-p>": "normal:k"
+        "<C-p>": "normal:k",
+        "<C-v>": "eval:@@"
     },
     "list.normalMappings": {
       "<C-o>": "insert:<C-o>"
