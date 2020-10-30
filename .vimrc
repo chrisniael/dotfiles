@@ -47,6 +47,9 @@ let g:coc_global_extensions = ['coc-yank', 'coc-pairs', 'coc-lists', 'coc-markdo
 
 
 " vim 支持显示粗体与斜体
+" https://github.com/neovim/neovim/issues/3461#issuecomment-268640486
+" https://github.com/tmux/tmux/issues/2262#issuecomment-640166755
+" https://github.com/mhinz/dotfiles/blob/master/bin/fix-term
 if !has("nvim")
   set t_ZH=[3m
   set t_ZR=[23m
@@ -55,7 +58,7 @@ endif
 " 设置 gruvbox 主题 contrast 程度 (得放在 colorscheme 设置之前) : soft, medium (default), hard
 " let g:gruvbox_contrast_dark = 'medium'
 " let g:gruvbox_contrast_light = 'medium'
-" 设置 grubbox 主题支持粗体与斜体 (https://github.com/neovim/neovim/issues/3461#issuecomment-268640486)
+" 设置 grubbox 主题支持粗体与斜体
 let g:gruvbox_bold = 1
 let g:gruvbox_italic = 1
 set t_Co=256  " 支持 xterm-256color
@@ -489,8 +492,7 @@ if !&diff
   endfunction
 
   " nnoremap <space>W :CocList --normal --ignore-case --input=<C-R>=expand('<cword>')<CR> words<Left><Left><Left><Left><Left><Left>
-  nnoremap <space>w :<C-u>CocList -I words<CR>
-  nnoremap <space>W :<C-u>CocList -I --ignore-case words<CR>
+  nnoremap <space>w :<C-u>CocList -I --ignore-case words<CR>
   " 在当前 buffer 中搜索光标所在单词
   nnoremap <leader>w :<C-u>CocListWords <C-R>=expand('<cword>')<CR>
   " 在当前 buffer 中搜索 visual 模式选择的文本
@@ -522,8 +524,10 @@ if !&diff
   nnoremap <space>G :<C-u>CocListGrep -i 
   " Grep 光标所在单词
   nnoremap <leader>g :<C-u>CocListGrep <C-R>=expand('<cword>')<CR> 
+  nnoremap <leader>G :<C-u>CocListGrep -i <C-R>=expand('<cword>')<CR> 
   " Grep visual 模式选择的文本
   vnoremap <leader>g :<C-u>call <SID>GrepFromSelected(visualmode())<CR>
+  vnoremap <leader>G :<C-u>call <SID>GrepFromSelectedIgnoreCase(visualmode())<CR>
 
   function! s:GrepFromSelected(type)
     let saved_unnamed_register = @@
@@ -539,6 +543,22 @@ if !&diff
     let @@ = saved_unnamed_register
     execute 'CocList --normal grep '.word
   endfunction
+
+  function! s:GrepFromSelectedIgnoreCase(type)
+    let saved_unnamed_register = @@
+    if a:type ==# 'v'
+      normal! `<v`>y
+    elseif a:type ==# 'char'
+      normal! `[v`]y
+    else
+      return
+    endif
+    let word = substitute(@@, '\n$', '', 'g')
+    let word = escape(word, '| ')
+    let @@ = saved_unnamed_register
+    execute 'CocList --normal grep -i '.word
+  endfunction
+
 
   " 历史剪切板列表
   nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
