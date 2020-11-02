@@ -26,16 +26,16 @@ if !&diff
   Plug 'vim-airline/vim-airline-themes'
   Plug 'tpope/vim-commentary'
   Plug 'godlygeek/tabular'
-  Plug 'plasticboy/vim-markdown'
-  Plug 'MTDL9/vim-log-highlighting'
-  " 可选替代 vim-husk
-  Plug 'tpope/vim-rsi'
+  Plug 'plasticboy/vim-markdown', { 'for': ['markdown'] }
+  Plug 'MTDL9/vim-log-highlighting', { 'for': ['log'] }
   Plug 'tpope/vim-obsession'
   Plug 'skywind3000/asynctasks.vim'
   Plug 'skywind3000/asyncrun.vim'
 endif
 Plug 'morhetz/gruvbox'
-" Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
+" 可选替代 vim-husk
+Plug 'tpope/vim-rsi'
 
 " Initialize plugin system
 call plug#end()
@@ -111,8 +111,9 @@ augroup END
 set backspace=indent,eol,start
 
 " 启动vim时不自动折叠代码
-set foldmethod=syntax
-set foldlevel=100
+" 会影响 vim diff 打开速度
+" set foldmethod=syntax
+" set foldlevel=100
 
 " 不显示折叠列标记
 set foldcolumn=0
@@ -154,6 +155,7 @@ autocmd BufNewFile,BufRead *.json setlocal tabstop=2 shiftwidth=2
 
 " RO lua 配置文件识别为 lua
 autocmd! BufNewFile,BufRead *.txt set filetype=lua
+autocmd! BufNewFile,BufRead CMakeLists.txt set filetype=cmake
 " RO 日志文件识别为 log 文件类型
 autocmd! BufNewFile,BufRead *.log.[0-9][0-9][0-9][0-9][0-1][0-9][0-3][0-9]-[0-2][0-9] set filetype=log
 
@@ -199,6 +201,14 @@ augroup filetype
   autocmd! BufRead,BufNewFile *.proto setfiletype proto
 augroup end
 
+" 命令行模式下，进入 popup menu 补全选择时，使用 enter 进行选择，而不是直接执行
+" nvim 5.0 Pre-release <C-e> 快捷键在 Mac 上有 bug，表现与 Linux 上不一致
+cnoremap <expr> <cr> pumvisible() ? "\<C-e>" : "\<CR>"
+" TODO: <C-c> 取消 popup menu 选择，不使用任何一个补全
+" <C-k> 删除光标后面的所有字符
+" https://stackoverflow.com/a/26310522
+cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
+
 
 " 仅仅适用于 diff 模式的配置
 if &diff
@@ -210,16 +220,15 @@ if &diff
   " vimdiff 折行
   au VimEnter * if &diff | execute 'windo set wrap' | endif
 
-  " " vim-cpp-enhanced-highlight 配置
-  " let g:cpp_class_scope_highlight = 1
-  " let g:cpp_member_variable_highlight = 1
-  " let g:cpp_class_decl_highlight = 1
-  " let g:cpp_posix_standard = 1
-  " let g:cpp_experimental_simple_template_highlight = 1
-  " " let g:cpp_experimental_template_highlight = 1
-  " let g:cpp_concepts_highlight = 1
-else
-  " 仅仅适用于 !diff 模式的配置
+  " vim-cpp-enhanced-highlight 配置
+  let g:cpp_class_scope_highlight = 1
+  let g:cpp_member_variable_highlight = 1
+  let g:cpp_class_decl_highlight = 1
+  let g:cpp_posix_standard = 1
+  let g:cpp_experimental_simple_template_highlight = 1
+  " let g:cpp_experimental_template_highlight = 1
+  let g:cpp_concepts_highlight = 1
+else  " 仅仅适用于 !diff 模式的配置 
   autocmd FileType c,cpp set colorcolumn=
   set cmdheight=2
   set laststatus=2
@@ -626,14 +635,6 @@ else
     " :help clipboard-autoselect
     set clipboard=unnamed
   endif
-
-  " 命令行模式下，进入 popup menu 补全选择时，使用 enter 进行选择，而不是直接执行
-  " nvim 5.0 Pre-release <C-e> 快捷键在 Mac 上有 bug，表现与 Linux 上不一致
-  cnoremap <expr> <cr> pumvisible() ? "\<C-e>" : "\<CR>"
-  " TODO: <C-c> 取消 popup menu 选择，不使用任何一个补全
-  " <C-k> 删除光标后面的所有字符
-  " https://stackoverflow.com/a/26310522
-  cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
 
   autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 
