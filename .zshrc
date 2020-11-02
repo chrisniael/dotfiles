@@ -216,13 +216,15 @@ else
       ubuntu)
         ;;
       centos)
-        export PATH="$PATH:/squashfs-root/usr/bin"
+        export PATH="/squashfs-root/usr/bin:$PATH"
+        export PATH="$PATH:/sbin"
         export CC="ccache distcc gcc"
         export CPP="ccache distcc cpp"
         export CXX="ccache distcc g++"
         alias ro-server="cd /data/rogame/server"
         alias ro-log="cd /data/rogame/server/bin/Debug/log"
         alias ro-bin="cd /data/rogame/server/bin/Debug"
+        alias ro-config="cd /data/rogame/server/bin/Debug/Lua"
         ;;
       *)
         ;;
