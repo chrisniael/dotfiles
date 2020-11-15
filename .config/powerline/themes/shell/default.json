@@ -7,8 +7,8 @@
 					"override": {
 						"vicmd": "N",
 						"viins": "I"
-          }
-        }
+					}
+				}
 			},
 			{
 				"function": "powerline.segments.common.net.hostname",
