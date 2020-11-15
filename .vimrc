@@ -646,12 +646,42 @@ else  " 仅仅适用于 !diff 模式的配置
   " au FileType qf setlocal signcolumn=no  " quickfix 窗口不显示符号列
 
   " https://vi.stackexchange.com/a/15699
-  " let g:asyncrun_status = 'stopped' 
-  " function! AsyncrunGetStatus() abort
-  "   return get(g:, 'asyncrun_status', '')
-  " endfunction
-  " call airline#parts#define_function('asyncrun_status', 'AsyncrunGetStatus')
-  " let g:airline_section_c = airline#section#create(['%<', 'file', g:airline_symbols.space, 'readonly', 'asyncrun_status', 'coc_status'])
+  let g:asyncrun_status = 'stopped' 
+  function! AsyncrunGetStatus() abort
+    return get(g:, 'asyncrun_status', '')
+  endfunction
+  call airline#parts#define_function('asyncrun_status', 'AsyncrunGetStatus')
+  let g:airline_section_x = airline#section#create_right(['bookmark', 'tagbar', 'vista', 'gutentags', 'gen_tags', 'omnisharp', 'grepper', 'asyncrun_status', 'filetype'])
 
   nnoremap <silent> <space>t  :<C-u>CocList tasks<cr>
+
+  " quickfix list 与 localtion list toggle 快捷键
+  " https://vim.fandom.com/wiki/Toggle_to_open_or_close_the_quickfix_window
+  function! GetBufferList()
+    redir =>buflist
+    silent! ls!
+    redir END
+    return buflist
+  endfunction
+
+  function! ToggleList(bufname, pfx)
+    let buflist = GetBufferList()
+    for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+      if bufwinnr(bufnum) != -1
+        exec(a:pfx.'close')
+        return
+      endif
+    endfor
+    if a:pfx == 'l' && len(getloclist(0)) == 0
+      echohl ErrorMsg
+      echo "Location List is Empty."
+      return
+    endif
+    exec('topleft '.a:pfx.'open')
+    exec('$')
+    wincmd p
+  endfunction
+
+  " nmap <silent> <space>l :call ToggleList("Location List", 'l')<CR>
+  nmap <silent> <space>q :call ToggleList("Quickfix List", 'c')<CR>
 endif
