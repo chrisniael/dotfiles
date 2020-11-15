@@ -216,7 +216,7 @@ else
       ubuntu)
         ;;
       centos)
-        export PATH="$PATH:/squashfs-root/usr/bin"
+        export PATH="/squashfs-root/usr/bin:$PATH"
         ;;
       *)
         ;;
@@ -278,6 +278,14 @@ if [[ "$(uname -r | grep -Eo Microsoft)" == "Microsoft" ]]; then
   # WSL local nost auto set DISPLAY variable
   if [[ -z "$SSH_CONNECTION" ]]; then
     export DISPLAY=:0.0
+  fi
+fi
+
+
+if [[ -n "$NVIM_LISTEN_ADDRESS" ]]; then
+  if [ -d $HOME/.vim/plugged/vim-floaterm/bin ]; then
+    export PATH="$HOME/.vim/plugged/vim-floaterm/bin:$PATH"
+    alias vim="floaterm"
   fi
 fi
 
