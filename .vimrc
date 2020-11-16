@@ -113,7 +113,7 @@ set backspace=indent,eol,start
 " 启动vim时不自动折叠代码
 " 会影响 vim diff 打开速度
 " set foldmethod=syntax
-" set foldlevel=100
+set foldlevel=100
 
 " 不显示折叠列标记
 set foldcolumn=0
