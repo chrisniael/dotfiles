@@ -294,7 +294,7 @@ else  " 仅仅适用于 !diff 模式的配置
   " 高亮光标所在位置的单词，并输入全文替换的命令，替换单词代填充
   nmap <leader>rp #<S-N>:%s/<C-R>=expand("<cword>")<CR>//g<Left><Left>
 
-  nmap <silent><leader>x :bdelete<CR>
+  nmap <silent><leader>x :silent! bdelete<CR>
 
 
 
@@ -644,8 +644,8 @@ else  " 仅仅适用于 !diff 模式的配置
   function! AsyncrunGetStatus() abort
     return get(g:, 'asyncrun_status', '')
   endfunction
-  call airline#parts#define_function('asyncrun_status', 'AsyncrunGetStatus')
-  let g:airline_section_x = airline#section#create_right(['bookmark', 'tagbar', 'vista', 'gutentags', 'gen_tags', 'omnisharp', 'grepper', 'asyncrun_status', 'filetype'])
+  silent! call airline#parts#define_function('asyncrun_status', 'AsyncrunGetStatus')
+  silent! let g:airline_section_x = airline#section#create_right(['bookmark', 'tagbar', 'vista', 'gutentags', 'gen_tags', 'omnisharp', 'grepper', 'asyncrun_status', 'filetype'])
 
   nnoremap <silent> <space>t  :<C-u>CocList tasks<cr>
 
