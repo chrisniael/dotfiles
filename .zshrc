@@ -15,7 +15,7 @@ export ZSH="$HOME/.oh-my-zsh"
 OS=$(uname -s)
 if [[ "${OS}" == "Darwin" ]]; then
   # 当终端是 Apple Terminal 时，不使用 powerline，powerline 暂时不能自动判断终端类型来关闭 true color
-  if [[ "$TERM_PROGRAM" = "Apple_Terminal" ]]
+  if [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]
   then
     ZSH_THEME="robbyrussell"
   else

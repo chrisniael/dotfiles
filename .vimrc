@@ -94,7 +94,9 @@ endfunction
 " else
 "   call s:enable_true_color()
 " endif
-call s:enable_true_color()
+if $TERM_PROGRAM != "Apple_Terminal"
+  call s:enable_true_color()
+endif
 
 " 设置垂直分隔符号
 set fillchars+=vert:\ 
