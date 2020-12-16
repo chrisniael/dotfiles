@@ -161,6 +161,7 @@ if [[ "${OS}" == "Darwin" ]]; then
   alias la="ls -laFhOT"
   alias lldb="PATH=/usr/bin /usr/bin/lldb"
   alias ssh-over-ss="ssh -o ProxyCommand='nc -x 127.0.0.1:1081 %h %p'"
+  alias htop="TERM=xterm-256color htop"
 
   # 更新所有 cask
   function brew-cask-upgrade() {
@@ -239,7 +240,6 @@ alias mv="mv -i"                            #"移动"
 alias mkdir="mkdir -v"                      #"新建时会提示
 alias vim="nvim"
 alias grep="grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox} --line-buffered"
-alias htop="TERM=xterm-256color htop"
 
 function unssproxy() {
   unset http_proxy
