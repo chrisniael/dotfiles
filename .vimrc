@@ -209,6 +209,8 @@ cnoremap <expr> <cr> pumvisible() ? "\<C-e>" : "\<CR>"
 " https://stackoverflow.com/a/26310522
 cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
 
+" 不显示 tabline
+set showtabline=0
 
 " 仅仅适用于 diff 模式的配置
 if &diff
@@ -235,31 +237,39 @@ else  " 仅仅适用于 !diff 模式的配置
   " 折行
   set wrap
 
+  " 打开 terminal 时关闭行号和符号列, 并自动进入 insert 模式
+  " 退出 terminal: <C-\><C-n>
   if has("nvim")
-    " 打开 terminal 时关闭行号和符号列, 并自动进入 insert 模式
-    " 退出 terminal: <C-\><C-n>
     au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
   endif
 
   " coc.nvim 的插件
   let g:coc_global_extensions = [
         \ 'coc-yank', 'coc-pairs', 'coc-lists', 'coc-clangd',
-        \ 'coc-cmake', 'coc-rust-analyzer', 'coc-tasks'
+        \ 'coc-cmake', 'coc-rust-analyzer', 'coc-tasks', 'coc-json',
         \ ] 
 
   " vim-airline 配置
   " set laststatus=2  " 底部显示状态栏, 1:不显示, 2:显示
   let g:airline_powerline_fonts = 1   " 使用 powerline 符号
   let g:airline_theme = "gruvbox"  " 设置主题
-  " 开启tabline
-  let g:airline#extensions#tabline#enabled = 0  " 不显示 buffer 标签页
-  let g:airline#extensions#tabline#left_sep = ' '
-  let g:airline#extensions#tabline#left_alt_sep = '|'
-  let g:airline#extensions#tabline#buffer_nr_show = 1  " 实现 buffer 序号
-  " 切换 buffer 快捷键, 开启 buffer 标签页才会生效
-  if g:airline#extensions#tabline#enabled == 1
+  let g:airline#extensions#tabline#enabled = 0  " 是否开启 tabline
+  let g:airline#extensions#tabline#show_buffers = 0  " 是否显示 buffer
+  let g:airline#extensions#tabline#buffer_nr_show = 0  " 显示 buffer 序号
+  let g:airline#extensions#tabline#show_tabs = 1  " 是否显示 tab
+  let g:airline#extensions#tabline#show_tab_count = 0  " 是否显示 tab 总数量在右边
+  " let g:airline#extensions#tabline#show_tab_type = 1
+  let g:airline#extensions#tabline#show_tab_nr = 0  " 是否显示 tab 序号
+  let g:airline#extensions#tabline#show_close_button = 0
+  let g:airline#extensions#tabline#show_tab_type = 1  " 显示类型: buffer/tab
+  let g:airline#extensions#tabline#tabs_label = 'T'
+  if g:airline#extensions#tabline#show_buffers == 1
     nnoremap <silent> [b :bp<CR>
     nnoremap <silent> ]b :bn<CR>
+  endif
+  if g:airline#extensions#tabline#show_tabs == 1
+    nnoremap <silent> [t :tabp<CR>
+    nnoremap <silent> ]t :tabn<CR>
   endif
 
   " Windows 部分字体不能显示 Ɇ 这个字符，可以改成 ∄ Ø
@@ -640,7 +650,11 @@ else  " 仅仅适用于 !diff 模式的配置
 
   " asynctasks 配置
   let g:asynctasks_config_name = '.git/tasks.ini'
-  let g:asyncrun_open = 10
+  let g:asyncrun_open = 20
+  let g:asynctasks_term_pos = 'tab'
+  let g:asynctasks_term_rows = 20
+  let g:asynctasks_term_reuse = 1
+  let g:asynctasks_term_focus = 1
   let g:asyncrun_rootmarks = ['.git', '.svn', '.root', '.project', '.hg']
 
   " au FileType qf setlocal signcolumn=no  " quickfix 窗口不显示符号列
@@ -677,7 +691,8 @@ else  " 仅仅适用于 !diff 模式的配置
       echo "Location List is Empty."
       return
     endif
-    exec('topleft '.a:pfx.'open')
+    " exec('topleft '.string(g:asyncrun_open).a:pfx.'open')
+    exec(string(g:asyncrun_open).a:pfx.'open')
     exec('$')
     wincmd p
   endfunction

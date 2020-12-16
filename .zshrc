@@ -219,12 +219,14 @@ else
         export PATH="/squashfs-root/usr/bin:$PATH"
         export PATH="$PATH:/sbin"
         export CC="ccache distcc gcc"
-        export CPP="ccache distcc cpp"
+        # export CPP="ccache distcc cpp"
         export CXX="ccache distcc g++"
         alias ro-server="cd /data/rogame/server"
         alias ro-log="cd /data/rogame/server/bin/Debug/log"
         alias ro-bin="cd /data/rogame/server/bin/Debug"
         alias ro-config="cd /data/rogame/server/bin/Debug/Lua"
+        alias ssh-tunnel="ssh -D 1337 -f -C -q -N 172.26.157.103"
+        alias ss5proxy="export ALL_PROXY=socks5://127.0.0.1:1337"
         ;;
       *)
         ;;
@@ -244,6 +246,7 @@ alias cp="cp -i"                            #"复制"
 alias mv="mv -i"                            #"移动"
 alias mkdir="mkdir -v"                      #"新建时会提示
 alias vim="nvim"
+alias grep="grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox} --line-buffered"
 
 function unssproxy() {
   unset http_proxy
