@@ -94,7 +94,9 @@ endfunction
 " else
 "   call s:enable_true_color()
 " endif
-call s:enable_true_color()
+if $TERM_PROGRAM != "Apple_Terminal"
+  call s:enable_true_color()
+endif
 
 " 设置垂直分隔符号
 set fillchars+=vert:\ 
@@ -246,8 +248,8 @@ else  " 仅仅适用于 !diff 模式的配置
   " coc.nvim 的插件
   let g:coc_global_extensions = [
         \ 'coc-yank', 'coc-pairs', 'coc-lists', 'coc-clangd',
-        \ 'coc-cmake', 'coc-rust-analyzer', 'coc-tasks', 'coc-json',
-        \ ] 
+        \ 'coc-cmake', 'coc-rust-analyzer', 'coc-tasks', 'coc-json'
+        \ ]
 
   " vim-airline 配置
   " set laststatus=2  " 底部显示状态栏, 1:不显示, 2:显示

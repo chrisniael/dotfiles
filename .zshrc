@@ -15,7 +15,7 @@ export ZSH="$HOME/.oh-my-zsh"
 OS=$(uname -s)
 if [[ "${OS}" == "Darwin" ]]; then
   # 当终端是 Apple Terminal 时，不使用 powerline，powerline 暂时不能自动判断终端类型来关闭 true color
-  if [[ "$TERM_PROGRAM" = "Apple_Terminal" ]]
+  if [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]
   then
     ZSH_THEME="robbyrussell"
   else
@@ -234,9 +234,11 @@ else
   fi
 fi
 
-export PATH="$HOME/.config/bin:$PATH"
+if [[ -d $HOME/.config/bin ]]; then
+  export PATH="$HOME/.config/bin:$PATH"
+fi
 
-if [ -d $HOME/.vim/plugged/asynctasks.vim/bin ]; then
+if [[ -d $HOME/.vim/plugged/asynctasks.vim/bin ]]; then
   export PATH="$HOME/.vim/plugged/asynctasks.vim/bin:$PATH"
   alias t='asynctask -f'
 fi
@@ -316,7 +318,11 @@ bindkey '\e[4~' end-of-line
 if [[ -z "$TMUX" ]]; then
   # 不是 vim/neovim 的 terminal 启动的 zsh
   if [[ -z "$NVIM_LISTEN_ADDRESS" ]]; then
-    alias exit='killall xclip >/dev/null 2>&1 ; exit'
+    exit() {
+      killall xclip >/dev/null 2>&1
+      unset -f exit
+      exit
+    }
   fi
   # XShell 终端类型里没有 xterm-256color 选项，需要手动设置
   # tmux 里不可以手动设置，tmux 本身配置里有对 TERM 设置
@@ -345,7 +351,14 @@ else
   # 关闭 xclip child process 的原因是因为 xclip 会保持和 X Server 的连接，exit 的时候会不能正常关闭 SSH 连接
   # 用 eval 是去除前后的空格， mac 上的 wc 命令与 linux 不太一样，会输出一些空格
   if [[ -z "$NVIM_LISTEN_ADDRESS" ]]; then
-    alias exit='if [[ $(eval echo $(tmux list-sessions | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-windows | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-panes | wc -l)) = 1 ]]; then echo -n ""; else exit; fi'
+    exit() {
+      if [[ $(eval echo $(tmux list-sessions | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-windows | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-panes | wc -l)) = 1 ]]; then
+        echo -n ""
+      else
+        unset -f exit
+        exit
+      fi
+    }
   fi
 
   # 手动更新 tmux session 的 zsh 环境变量
