@@ -1,0 +1,39 @@
+_RO_CLIENT_DIR="${HOME}/Documents/client-trunk2019"
+_RO_CEHUA_DIR="${HOME}/Documents/Cehua"
+
+svn_revert_loal_update() {
+  dir=$1
+  svn revert -R ${dir}
+  svn st ${dir} | grep "^?" | awk -F '?' '{print $2}' | xargs -I {} rm -rf "{}"
+  svn up ${dir}
+}
+
+ro_update_client() {
+  svn_revert_loal_update ${_RO_CLIENT_DIR}
+  open -a 'Unity Hub'
+}
+
+ro_update_cehua() {
+  svn_revert_loal_update ${_RO_CEHUA_DIR}
+}
+
+ro_excel() {
+  excel_dir=${_RO_CLIENT_DIR}/Cehua
+  excel_file=$(rg --files ${excel_dir} | rg ".xlsx$" | fzf)
+  if [ -n "${excel_file}" ]; then
+    echo $excel_file
+    open $excel_file
+  fi
+}
+
+ro_cehua() {
+  excel_dir=${_RO_CEHUA_DIR}
+  excel_file=$(rg --files ${excel_dir} | fzf)
+  if [ -n "${excel_file}" ]; then
+    echo $excel_file
+    open $excel_file
+  fi
+}
+
+# RO CN 用于 ssh forward
+# ssh-add ~/.ssh/id_rsa
