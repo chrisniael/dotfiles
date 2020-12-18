@@ -242,7 +242,8 @@ else  " 仅仅适用于 !diff 模式的配置
   " coc.nvim 的插件
   let g:coc_global_extensions = [
         \ 'coc-yank', 'coc-pairs', 'coc-lists', 'coc-clangd',
-        \ 'coc-cmake', 'coc-rust-analyzer', 'coc-tasks', 'coc-json'
+        \ 'coc-cmake', 'coc-rust-analyzer', 'coc-tasks', 'coc-json',
+        \ 'coc-pyright', 'coc-lua'
         \ ]
 
   " vim-airline 配置

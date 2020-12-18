@@ -46,10 +46,6 @@
       "<C-o>": "insert:<C-o>"
     },
     "coc.preferences.formatOnSaveFiletypes": ["c", "cpp"],
-    "markdownlint.config": {
-        "default": true,
-        "line_length": false
-    },
     "clangd": {
       "enabled": true,
       "disableDiagnostics": false,
