@@ -125,8 +125,5 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 ln -s ~/.vim ~/.config/nvim
 ln -s ~/.vimrc ~/.config/nvim/init.vim
 
-nvim +PluginUpdate  # not working, just open vim and run :PluginUpdate manually
-nvim "+CocStart" "+CocInstall -sync coc-lists" "+qa"
-nvim "+CocStart" "+CocInstall -sync coc-yank" "+qa"
-nvim "+CocStart" "+CocInstall -sync coc-markdownlint" "+qa"
+nvim +'PlugInstall --sync' +qa
 ```
