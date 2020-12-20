@@ -1,60 +1,67 @@
 {
-    "languageserver": {
-        "ccls": {
-            "enable": false,
-            "command": "ccls",
-            "filetypes": [
-                "c",
-                "cpp",
-                "objc",
-                "objcpp"
-            ],
-            "rootPatterns": [
-                ".ccls",
-                "compile_commands.json",
-                ".vim/",
-                ".git/",
-                ".hg/"
-            ],
-            "initializationOptions": {
-                "cache": {
-                    "directory": "/tmp/ccls"
-                }
-            }
-        },
-        "bash": {
-            "enable": true,
-            "command": "bash-language-server",
-            "args": ["start"],
-            "filetypes": ["sh"],
-            "ignoredRootPaths": ["~"]
-        },
-        "golang": {
-          "command": "gopls",
-          "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
-          "filetypes": ["go"],
-          "initializationOptions": {
-            "usePlaceholders": true
-          }
+  "languageserver": {
+    "ccls": {
+      "enable": false,
+      "command": "ccls",
+      "filetypes": ["c", "cpp", "objc", "objcpp"],
+      "rootPatterns": [
+        ".ccls",
+        "compile_commands.json",
+        ".vim/",
+        ".git/",
+        ".hg/"
+      ],
+      "initializationOptions": {
+        "cache": {
+          "directory": "/tmp/ccls"
         }
+      }
     },
-    "list.insertMappings": {
-        "<C-n>": "normal:j",
-        "<C-p>": "normal:k"
+    "bash": {
+      "enable": true,
+      "command": "bash-language-server",
+      "args": ["start"],
+      "filetypes": ["sh"],
+      "ignoredRootPaths": ["~"]
     },
-    "list.normalMappings": {
-      "<C-o>": "insert:<C-o>"
-    },
-    "coc.preferences.formatOnSaveFiletypes": ["c", "cpp"],
-    "clangd": {
-      "enabled": true,
-      "disableDiagnostics": false,
-      "semanticHighlighting": true
-    },
-    "yank": {
-      "enableCompletion": false
-    },
-    "rust-analyzer": {
-      "serverPath": "rust-analyzer"
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "filetypes": ["go"],
+      "initializationOptions": {
+        "usePlaceholders": true
+      }
     }
+  },
+  "list.insertMappings": {
+    "<C-n>": "normal:j",
+    "<C-p>": "normal:k"
+  },
+  "list.normalMappings": {
+    "<C-o>": "insert:<C-o>"
+  },
+  "coc.preferences.formatOnSaveFiletypes": [
+    "c",
+    "cpp",
+    "go",
+    "html",
+    "css",
+    "markdown",
+    "json",
+    "python",
+    "yaml",
+    "rs"
+  ],
+  "clangd": {
+    "enabled": true,
+    "disableDiagnostics": false,
+    "semanticHighlighting": true
+  },
+  "yank": {
+    "enableCompletion": false
+  },
+  "rust-analyzer": {
+    "serverPath": "rust-analyzer"
+  },
+  "python.pythonPath": "python3"
 }

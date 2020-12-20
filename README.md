@@ -14,8 +14,8 @@ cd ~/.dotfiles
 
 ## powerline-status
 
-* python >= 3.7
-* pip
+- python >= 3.7
+- pip
 
 ```bash
 # Ubuntu
@@ -33,13 +33,13 @@ pip install powerline-status
 
 ## zsh
 
-* zsh >= 4.3.9
-* ohmyzsh
+- zsh >= 4.3.9
+- ohmyzsh
 
 ## tmux
 
-* tmux > 3.0
-* tmp
+- tmux > 3.0
+- tmp
 
 ```bash
 # Ubuntu
@@ -67,17 +67,17 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 ## vim
 
-* neovim >= 0.3.1 or vim >= 8.0.1453
-* node >= 8.10.0
-* vim-plugin
-* xsel
-* pynvim (python)
-* neovim (nodejs)
-* coc-yank
-* coc-lists
-* ripgrep
-* clangd
-* bash-language-server
+- neovim >= 0.3.1 or vim >= 8.0.1453
+- node >= 8.10.0
+- vim-plugin
+- xsel
+- pynvim (python)
+- neovim (nodejs)
+- coc-yank
+- coc-lists
+- ripgrep
+- clangd
+- bash-language-server
 
 Install newest neovim.
 
@@ -126,4 +126,38 @@ ln -s ~/.vim ~/.config/nvim
 ln -s ~/.vimrc ~/.config/nvim/init.vim
 
 nvim +'PlugInstall --sync' +qa
+```
+
+coc-pyright config
+
+Python format depends on autopep8.
+
+```bash
+# Mac
+# Make sure python3 exist
+pip3 install autopep8
+```
+
+```bash
+# Arch
+ln -s /usr/bin/python /usr/local/bin/python3
+pip install autopep8
+```
+
+vim-lua-format config
+
+Install lua-format by luarocks.
+
+```bash
+luarocks install --server=https://luarocks.org/dev luaformatter
+```
+
+Install lua-format mannually.
+
+```bash
+git clone --recurse-submodules https://github.com/Koihik/LuaFormatter.git
+cd LuaFormatter
+cmake .
+make
+make install
 ```
