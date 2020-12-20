@@ -191,7 +191,7 @@ if [[ "${OS}" == "Darwin" ]]; then
   # 这个命令会让 zsh 启动变特别慢, 直接指定路径加速启动
   # export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
   export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/usr/local/opt/openssl@1.1"
-  # export HOMEBREW_NO_AUTO_UPDATE=true
+  export HOMEBREW_NO_AUTO_UPDATE=true
 
   bindkey \^U backward-kill-line
   bindkey '\e[1~' beginning-of-line
@@ -363,3 +363,25 @@ fi
 if [ -f "${HOME}/.zshrc_custom" ]; then
   source "${HOME}/.zshrc_custom"
 fi
+
+u()
+{
+  # 升级 ohmyzsh
+  # Note: `upgrade_oh_my_zsh` is deprecated. Use `omz update` instead.
+  which omz >/dev/null 2>&1
+  if [ $? = 0 ]; then
+    omz update
+  fi
+  # 升级 brew
+  hash brew >/dev/null 2>&1
+  if [ $? = 0 ]; then
+    echo "Upgrading brew"
+    brew update
+    brew upgrade
+    brew-cask-upgrade
+  fi
+  # 升级 vim 插件
+  vim +'PlugInstall --sync' +qa
+  # 升级 coc 插件
+  vim +'CocStart' +'CocUpdateSync' +qa
+}
