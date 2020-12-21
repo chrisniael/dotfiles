@@ -381,7 +381,9 @@ u()
     brew-cask-upgrade
   fi
   # 升级 vim 插件
+  vim +'PlugUpgrade' +qa
   vim +'PlugInstall --sync' +qa
+  vim +'PlugUpdate --sync' +qa
   # 升级 coc 插件
   vim +'CocStart' +'CocUpdateSync' +qa
 }
