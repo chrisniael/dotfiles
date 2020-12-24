@@ -12,6 +12,7 @@
 	decorate = auto
 [core]
 	editor = nvim
+	quotepath = false
 [credential]
 	helper = store
 [alias]
