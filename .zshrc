@@ -183,7 +183,7 @@ if [[ "${OS}" == "Darwin" ]]; then
   export PATH="/usr/local/opt/ruby/bin:$PATH"
   export PATH="/usr/local/opt/openssl/bin:$PATH"
   export PATH="/usr/local/opt/sqlite/bin:$PATH"
-  export PATH="/usr/local/opt/sphinx-doc/bin:$PATH"
+  # export PATH="/usr/local/opt/sphinx-doc/bin:$PATH"
   export PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
   export PATH="/usr/local/opt/ncurses/bin:$PATH"
   export PATH=$PATH:/usr/local/opt/llvm/bin
@@ -295,6 +295,7 @@ fi
 
 export LANG=en_US.UTF-8
 export XAUTHORITY=$HOME/.Xauthority
+export EDITOR=nvim
 
 ulimit -c unlimited
 ulimit -n 20480
