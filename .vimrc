@@ -751,6 +751,7 @@ else  " 仅仅适用于 !diff 模式的配置
   let g:go_echo_go_info = 0  " 关闭代码补全后的识别信息提示"
 
   " vim-markdown 配置
-  let g:vim_markdown_fenced_languages = ['protobuf=proto']  " 兼容 github 默认识别 protobuf 高亮 Protobuf code, 而 vim 识别 proto
-  let g:vim_markdown_fenced_languages = ['bash=sh']  " 高亮 bash code, vim 识别 sh 
+  " 兼容 github 默认识别 protobuf 高亮 Protobuf code, 而 vim 识别 proto
+  " 高亮 bash code, vim 识别 sh 
+  let g:vim_markdown_fenced_languages = ['protobuf=proto', 'bash=sh']
 endif
