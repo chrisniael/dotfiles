@@ -240,9 +240,12 @@ if &diff
   " let g:cpp_experimental_template_highlight = 1
   let g:cpp_concepts_highlight = 1
 else  " 仅仅适用于 !diff 模式的配置
-  autocmd FileType c,cpp set colorcolumn=
+  autocmd FileType c,cpp set colorcolumn=81
   set cmdheight=2
   set laststatus=2
+
+  " 不折行
+  " autocmd FileType markdown set nowrap
   " 折行
   set wrap
 
@@ -704,6 +707,7 @@ else  " 仅仅适用于 !diff 模式的配置
   " nmap <silent> <space>l :call ToggleList("Location List", 'l')<CR>
   nmap <silent> <space>q :call ToggleList("Quickfix List", 'c')<CR>
 
+  nmap <silent> <leader>q :AsyncStop<CR>
   nmap <silent> <leader>b :AsyncTask build<CR>
   nmap <silent> <leader>r :AsyncTask run<CR>
 
@@ -739,7 +743,14 @@ else  " 仅仅适用于 !diff 模式的配置
   let g:go_highlight_variable_assignments = 1
 
   let g:go_gopls_enabled = 0
-  let g:go_fmt_autosave = 0
+  let g:go_code_completion_enabled = 0
+  let g:go_fmt_autosave = 0  " 关闭保存文件时自动 fmt 文件
   let g:go_def_mapping_enabled = 0  " 关闭跳转快捷键 gd
   let g:go_doc_keywordprg_enabled = 0  " 关闭查看文档快捷键 K
+  let g:go_get_update = 0  " 关闭自动更新依赖
+  let g:go_echo_go_info = 0  " 关闭代码补全后的识别信息提示"
+
+  " vim-markdown 配置
+  let g:vim_markdown_fenced_languages = ['protobuf=proto']  " 兼容 github 默认识别 protobuf 高亮 Protobuf code, 而 vim 识别 proto
+  let g:vim_markdown_fenced_languages = ['bash=sh']  " 高亮 bash code, vim 识别 sh 
 endif
