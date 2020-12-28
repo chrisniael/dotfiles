@@ -182,7 +182,7 @@ if [[ "${OS}" == "Darwin" ]]; then
   export PATH="/usr/local/opt/ruby/bin:$PATH"
   export PATH="/usr/local/opt/openssl/bin:$PATH"
   export PATH="/usr/local/opt/sqlite/bin:$PATH"
-  export PATH="/usr/local/opt/sphinx-doc/bin:$PATH"
+  # export PATH="/usr/local/opt/sphinx-doc/bin:$PATH"
   export PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
   export PATH="/usr/local/opt/ncurses/bin:$PATH"
   export PATH=$PATH:/usr/local/opt/llvm/bin
@@ -190,7 +190,7 @@ if [[ "${OS}" == "Darwin" ]]; then
   # 这个命令会让 zsh 启动变特别慢, 直接指定路径加速启动
   # export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
   export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/usr/local/opt/openssl@1.1"
-  # export HOMEBREW_NO_AUTO_UPDATE=true
+  export HOMEBREW_NO_AUTO_UPDATE=true
 
   bindkey \^U backward-kill-line
   bindkey '\e[1~' beginning-of-line

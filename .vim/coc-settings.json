@@ -1,67 +1,123 @@
 {
-    "languageserver": {
-        "ccls": {
-            "enable": false,
-            "command": "ccls",
-            "filetypes": [
-                "c",
-                "cpp",
-                "objc",
-                "objcpp"
-            ],
-            "rootPatterns": [
-                ".ccls",
-                "compile_commands.json",
-                ".vim/",
-                ".git/",
-                ".hg/"
-            ],
-            "initializationOptions": {
-                "cache": {
-                    "directory": "/tmp/ccls"
-                }
-            }
-        },
-        "bash": {
-            "enable": true,
-            "command": "bash-language-server",
-            "args": ["start"],
-            "filetypes": ["sh"],
-            "ignoredRootPaths": ["~"]
-        },
-        "golang": {
-          "command": "gopls",
-          "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
-          "filetypes": ["go"],
-          "initializationOptions": {
-            "usePlaceholders": true
-          }
+  "languageserver": {
+    "ccls": {
+      "enable": false,
+      "command": "ccls",
+      "filetypes": ["c", "cpp", "objc", "objcpp"],
+      "rootPatterns": [
+        ".ccls",
+        "compile_commands.json",
+        ".vim/",
+        ".git/",
+        ".hg/"
+      ],
+      "initializationOptions": {
+        "cache": {
+          "directory": "/tmp/ccls"
         }
+      }
     },
-    "list.insertMappings": {
-        "<C-n>": "normal:j",
-        "<C-p>": "normal:k",
-        "<C-v>": "eval:@@"
+    "bash": {
+      "enable": true,
+      "command": "bash-language-server",
+      "args": ["start"],
+      "filetypes": ["sh"],
+      "ignoredRootPaths": ["~"]
     },
-    "list.normalMappings": {
-      "<C-o>": "insert:<C-o>"
-    },
-    "list.source.files.args": ["--color", "never", "--files", "--glob", "*", "--glob", "!.git/", "--glob", "!.svn/", "--glob", "!log/", "--glob", "!.cache/", "--glob", "!cmake_build", "--glob", "!.clangd/", "--glob", "!CMakeFiles", "--glob", "!trade", "--glob", "!*.pb.h", "--glob", "!*.pb.cc", "--glob", "!Proto/client/"],
-    "list.source.grep.args": ["--glob", "*", "--glob", "!.git/", "--glob", "!.svn/", "--glob", "!log/", "--glob", "!.cache/", "--glob", "!cmake_build", "--glob", "!.clangd/", "--glob", "!CMakeFiles", "--glob", "!trade", "--glob", "!*.pb.h", "--glob", "!*.pb.cc", "--glob", "!Proto/client/"],
-    "coc.preferences.formatOnSaveFiletypes": ["c", "cpp"],
-    "markdownlint.config": {
-        "default": true,
-        "line_length": false
-    },
-    "clangd": {
-      "enabled": true,
-      "disableDiagnostics": false,
-      "semanticHighlighting": true
-    },
-    "yank": {
-      "enableCompletion": false
-    },
-    "rust-analyzer": {
-      "serverPath": "rust-analyzer"
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "filetypes": ["go"],
+      "initializationOptions": {
+        "usePlaceholders": true
+      }
     }
+  },
+  "list.insertMappings": {
+    "<C-n>": "normal:j",
+    "<C-p>": "normal:k",
+    "<C-v>": "eval:@@"
+  },
+  "list.normalMappings": {
+    "<C-o>": "insert:<C-o>"
+  },
+  "list.source.files.args": [
+    "--color",
+    "never",
+    "--files",
+    "--glob",
+    "*",
+    "--glob",
+    "!.git/",
+    "--glob",
+    "!.svn/",
+    "--glob",
+    "!log/",
+    "--glob",
+    "!.cache/",
+    "--glob",
+    "!cmake_build",
+    "--glob",
+    "!.clangd/",
+    "--glob",
+    "!CMakeFiles",
+    "--glob",
+    "!trade",
+    "--glob",
+    "!*.pb.h",
+    "--glob",
+    "!*.pb.cc",
+    "--glob",
+    "!Proto/client/"
+  ],
+  "list.source.grep.args": [
+    "--glob",
+    "*",
+    "--glob",
+    "!.git/",
+    "--glob",
+    "!.svn/",
+    "--glob",
+    "!log/",
+    "--glob",
+    "!.cache/",
+    "--glob",
+    "!cmake_build",
+    "--glob",
+    "!.clangd/",
+    "--glob",
+    "!CMakeFiles",
+    "--glob",
+    "!trade",
+    "--glob",
+    "!*.pb.h",
+    "--glob",
+    "!*.pb.cc",
+    "--glob",
+    "!Proto/client/"
+  ],
+  "coc.preferences.formatOnSaveFiletypes": [
+    "c",
+    "cpp",
+    "go",
+    "html",
+    "css",
+    "markdown",
+    "json",
+    "python",
+    "yaml",
+    "rs"
+  ],
+  "clangd": {
+    "enabled": true,
+    "disableDiagnostics": false,
+    "semanticHighlighting": true
+  },
+  "yank": {
+    "enableCompletion": false
+  },
+  "rust-analyzer": {
+    "serverPath": "rust-analyzer"
+  },
+  "python.pythonPath": "python3"
 }

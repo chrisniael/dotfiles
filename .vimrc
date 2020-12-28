@@ -31,6 +31,8 @@ if !&diff
   Plug 'tpope/vim-obsession'
   Plug 'skywind3000/asynctasks.vim'
   Plug 'skywind3000/asyncrun.vim'
+  Plug 'andrejlevkovitch/vim-lua-format'
+  Plug 'fatih/vim-go', { 'for': ['go'] }
 endif
 Plug 'morhetz/gruvbox'
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
@@ -40,6 +42,14 @@ Plug 'tpope/vim-rsi'
 " Initialize plugin system
 call plug#end()
 
+" coc.nvim 的插件
+let g:coc_global_extensions = [
+      \ 'coc-yank', 'coc-pairs', 'coc-lists', 'coc-clangd',
+      \ 'coc-cmake', 'coc-rust-analyzer', 'coc-tasks', 'coc-json',
+      \ 'coc-pyright', 'coc-lua', 'coc-vimlsp', 'coc-html',
+      \ 'coc-prettier', 'coc-smartf', 'coc-imselect', 'coc-emoji',
+      \ 'coc-word', 'coc-dictionary', 'coc-yaml'
+      \ ]
 
 " 适用于所有场景的配置
 " vim 支持显示粗体与斜体
@@ -151,9 +161,13 @@ set softtabstop=0
 set shiftwidth=2
 set smarttab
 
-" GoLang 缩进符用 Tab
-autocmd BufNewFile,BufRead *.go setlocal tabstop=4 shiftwidth=4
-autocmd BufNewFile,BufRead *.json setlocal tabstop=2 shiftwidth=2
+" go 缩进符用 Tab
+autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
+" json 缩进符 2 Space
+autocmd BufNewFile,BufRead *.json setlocal expandtab tabstop=2 shiftwidth=2
+" python 缩进符 4 Space
+autocmd BufNewFile,BufRead *.json setlocal expandtab tabstop=4 shiftwidth=4
+
 
 " RO lua 配置文件识别为 lua
 autocmd! BufNewFile,BufRead *.txt set filetype=lua
@@ -232,10 +246,13 @@ if &diff
   let g:cpp_experimental_simple_template_highlight = 1
   " let g:cpp_experimental_template_highlight = 1
   let g:cpp_concepts_highlight = 1
-else  " 仅仅适用于 !diff 模式的配置 
+else  " 仅仅适用于 !diff 模式的配置
   autocmd FileType c,cpp set colorcolumn=
   set cmdheight=2
   set laststatus=2
+
+  " 不折行
+  " autocmd FileType markdown set nowrap
   " 折行
   set wrap
 
@@ -244,12 +261,6 @@ else  " 仅仅适用于 !diff 模式的配置
   if has("nvim")
     au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
   endif
-
-  " coc.nvim 的插件
-  let g:coc_global_extensions = [
-        \ 'coc-yank', 'coc-pairs', 'coc-lists', 'coc-clangd',
-        \ 'coc-cmake', 'coc-rust-analyzer', 'coc-tasks', 'coc-json'
-        \ ]
 
   " vim-airline 配置
   " set laststatus=2  " 底部显示状态栏, 1:不显示, 2:显示
@@ -555,8 +566,8 @@ else  " 仅仅适用于 !diff 模式的配置
   nnoremap <space>g :<C-u>CocListGrep 
   nnoremap <space>G :<C-u>CocListGrep -i 
   " Grep 光标所在单词
-  nnoremap <leader>g :<C-u>CocListGrep <C-R>=expand('<cword>')<CR> 
-  nnoremap <leader>G :<C-u>CocListGrep -i <C-R>=expand('<cword>')<CR> 
+  nnoremap <leader>g :<C-u>CocListGrep <C-R>=expand('<cword>')<CR>
+  nnoremap <leader>G :<C-u>CocListGrep -i <C-R>=expand('<cword>')<CR>
   " Grep visual 模式选择的文本
   vnoremap <leader>g :<C-u>call <SID>GrepFromSelected(visualmode())<CR>
   vnoremap <leader>G :<C-u>call <SID>GrepFromSelectedIgnoreCase(visualmode())<CR>
@@ -648,21 +659,22 @@ else  " 仅仅适用于 !diff 模式的配置
     set clipboard=unnamed
   endif
 
-  autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
+  " go 自动 import 用到的 package
+  autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
 
   " asynctasks 配置
   let g:asynctasks_config_name = '.git/tasks.ini'
   let g:asyncrun_open = 10
   let g:asynctasks_term_pos = 'tab'
   let g:asynctasks_term_rows = 10
-  let g:asynctasks_term_reuse = 0
+  let g:asynctasks_term_reuse = 1
   let g:asynctasks_term_focus = 1
   let g:asyncrun_rootmarks = ['.git', '.svn', '.root', '.project', '.hg']
 
   " au FileType qf setlocal signcolumn=no  " quickfix 窗口不显示符号列
 
   " https://vi.stackexchange.com/a/15699
-  let g:asyncrun_status = 'stopped' 
+  let g:asyncrun_status = 'stopped'
   function! AsyncrunGetStatus() abort
     return get(g:, 'asyncrun_status', '')
   endfunction
@@ -702,6 +714,51 @@ else  " 仅仅适用于 !diff 模式的配置
   " nmap <silent> <space>l :call ToggleList("Location List", 'l')<CR>
   nmap <silent> <space>q :call ToggleList("Quickfix List", 'c')<CR>
 
+  nmap <silent> <leader>q :AsyncStop<CR>
+  nmap <silent> <leader>b :AsyncTask build<CR>
+  nmap <silent> <leader>r :AsyncTask run<CR>
+
+  " press <esc> to cancel.
+  nmap f <Plug>(coc-smartf-forward)
+  nmap F <Plug>(coc-smartf-backward)
+  nmap ; <Plug>(coc-smartf-repeat)
+  nmap , <Plug>(coc-smartf-repeat-opposite)
+
+  augroup Smartf
+    autocmd User SmartfEnter :hi Conceal ctermfg=220 guifg=#6638F0
+    autocmd User SmartfLeave :hi Conceal ctermfg=239 guifg=#504945
+  augroup end
+
+  " coc-dictionary
+  " https://vim.fandom.com/wiki/Dictionary_completions
+  set dictionary+=~/.vim/dic.txt
+
+  " vim-lua-foramt
+  autocmd FileType lua nnoremap <buffer> <silent><leader>f :call LuaFormat()<CR>
+  autocmd BufWrite *.lua call LuaFormat()
+
+  " vim-go
+  let g:go_highlight_extra_types = 1
+  let g:go_highlight_operators = 1
+  let g:go_highlight_types = 1
+  let g:go_highlight_functions = 1
+  let g:go_highlight_operators = 1
+  let g:go_highlight_function_calls = 1
+  let g:go_highlight_fields = 1
+  let g:go_highlight_function_parameters = 1
+  let g:go_highlight_variable_declarations = 1
+  let g:go_highlight_variable_assignments = 1
+
+  let g:go_gopls_enabled = 0
+  let g:go_code_completion_enabled = 0
+  let g:go_fmt_autosave = 0  " 关闭保存文件时自动 fmt 文件
+  let g:go_def_mapping_enabled = 0  " 关闭跳转快捷键 gd
+  let g:go_doc_keywordprg_enabled = 0  " 关闭查看文档快捷键 K
+  let g:go_get_update = 0  " 关闭自动更新依赖
+  let g:go_echo_go_info = 0  " 关闭代码补全后的识别信息提示"
+
   " vim-markdown 配置
-  let g:vim_markdown_fenced_languages = ['protobuf=proto']  " 兼容 github 默认识别 protobuf 高亮 Protobuf code, 而 vim 识别 proto
+  " 兼容 github 默认识别 protobuf 高亮 Protobuf code, 而 vim 识别 proto
+  " 高亮 bash code, vim 识别 sh 
+  let g:vim_markdown_fenced_languages = ['protobuf=proto', 'bash=sh']
 endif
