@@ -566,8 +566,8 @@ else  " 仅仅适用于 !diff 模式的配置
   nnoremap <space>g :<C-u>CocListGrep 
   nnoremap <space>G :<C-u>CocListGrep -i 
   " Grep 光标所在单词
-  nnoremap <leader>g :<C-u>CocListGrep <C-R>=expand('<cword>')<CR>
-  nnoremap <leader>G :<C-u>CocListGrep -i <C-R>=expand('<cword>')<CR>
+  nnoremap <leader>g :<C-u>CocListGrep <C-R>=expand('<cword>')<CR> 
+  nnoremap <leader>G :<C-u>CocListGrep -i <C-R>=expand('<cword>')<CR> 
   " Grep visual 模式选择的文本
   vnoremap <leader>g :<C-u>call <SID>GrepFromSelected(visualmode())<CR>
   vnoremap <leader>G :<C-u>call <SID>GrepFromSelectedIgnoreCase(visualmode())<CR>
