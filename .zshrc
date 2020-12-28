@@ -304,6 +304,7 @@ fi
 
 export LANG=en_US.UTF-8
 export XAUTHORITY=$HOME/.Xauthority
+export EDITOR=nvim
 
 ulimit -c unlimited
 ulimit -n 20480

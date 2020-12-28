@@ -652,10 +652,10 @@ else  " 仅仅适用于 !diff 模式的配置
 
   " asynctasks 配置
   let g:asynctasks_config_name = '.git/tasks.ini'
-  let g:asyncrun_open = 20
+  let g:asyncrun_open = 10
   let g:asynctasks_term_pos = 'tab'
-  let g:asynctasks_term_rows = 20
-  let g:asynctasks_term_reuse = 1
+  let g:asynctasks_term_rows = 10
+  let g:asynctasks_term_reuse = 0
   let g:asynctasks_term_focus = 1
   let g:asyncrun_rootmarks = ['.git', '.svn', '.root', '.project', '.hg']
 
@@ -701,4 +701,7 @@ else  " 仅仅适用于 !diff 模式的配置
 
   " nmap <silent> <space>l :call ToggleList("Location List", 'l')<CR>
   nmap <silent> <space>q :call ToggleList("Quickfix List", 'c')<CR>
+
+  " vim-markdown 配置
+  let g:vim_markdown_fenced_languages = ['protobuf=proto']  " 兼容 github 默认识别 protobuf 高亮 Protobuf code, 而 vim 识别 proto
 endif
