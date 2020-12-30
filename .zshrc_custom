@@ -1,3 +1,7 @@
+# 安装依赖
+# brew install daemon fzf ripgrep
+
+
 _RO_CLIENT_DIR="${HOME}/Documents/client-trunk2019"
 _RO_CEHUA_DIR="${HOME}/Documents/Cehua"
 
