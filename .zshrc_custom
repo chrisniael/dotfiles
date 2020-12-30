@@ -9,8 +9,14 @@ svn_revert_loal_update() {
 }
 
 ro_update_client() {
-  svn_revert_loal_update ${_RO_CLIENT_DIR}
-  open -a 'Unity Hub'
+  daemon --name=unity --running
+  if [ $? -eq 0 ]
+  then
+    echo "Unity is running."
+  else
+    svn_revert_loal_update ${_RO_CLIENT_DIR}
+    daemon --name=unity --command="/Applications/Unity.app/Contents/MacOS/Unity -job-worker-count 12 -projectPath ${_RO_CLIENT_DIR}/client-refactory/Develop"
+  fi
 }
 
 ro_update_cehua() {
