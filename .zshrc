@@ -267,8 +267,8 @@ function proxy() {
       # electron 代理配置
       # https://rabbitfeet.net/archives/npm安装Electron慢的解决方案
       export ELECTRON_GET_USE_PROXY=1
-      export GLOBAL_AGENT_HTTP_PROXY=http://${HTTP_PROXY_USERNAME}:${HTTP_PROXY_PASSWORD}@${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}
-      export GLOBAL_AGENT_HTTPS_PROXY=http://${HTTP_PROXY_USERNAME}:${HTTP_PROXY_PASSWORD}@${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}
+      export GLOBAL_AGENT_HTTP_PROXY=$proxy_url
+      export GLOBAL_AGENT_HTTPS_PROXY=$proxy_url
       curl -s ipinfo.io
     fi
   fi
