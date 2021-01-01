@@ -708,8 +708,8 @@ else  " 仅仅适用于 !diff 模式的配置
   nmap <silent> <space>q :call ToggleList("Quickfix List", 'c')<CR>
 
   nmap <silent> <leader>q :AsyncStop<CR>
-  nmap <silent> <leader>b :AsyncTask build<CR>
-  nmap <silent> <leader>r :AsyncTask run<CR>
+  nmap <silent> <M-b> :AsyncTask build<CR>
+  nmap <silent> <M-r> :AsyncTask run<CR>
 
   " press <esc> to cancel.
   nmap f <Plug>(coc-smartf-forward)
