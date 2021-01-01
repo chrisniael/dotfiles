@@ -54,8 +54,10 @@
   ],
   "clangd": {
     "enabled": true,
+    "arguments": ["--clang-tidy"],
     "disableDiagnostics": false,
-    "semanticHighlighting": true
+    "semanticHighlighting": true,
+    "fallbackFlags": ["-std=c++2a"]
   },
   "yank": {
     "enableCompletion": false
