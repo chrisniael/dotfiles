@@ -27,7 +27,7 @@ elif [[ "${OS}" == "Linux" ]]; then
   case "${ID}" in
     arch)
       powerline-daemon -q
-      source /usr/lib/python3.8/site-packages/powerline/bindings/zsh/powerline.zsh
+      source /usr/lib/python3.9/site-packages/powerline/bindings/zsh/powerline.zsh
       ;;
     ubuntu)
       powerline-daemon -q
