@@ -27,7 +27,7 @@ elif [[ "${OS}" == "Linux" ]]; then
   case "${ID}" in
     arch)
       powerline-daemon -q
-      source /usr/lib/python3.8/site-packages/powerline/bindings/zsh/powerline.zsh
+      source /usr/lib/python3.9/site-packages/powerline/bindings/zsh/powerline.zsh
       ;;
     ubuntu)
       powerline-daemon -q
@@ -217,16 +217,6 @@ else
         ;;
       centos)
         export PATH="/squashfs-root/usr/bin:$PATH"
-        export PATH="$PATH:/sbin"
-        export CC="ccache distcc gcc"
-        # export CPP="ccache distcc cpp"
-        export CXX="ccache distcc g++"
-        alias ro-server="cd /data/rogame/server"
-        alias ro-log="cd /data/rogame/server/bin/Debug/log"
-        alias ro-bin="cd /data/rogame/server/bin/Debug"
-        alias ro-config="cd /data/rogame/server/bin/Debug/Lua"
-        alias ssh-tunnel="ssh -D 1337 -f -C -q -N 172.26.157.103"
-        alias ss5proxy="export ALL_PROXY=socks5://127.0.0.1:1337"
         ;;
       *)
         ;;
@@ -250,33 +240,34 @@ alias mkdir="mkdir -v"                      #"新建时会提示
 alias vim="nvim"
 alias grep="grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox} --line-buffered"
 
-function unssproxy() {
-  unset http_proxy
-  unset https_proxy
-  unset HTTP_PROXY
-  unset HTTPS_PROXY
+function unproxy() {
+  unset {http,https,ftp,rsync,all}_proxy
+  unset {HTTP,HTTPS,FTP,RSYNC,ALL}_PROX
   unset ELECTRON_GET_USE_PROXY
   unset GLOBAL_AGENT_HTTP_PROXY
   unset GLOBAL_AGENT_HTTPS_PROXY
 }
 
-function ssproxy() {
-  unssproxy
-  # ~/.ssproxy : 代理的 ip 和 port, 格式:
+function proxy() {
+  # ~/.proxy : 代理的用户名、密码、 ip 和 port, 格式:
+  # HTTP_PROXY_USERNAME=shenyu
+  # HTTP_PROXY_PASSWORD=123456
   # HTTP_PROXY_IP=127.0.0.1
   # HTTP_PROXY_PORT=7890
-  if [[ -f $HOME/.ssproxy ]]; then
-    source $HOME/.ssproxy
-    if [[ -n "$HTTP_PROXY_IP" ]] && [[ -n "$HTTP_PROXY_PORT" ]]; then
-      export http_proxy="http://${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}"
-      export https_proxy="http://${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}"
-      export HTTP_PROXY="http://${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}"
-      export HTTPS_PROXY="http://${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}"
+  if [[ -f $HOME/.proxy ]]; then
+    source $HOME/.proxy
+    if [[ -n "$HTTP_PROXY_USERNAME" ]] && [[ -n "$HTTP_PROXY_PASSWORD" ]] && [[ -n "$HTTP_PROXY_IP" ]] && [[ -n "$HTTP_PROXY_PORT" ]]; then
+      unproxy
+      local proxy_url=http://${HTTP_PROXY_USERNAME}:${HTTP_PROXY_PASSWORD}@${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}
+
+      export {http,https,ftp,rsync,all}_proxy=$proxy_url
+      export {HTTP,HTTPS,FTP,RSYNC,ALL}_PROXY=$proxy_url
+
       # electron 代理配置
       # https://rabbitfeet.net/archives/npm安装Electron慢的解决方案
       export ELECTRON_GET_USE_PROXY=1
-      export GLOBAL_AGENT_HTTP_PROXY="http://${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}"
-      export GLOBAL_AGENT_HTTPS_PROXY="http://${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}"
+      export GLOBAL_AGENT_HTTP_PROXY=$proxy_url
+      export GLOBAL_AGENT_HTTPS_PROXY=$proxy_url
       curl -s ipinfo.io
     fi
   fi
@@ -367,4 +358,9 @@ else
   function preexec {
     eval "$(tmux show-environment -s)"
   }
+fi
+
+# 加载自定义配置
+if [ -f "${HOME}/.zshrc_custom" ]; then
+  source "${HOME}/.zshrc_custom"
 fi

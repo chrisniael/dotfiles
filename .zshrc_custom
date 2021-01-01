@@ -1,0 +1,33 @@
+export PATH="$PATH:/sbin"
+export CC="ccache distcc gcc"
+# export CPP="ccache distcc cpp"
+export CXX="ccache distcc g++"
+alias ro-server="cd /data/rogame/server"
+alias ro-log="cd /data/rogame/server/bin/Debug/log"
+alias ro-bin="cd /data/rogame/server/bin/Debug"
+alias ro-config="cd /data/rogame/server/bin/Debug/Lua"
+
+unset -f proxy
+function proxy() {
+  local ssh_tunnel_num=$(ps ux | grep "ssh -D 1337 -f -C -q -N mac.shenyu.me" | grep -v grep | wc -l)
+  if [[ ${ssh_tunnel_num} -lt 1 ]]
+  then
+    ssh -D 1337 -f -C -q -N mac.shenyu.me
+  fi
+
+  SOCK5_PROXY_IP=127.0.0.1
+  SOCK5_PROXY_PORT=1337
+
+  unproxy
+  local proxy_url=socks5://${SOCK5_PROXY_IP}:${SOCK5_PROXY_PORT}
+
+  export {http,https,ftp,rsync,all}_proxy=$proxy_url
+  export {HTTP,HTTPS,FTP,RSYNC,ALL}_PROXY=$proxy_url
+
+  # electron 代理配置
+  # https://rabbitfeet.net/archives/npm安装Electron慢的解决方案
+  export ELECTRON_GET_USE_PROXY=1
+  export GLOBAL_AGENT_HTTP_PROXY=$proxy_url
+  export GLOBAL_AGENT_HTTPS_PROXY=$proxy_url
+  curl -s ipinfo.io
+}

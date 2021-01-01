@@ -110,6 +110,7 @@
   ],
   "clangd": {
     "enabled": true,
+    "arguments": ["--clang-tidy"],
     "disableDiagnostics": false,
     "semanticHighlighting": true
   },

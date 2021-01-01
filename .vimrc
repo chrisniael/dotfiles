@@ -217,6 +217,16 @@ augroup filetype
   autocmd! BufRead,BufNewFile *.proto setfiletype proto
 augroup end
 
+" .clang-format 文件识别为 yaml 文件
+augroup filetype
+  autocmd! BufRead,BufNewFile .clang-format setfiletype yaml
+augroup end
+
+" .tasks 配置文件识别为 dosini 文件
+augroup filetype
+  autocmd! BufRead,BufNewFile .tasks setfiletype dosini
+augroup end
+
 " 命令行模式下，进入 popup menu 补全选择时，使用 enter 进行选择，而不是直接执行
 " nvim 5.0 Pre-release <C-e> 快捷键在 Mac 上有 bug，表现与 Linux 上不一致
 cnoremap <expr> <cr> pumvisible() ? "\<C-e>" : "\<CR>"
@@ -715,8 +725,8 @@ else  " 仅仅适用于 !diff 模式的配置
   nmap <silent> <space>q :call ToggleList("Quickfix List", 'c')<CR>
 
   nmap <silent> <leader>q :AsyncStop<CR>
-  nmap <silent> <leader>b :AsyncTask build<CR>
-  nmap <silent> <leader>r :AsyncTask run<CR>
+  nmap <silent> <M-b> :AsyncTask build<CR>
+  nmap <silent> <M-r> :AsyncTask run<CR>
 
   " press <esc> to cancel.
   nmap f <Plug>(coc-smartf-forward)
