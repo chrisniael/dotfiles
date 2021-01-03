@@ -38,6 +38,7 @@ Plug 'morhetz/gruvbox'
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
 " 可选替代 vim-husk
 Plug 'tpope/vim-rsi'
+Plug 'gu-fan/riv.vim'
 
 " Initialize plugin system
 call plug#end()
