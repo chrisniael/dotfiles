@@ -766,3 +766,15 @@ else  " 仅仅适用于 !diff 模式的配置
   " 高亮 bash code, vim 识别 sh 
   let g:vim_markdown_fenced_languages = ['protobuf=proto', 'bash=sh']
 endif
+
+" 类似 IDE 函数体 {} 自动缩进
+function! FunctionBracketAutoIndent()
+  if col('.') > 1
+    let l:next_char = getline('.')[col('.')-1]
+    if l:next_char == '}'
+      return "\<cr>\<Esc>ko"
+    endif
+  endif
+  return "\<cr>"
+endfunction
+inoremap <expr><cr> FunctionBracketAutoIndent()
