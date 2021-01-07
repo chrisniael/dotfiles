@@ -384,14 +384,26 @@ else  " 仅仅适用于 !diff 模式的配置
     inoremap <silent><expr> <c-@> coc#refresh()
   endif
 
+  " 类似 IDE 函数体 {} 自动缩进
+  function! FunctionBracketAutoIndent()
+    if col('.') > 1
+      " TODO(shenyu): trim 空格，判断是否最后一个字符为 }
+      let l:next_char = getline('.')[col('.')-1]
+      if l:next_char == '}'
+        return "\<cr>\<Esc>ko"
+      endif
+    endif
+    return "\<C-g>u\<CR>"
+  endfunction
+
   " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
   " position. Coc only does snippet and additional edit on confirm.
   " <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
   if exists('*complete_info')
-    inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+    inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : FunctionBracketAutoIndent()
   else
     " inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-    inoremap <expr> <cr> pumvisible() && coc#_selected() ? "\<C-y>" : "\<C-g>u\<CR>"
+    inoremap <expr> <cr> pumvisible() && coc#_selected() ? "\<C-y>" : FunctionBracketAutoIndent()
   endif
 
   " Use <C-h>/<C-l> jump to next/previous placeholder.
@@ -766,15 +778,3 @@ else  " 仅仅适用于 !diff 模式的配置
   " 高亮 bash code, vim 识别 sh 
   let g:vim_markdown_fenced_languages = ['protobuf=proto', 'bash=sh']
 endif
-
-" 类似 IDE 函数体 {} 自动缩进
-function! FunctionBracketAutoIndent()
-  if col('.') > 1
-    let l:next_char = getline('.')[col('.')-1]
-    if l:next_char == '}'
-      return "\<cr>\<Esc>ko"
-    endif
-  endif
-  return "\<cr>"
-endfunction
-inoremap <expr><cr> FunctionBracketAutoIndent()
