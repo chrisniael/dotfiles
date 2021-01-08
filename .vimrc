@@ -778,3 +778,8 @@ else  " 仅仅适用于 !diff 模式的配置
   " 高亮 bash code, vim 识别 sh 
   let g:vim_markdown_fenced_languages = ['protobuf=proto', 'bash=sh']
 endif
+
+" riv 配置
+let g:riv_highlight_code = 'lua,python,cpp,javascript,vim,sh,proto,c'
+" 处理 回车键绑定其他操作导致补全操作不符合期望的问题
+autocmd FileType rst iunma <silent><buffer> <cr>
