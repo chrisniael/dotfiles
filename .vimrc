@@ -33,6 +33,9 @@ if !&diff
   Plug 'skywind3000/asyncrun.vim'
   Plug 'andrejlevkovitch/vim-lua-format'
   Plug 'fatih/vim-go', { 'for': ['go'] }
+  Plug 'google/vim-maktaba'
+  Plug 'google/vim-codefmt'
+  Plug 'google/vim-glaive'
 endif
 Plug 'morhetz/gruvbox'
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
@@ -777,6 +780,11 @@ else  " 仅仅适用于 !diff 模式的配置
   " 兼容 github 默认识别 protobuf 高亮 Protobuf code, 而 vim 识别 proto
   " 高亮 bash code, vim 识别 sh 
   let g:vim_markdown_fenced_languages = ['protobuf=proto', 'bash=sh']
+
+  " vim-codefmt 配置
+  augroup autoformat_settings
+    autocmd FileType proto,arduino AutoFormatBuffer clang-format
+  augroup END
 endif
 
 " riv 配置
