@@ -400,10 +400,10 @@ else  " 仅仅适用于 !diff 模式的配置
   " position. Coc only does snippet and additional edit on confirm.
   " <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
   if exists('*complete_info')
-    inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : FunctionBracketAutoIndent()
+    inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
   else
     " inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-    inoremap <expr> <cr> pumvisible() && coc#_selected() ? "\<C-y>" : FunctionBracketAutoIndent()
+    inoremap <expr> <cr> pumvisible() && coc#_selected() ? "\<C-y>" : "\<C-g>u\<CR>"
   endif
 
   " Use <C-h>/<C-l> jump to next/previous placeholder.
