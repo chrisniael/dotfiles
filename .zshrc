@@ -257,9 +257,13 @@ function proxy() {
   # HTTP_PROXY_PORT=7890
   if [[ -f $HOME/.proxy ]]; then
     source $HOME/.proxy
-    if [[ -n "$HTTP_PROXY_USERNAME" ]] && [[ -n "$HTTP_PROXY_PASSWORD" ]] && [[ -n "$HTTP_PROXY_IP" ]] && [[ -n "$HTTP_PROXY_PORT" ]]; then
+    if [[ -n "$HTTP_PROXY_USERNAME" ]] && [[ -n "$HTTP_PROXY_IP" ]] && [[ -n "$HTTP_PROXY_PORT" ]]; then
       unproxy
-      local proxy_url=http://${HTTP_PROXY_USERNAME}:${HTTP_PROXY_PASSWORD}@${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}
+      if [[ -n "$HTTP_PROXY_PASSWORD" ]]; then
+        local proxy_url=http://${HTTP_PROXY_USERNAME}:${HTTP_PROXY_PASSWORD}@${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}
+      else
+        local proxy_url=http://${HTTP_PROXY_USERNAME}@${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}
+      fi
 
       export {http,https,ftp,rsync,all}_proxy=$proxy_url
       export {HTTP,HTTPS,FTP,RSYNC,ALL}_PROXY=$proxy_url
