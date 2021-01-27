@@ -57,7 +57,7 @@
     "arguments": ["--clang-tidy"],
     "disableDiagnostics": false,
     "semanticHighlighting": true,
-    "fallbackFlags": ["-std=c++2a"]
+    "fallbackFlags": []
   },
   "yank": {
     "enableCompletion": false
