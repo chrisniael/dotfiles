@@ -791,3 +791,9 @@ endif
 let g:riv_highlight_code = 'lua,python,cpp,javascript,vim,sh,proto,c'
 " 处理 回车键绑定其他操作导致补全操作不符合期望的问题
 autocmd FileType rst iunma <silent><buffer> <cr>
+
+" 透明背景
+highlight Normal ctermbg=none
+highlight NonText ctermbg=none
+highlight Normal guibg=none
+highlight NonText guibg=none
