@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+export ZSH="${HOME}/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -25,7 +25,7 @@ if [[ "${OS}" == "Darwin" ]]; then
 elif [[ "${OS}" == "Linux" ]]; then
   source /etc/os-release
   case "${ID}" in
-    arch)
+    arch | manjaro)
       powerline-daemon -q
       source /usr/lib/python3.9/site-packages/powerline/bindings/zsh/powerline.zsh
       ;;
@@ -49,7 +49,7 @@ fi
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
+# a theme from this variable instead of looking in $ZSH/themes/
 # If set to an empty array, this variable will have no effect.
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
@@ -70,7 +70,7 @@ fi
 # export UPDATE_ZSH_DAYS=13
 
 # Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS=true
+# DISABLE_MAGIC_FUNCTIONS="true"
 
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
@@ -82,6 +82,8 @@ fi
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
+# Caution: this setting can cause issues with multiline prompts (zsh 5.7.1 and newer seem to work)
+# See https://github.com/ohmyzsh/ohmyzsh/issues/5765
 # COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
@@ -101,11 +103,11 @@ fi
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
 # Which plugins would you like to load?
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-# plugins=(zsh-completions docker)
+# plugins=(git)
 
 # zsh-vim-mode 安装
 # cd $ZSH_CUSTOM/plugins
@@ -310,8 +312,7 @@ bindkey '\e[1~' beginning-of-line
 bindkey '\e[4~' end-of-line
 
 # tmux 启动的时候存在 attached 的 session 则 attach 它并剔除所有其他客户端，不存在则创建一个新的
-# 通过 iTerm2 启动的终端都自动启动 tmux
-# 从本地某个目录启动不自动启动 tmux
+# 仅仅 ssh 连接时自动启动 tmux
 if [[ -z "$TMUX" ]]; then
   # 不是 vim/neovim 的 terminal 启动的 zsh
   if [[ -z "$NVIM_LISTEN_ADDRESS" ]]; then
@@ -325,9 +326,7 @@ if [[ -z "$TMUX" ]]; then
   # tmux 里不可以手动设置，tmux 本身配置里有对 TERM 设置
   # TERM 会影响 ohmyzsh 的 ATUO_TITLE 功能
   export TERM='xterm-256color'
-  if ([[ "${OS}" == "Darwin" ]] && [[ -z "$SSH_CONNECTION" ]] && [[ "$TERM_PROGRAM" == "iTerm.app" ]] && [[ "$(pwd)" == "${HOME}" ]]) ||
-     ([[ "${OS}" == "Darwin" ]] && [[ -n "$SSH_CONNECTION" ]]) ||
-     ([[ "${OS}" != "Darwin" ]] && [[ "$(pwd)" == "${HOME}" ]]); then
+  if [[ -n "$SSH_CONNECTION" ]]; then
     # 用 eval 是去除前后的空格， mac 上的 wc 命令与 linux 不太一样，会输出一些空格
     if [[ $(eval echo $(tmux list-sessions 2>/dev/null | wc -l)) = 0 ]]; then
       tmux new-session
@@ -350,7 +349,7 @@ else
   if [[ -z "$NVIM_LISTEN_ADDRESS" ]]; then
     exit() {
       if [[ $(eval echo $(tmux list-sessions | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-windows | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-panes | wc -l)) = 1 ]]; then
-        echo -n ""
+        killall xclip >/dev/null 2>&1; tmux detach -P
       else
         unset -f exit
         exit
