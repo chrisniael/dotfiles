@@ -177,7 +177,7 @@ if [[ "${OS}" == "Darwin" ]]; then
   export LSCOLORS=exfxcxdxbxegedabagacad
 
   # Fix GitHub API rate limit exceeded
-  export HOMEBREW_GITHUB_API_TOKEN=68bca7871d45088a1f61d10c312d1cde638ee9b9
+  export HOMEBREW_GITHUB_API_TOKEN=e5ac157a034dd65d2ae52a46fc736e59bfc85b84
 
   export GOPATH="/Users/shenyu/Documents/go"
 
