@@ -1,56 +1,52 @@
 {
-	"segments": {
-		"left": [
-			{
-				"function": "powerline.segments.shell.mode",
-				"args":{
-					"override": {
-						"vicmd": "N",
-						"viins": "I"
-					}
-				}
-			},
-			{
-				"function": "powerline.segments.common.net.hostname",
-				"priority": 10
-			},
-			{
-				"function": "powerline.segments.common.env.user",
-				"args": {
-					"hide_user": "shenyu"
-				},
-				"priority": 30
-			},
-			{
-				"function": "powerline.segments.common.env.virtualenv",
-				"priority": 50
-			},
-			{
-				"function": "powerline.segments.shell.cwd",
-				"args": {
-					"dir_limit_depth": 2,
-					"use_shortened_path": true
-				},
-				"priority": 10
-			},
-			{
-				"function": "powerline.segments.shell.jobnum",
-				"priority": 20
-			}
-		],
-		"right": [
-			{
-				"function": "powerline.segments.shell.last_pipe_status",
-				"priority": 10
-			},
-			{
-				"function": "powerline.segments.common.vcs.stash",
-				"priority": 50
-			},
-			{
-				"function": "powerline.segments.common.vcs.branch",
-				"priority": 40
-			}
-		]
-	}
+  "segments": {
+    "left": [
+      {
+        "function": "powerline.segments.shell.mode",
+        "args": {
+          "override": {
+            "vicmd": "N",
+            "viins": "I"
+          }
+        }
+      },
+      {
+        "function": "powerline.segments.common.env.user",
+        "args": {
+          "hide_user": "shenyu"
+        },
+        "priority": 30
+      },
+      {
+        "function": "powerline.segments.common.env.virtualenv",
+        "priority": 50
+      },
+      {
+        "function": "powerline.segments.shell.cwd",
+        "args": {
+          "dir_limit_depth": 2,
+          "use_shortened_path": true
+        },
+        "priority": 10
+      },
+      {
+        "function": "powerline.segments.shell.jobnum",
+        "priority": 20
+      }
+    ],
+    "right": [
+      {
+        "function": "powerline.segments.shell.last_pipe_status",
+        "priority": 10
+      },
+      {
+        "function": "powerline.segments.common.vcs.stash",
+        "priority": 50
+      },
+      {
+        "function": "powerline.segments.common.vcs.branch",
+        "priority": 40
+      }
+    ]
+  }
 }
