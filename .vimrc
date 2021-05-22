@@ -690,7 +690,8 @@ else  " 仅仅适用于 !diff 模式的配置
   let g:asynctasks_term_focus = 1
   let g:asyncrun_rootmarks = ['.git', '.svn', '.root', '.project', '.hg']
 
-  " au FileType qf setlocal signcolumn=no  " quickfix 窗口不显示符号列
+  au FileType qf setlocal signcolumn=  " quickfix 窗口不显示符号列
+  au FileType qf setlocal nonumber  " quickfix 窗口不显示行号
 
   " https://vi.stackexchange.com/a/15699
   let g:asyncrun_status = 'stopped'
