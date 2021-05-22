@@ -794,7 +794,5 @@ let g:riv_highlight_code = 'lua,python,cpp,javascript,vim,sh,proto,c'
 autocmd FileType rst iunma <silent><buffer> <cr>
 
 " 透明背景
-highlight Normal ctermbg=none
-highlight NonText ctermbg=none
-highlight Normal guibg=none
-highlight NonText guibg=none
+highlight Normal ctermbg=NONE guibg=NONE
+highlight NonText ctermbg=NONE guibg=NONE
