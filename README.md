@@ -161,3 +161,10 @@ cmake .
 make
 make install
 ```
+
+## zsh-vim-mode 安装
+
+```bash
+cd $ZSH_CUSTOM/plugins
+git clone https://github.com/softmoth/zsh-vim-mode.git
+```

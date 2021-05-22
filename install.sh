@@ -33,7 +33,7 @@ function ln_file() {
     /bin/mv -f ${DST_FILE} ${DST_FILE}.backup
     echo "Backup old ${DST_FILE} to ${DST_FILE}.backup"
   else
-    echo "Error: ${DST_FILE} is not a regular file."
+    echo "Error: ${DST_FILE} is not a symbolic link file or regular file."
   fi
 
   ln -s $ORI_FILE $DST_FILE
@@ -50,7 +50,7 @@ function ln_dir() {
     /bin/mv -f ${DST_DIR} ${DST_DIR}.backup
     echo "Backup old ${DST_DIR} to ${DST_DIR}.backup"
   else
-    echo "Error: ${DST_DIR} is not a regular file."
+    echo "Error: ${DST_DIR} is not a symbolic link file or regular file."
   fi
 
   ln -s $ORI_DIR $DST_DIR
@@ -76,3 +76,12 @@ ln_dir $VIM_CONFIG_DIR $NEOVIM_CONFIG_DIR
 
 # ~/.vimrc link to ~/.vim/init.vim
 ln_file $VIM_CONFIG_FILE $NEOVIM_CONFIG_FILE
+
+# 安装 tpm
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
+# 安装 tmux 插件
+~/.tmux/plugins/tpm/bin/install_plugins
+
+# 配置 powerline 主题
+ln_dir ~/.dotfiles/.config/powerline ~/.config/powerline
