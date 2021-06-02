@@ -206,7 +206,7 @@ else
   if [[ "${OS}" == "Linux" ]]; then
     source /etc/os-release
     case "${ID}" in
-      arch)
+      arch|manjaro)
         alias gdb="sudo gdb"
 
         export GOPATH="$HOME/Documents/go"
