@@ -36,6 +36,7 @@ if !&diff
   Plug 'google/vim-maktaba'
   Plug 'google/vim-codefmt'
   Plug 'google/vim-glaive'
+  Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown'}
 endif
 Plug 'morhetz/gruvbox'
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
@@ -796,3 +797,6 @@ autocmd FileType rst iunma <silent><buffer> <cr>
 " 透明背景
 highlight Normal ctermbg=NONE guibg=NONE
 highlight NonText ctermbg=NONE guibg=NONE
+
+" vim-instant-markdown 配置
+let g:instant_markdown_autostart = 0
