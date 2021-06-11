@@ -799,4 +799,6 @@ highlight Normal ctermbg=NONE guibg=NONE
 highlight NonText ctermbg=NONE guibg=NONE
 
 " vim-instant-markdown 配置
+" 安装外部依赖
+" npm -g install instant-markdown-d
 let g:instant_markdown_autostart = 0
