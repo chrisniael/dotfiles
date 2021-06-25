@@ -484,7 +484,7 @@ else  " 仅仅适用于 !diff 模式的配置
   command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
   " use `:OR` for organize import of current buffer
-  command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+  command! -nargs=0 OR   :silent call     CocAction('runCommand', 'editor.action.organizeImport')
 
   " Add status line support, for integration with other plugin, checkout `:h coc-status`
   " set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
@@ -680,7 +680,8 @@ else  " 仅仅适用于 !diff 模式的配置
   endif
 
   " go 自动 import 用到的 package
-  autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
+  " 会引发错误
+  " autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
 
   " asynctasks 配置
   " let g:asynctasks_config_name = '.git/tasks.ini'
