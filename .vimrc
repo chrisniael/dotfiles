@@ -53,7 +53,7 @@ let g:coc_global_extensions = [
       \ 'coc-cmake', 'coc-rust-analyzer', 'coc-tasks', 'coc-json',
       \ 'coc-pyright', 'coc-lua', 'coc-vimlsp', 'coc-html',
       \ 'coc-prettier', 'coc-smartf', 'coc-imselect', 'coc-emoji',
-      \ 'coc-word', 'coc-dictionary', 'coc-yaml'
+      \ 'coc-word', 'coc-dictionary', 'coc-yaml', 'coc-go'
       \ ]
 
 " 适用于所有场景的配置
@@ -483,9 +483,6 @@ else  " 仅仅适用于 !diff 模式的配置
   " Use `:Fold` to fold current buffer
   command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
-  " use `:OR` for organize import of current buffer
-  command! -nargs=0 OR   :silent call     CocAction('runCommand', 'editor.action.organizeImport')
-
   " Add status line support, for integration with other plugin, checkout `:h coc-status`
   " set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
@@ -679,10 +676,6 @@ else  " 仅仅适用于 !diff 模式的配置
     set clipboard=unnamed
   endif
 
-  " go 自动 import 用到的 package
-  " 会引发错误
-  " autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
-
   " asynctasks 配置
   " let g:asynctasks_config_name = '.git/tasks.ini'
   let g:asyncrun_open = 10
@@ -778,6 +771,8 @@ else  " 仅仅适用于 !diff 模式的配置
   let g:go_doc_keywordprg_enabled = 0  " 关闭查看文档快捷键 K
   let g:go_get_update = 0  " 关闭自动更新依赖
   let g:go_echo_go_info = 0  " 关闭代码补全后的识别信息提示"
+  let g:go_fmt_fail_silently = 1  " 隐藏 fmt 错误提示
+
 
   " vim-markdown 配置
   " 兼容 github 默认识别 protobuf 高亮 Protobuf code, 而 vim 识别 proto
