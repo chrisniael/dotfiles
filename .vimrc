@@ -40,8 +40,7 @@ if !&diff
 endif
 Plug 'morhetz/gruvbox'
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
-" 可选替代 vim-husk
-Plug 'tpope/vim-rsi'
+Plug 'tpope/vim-rsi'  " 可选替代 vim-husk
 Plug 'gu-fan/riv.vim'
 
 " Initialize plugin system
@@ -226,8 +225,9 @@ augroup filetype
 augroup end
 
 " 命令行模式下，进入 popup menu 补全选择时，使用 enter 进行选择，而不是直接执行
-" nvim 5.0 Pre-release <C-e> 快捷键在 Mac 上有 bug，表现与 Linux 上不一致
-cnoremap <expr> <cr> pumvisible() ? "\<C-e>" : "\<CR>"
+" nvim 5.0 <C-e> 快捷键表现与之前版本不一致，临时改成输出 Space 在删除掉一个字符
+" cnoremap <expr> <CR> pumvisible() ? "\<C-e>" : "\<CR>"
+cnoremap <expr> <CR> pumvisible() ? "\<Space><BS>" : "\<CR>"
 " TODO: <C-c> 取消 popup menu 选择，不使用任何一个补全
 " <C-k> 删除光标后面的所有字符
 " https://stackoverflow.com/a/26310522
