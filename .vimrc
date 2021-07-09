@@ -769,7 +769,7 @@ else  " 仅仅适用于 !diff 模式的配置
   let g:go_fmt_autosave = 0  " 关闭保存文件时自动 fmt 文件
   let g:go_def_mapping_enabled = 0  " 关闭跳转快捷键 gd
   let g:go_doc_keywordprg_enabled = 0  " 关闭查看文档快捷键 K
-  let g:go_get_update = 0  " 关闭自动更新依赖
+  " let g:go_get_update = 0  " 关闭自动更新依赖
   let g:go_echo_go_info = 0  " 关闭代码补全后的识别信息提示"
   let g:go_fmt_fail_silently = 1  " 隐藏 fmt 错误提示
 
