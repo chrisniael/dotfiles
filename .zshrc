@@ -158,9 +158,16 @@ else
 fi
 
 if [[ "${OS}" == "Darwin" ]]; then
-  alias ls="ls -FhOT"
-  alias ll="ls -lFhOT"
-  alias la="ls -laFhOT"
+  # 检测是否存在 exa 命令
+  if hash exa >/dev/null 2>&1; then
+    alias ls='exa -F --icons'
+    alias ll="exa -lF --icons"
+    alias la="exa -laF --icons"
+  else
+    alias ls="ls -FhOT"
+    alias ll="ls -lFhOT"
+    alias la="ls -laFhOT"
+  fi
   alias lldb="PATH=/usr/bin /usr/bin/lldb"
   alias ssh-over-ss="ssh -o ProxyCommand='nc -x 127.0.0.1:1081 %h %p'"
   alias htop="TERM=xterm-256color htop"

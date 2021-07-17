@@ -66,8 +66,8 @@ if !has("nvim")
 endif
 
 " 设置 gruvbox 主题 contrast 程度 (得放在 colorscheme 设置之前) : soft, medium (default), hard
-" let g:gruvbox_contrast_dark = 'medium'
-" let g:gruvbox_contrast_light = 'medium'
+let g:gruvbox_contrast_dark = 'hard'
+let g:gruvbox_contrast_light = 'hard'
 " 设置 grubbox 主题支持粗体与斜体
 let g:gruvbox_bold = 1
 let g:gruvbox_italic = 1
@@ -791,8 +791,8 @@ let g:riv_highlight_code = 'lua,python,cpp,javascript,vim,sh,proto,c'
 autocmd FileType rst iunma <silent><buffer> <cr>
 
 " 透明背景
-highlight Normal ctermbg=NONE guibg=NONE
-highlight NonText ctermbg=NONE guibg=NONE
+" highlight Normal ctermbg=NONE guibg=NONE
+" highlight NonText ctermbg=NONE guibg=NONE
 
 " vim-instant-markdown 配置
 " 安装外部依赖
