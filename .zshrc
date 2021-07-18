@@ -160,9 +160,9 @@ fi
 if [[ "${OS}" == "Darwin" ]]; then
   # 检测是否存在 exa 命令
   if hash exa >/dev/null 2>&1; then
-    alias ls='exa -F --icons'
-    alias ll="exa -lF --icons"
-    alias la="exa -laF --icons"
+    alias ls='exa -F'
+    alias ll='exa -lF'
+    alias la='exa -laF'
   else
     alias ls="ls -FhOT"
     alias ll="ls -lFhOT"
