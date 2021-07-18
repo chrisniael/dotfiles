@@ -66,8 +66,8 @@ if !has("nvim")
 endif
 
 " 设置 gruvbox 主题 contrast 程度 (得放在 colorscheme 设置之前) : soft, medium (default), hard
-let g:gruvbox_contrast_dark = 'hard'
-let g:gruvbox_contrast_light = 'hard'
+" let g:gruvbox_contrast_dark = 'hard'
+" let g:gruvbox_contrast_light = 'hard'
 " 设置 grubbox 主题支持粗体与斜体
 let g:gruvbox_bold = 1
 let g:gruvbox_italic = 1
