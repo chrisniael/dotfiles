@@ -184,7 +184,7 @@ if [[ "${OS}" == "Darwin" ]]; then
   export LSCOLORS=exfxcxdxbxegedabagacad
 
   # Fix GitHub API rate limit exceeded
-  export HOMEBREW_GITHUB_API_TOKEN=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
+  export HOMEBREW_GITHUB_API_TOKEN=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
 
   export GOPATH="/Users/shenyu/Documents/go"
 
@@ -333,16 +333,18 @@ if [[ -z "$TMUX" ]]; then
   # tmux 里不可以手动设置，tmux 本身配置里有对 TERM 设置
   # TERM 会影响 ohmyzsh 的 ATUO_TITLE 功能
   export TERM='xterm-256color'
-  if [[ -n "$SSH_CONNECTION" ]]; then
+  if [[ "$TERM_PROGRAM" != "Apple_Terminal" ]]; then
     # 用 eval 是去除前后的空格， mac 上的 wc 命令与 linux 不太一样，会输出一些空格
     if [[ $(eval echo $(tmux list-sessions 2>/dev/null | wc -l)) = 0 ]]; then
       tmux new-session
     else
       ID="$(tmux list-sessions 2>/dev/null | grep -m1 attached | cut -d: -f1)"
       if [[ -n "$ID" ]]; then
-        killall xclip >/dev/null 2>&1; tmux attach-session -d -x -t "$ID"
+        killall xclip >/dev/null 2>&1
+        tmux attach-session -d -x -t "$ID"
       else
-        killall xclip >/dev/null 2>&1; tmux attach-session -d -x
+        killall xclip >/dev/null 2>&1
+        tmux attach-session -d -x
       fi
     fi
   fi
@@ -356,7 +358,9 @@ else
   if [[ -z "$NVIM_LISTEN_ADDRESS" ]]; then
     exit() {
       if [[ $(eval echo $(tmux list-sessions | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-windows | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-panes | wc -l)) = 1 ]]; then
-        killall xclip >/dev/null 2>&1; tmux detach -P
+        killall xclip >/dev/null 2>&1
+        clear
+        tmux detach -P
       else
         unset -f exit
         exit
@@ -375,27 +379,3 @@ fi
 if [ -f "${HOME}/.zshrc_custom" ]; then
   source "${HOME}/.zshrc_custom"
 fi
-
-u()
-{
-  # 升级 ohmyzsh
-  # Note: `upgrade_oh_my_zsh` is deprecated. Use `omz update` instead.
-  which omz >/dev/null 2>&1
-  if [ $? = 0 ]; then
-    omz update
-  fi
-  # 升级 brew
-  hash brew >/dev/null 2>&1
-  if [ $? = 0 ]; then
-    echo "Upgrading brew"
-    brew update
-    brew upgrade
-    brew-cask-upgrade
-  fi
-  # 升级 vim 插件
-  vim +'PlugUpgrade' +qa
-  vim +'PlugInstall --sync' +qa
-  vim +'PlugUpdate --sync' +qa
-  # 升级 coc 插件
-  vim +'CocStart' +'CocUpdateSync' +qa
-}
