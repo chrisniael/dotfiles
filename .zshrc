@@ -252,7 +252,7 @@ alias grep="grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox} 
 
 function unproxy() {
   unset {http,https,ftp,rsync,all}_proxy
-  unset {HTTP,HTTPS,FTP,RSYNC,ALL}_PROX
+  unset {HTTP,HTTPS,FTP,RSYNC,ALL}_PROXY
   unset ELECTRON_GET_USE_PROXY
   unset GLOBAL_AGENT_HTTP_PROXY
   unset GLOBAL_AGENT_HTTPS_PROXY
