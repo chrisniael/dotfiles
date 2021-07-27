@@ -72,6 +72,8 @@ else
     set t_ZR=[23m
   endif
 
+  set title
+
   " 设置 gruvbox 主题 contrast 程度 (得放在 colorscheme 设置之前) : soft, medium (default), hard
   " let g:gruvbox_contrast_dark = 'hard'
   " let g:gruvbox_contrast_light = 'hard'
@@ -247,6 +249,17 @@ else
 
   " 不显示 tabline
   set showtabline=0
+
+  if has("win32")
+    " Windows 终端 C-z 会有问题
+    nnoremap <c-z> <nop>
+    inoremap <c-z> <nop>
+    vnoremap <c-z> <nop>
+    snoremap <c-z> <nop>
+    xnoremap <c-z> <nop>
+    cnoremap <c-z> <nop>
+    onoremap <c-z> <nop>
+  endif
 
   " 仅仅适用于 diff 模式的配置
   if &diff
