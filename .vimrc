@@ -48,7 +48,7 @@ else
   Plug 'morhetz/gruvbox'
   Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
   Plug 'tpope/vim-rsi'  " 可选替代 vim-husk
-  Plug 'gu-fan/riv.vim'
+  " Plug 'gu-fan/riv.vim'
 
   " Initialize plugin system
   call plug#end()
@@ -59,7 +59,8 @@ else
         \ 'coc-cmake', 'coc-rust-analyzer', 'coc-tasks', 'coc-json',
         \ 'coc-pyright', 'coc-lua', 'coc-vimlsp', 'coc-html',
         \ 'coc-prettier', 'coc-smartf', 'coc-imselect', 'coc-emoji',
-        \ 'coc-word', 'coc-dictionary', 'coc-yaml', 'coc-go'
+        \ 'coc-word', 'coc-dictionary', 'coc-yaml', 'coc-go',
+        \ 'coc-phpactor'
         \ ]
 
   " 适用于所有场景的配置
@@ -810,4 +811,7 @@ else
   " 安装外部依赖
   " npm -g install instant-markdown-d
   let g:instant_markdown_autostart = 0
+
+  " https://phpactor.readthedocs.io/en/master/lsp/vim.html#two-dollars-on-variables
+  autocmd FileType php set iskeyword+=$
 endif
