@@ -168,7 +168,7 @@ else
   set autoindent
   set smartindent
 
-  " 第一行设置tab键为4个空格，第二行设置当行之间交错时使用4个空格
+  " 缩进默认使用 2 Space
   set expandtab
   set tabstop=2
   set softtabstop=0
@@ -180,7 +180,9 @@ else
   " json 缩进符 2 Space
   autocmd BufNewFile,BufRead *.json setlocal expandtab tabstop=2 shiftwidth=2
   " python 缩进符 4 Space
-  autocmd BufNewFile,BufRead *.json setlocal expandtab tabstop=4 shiftwidth=4
+  autocmd BufNewFile,BufRead *.py setlocal expandtab tabstop=4 shiftwidth=4
+  " php 缩进符 4 Spae
+  autocmd BufNewFile,BufRead *.php setlocal expandtab tabstop=4 shiftwidth=4
 
   " 设置匹配模式，例如当光标位于一个左括号上时，会高亮相应的那个右括号
   set showmatch
