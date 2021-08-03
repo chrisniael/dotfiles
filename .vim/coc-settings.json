@@ -48,8 +48,18 @@
     "enabled": true,
     "arguments": ["--clang-tidy"],
     "disableDiagnostics": false,
-    "semanticHighlighting": true,
-    "fallbackFlags": []
+    "semanticHighlighting": false,
+    "fallbackFlags": [
+      "-std=c++2a",
+      "-fcoroutines-ts",
+      "-stdlib=libc++",
+      "-pthread",
+      "-O0",
+      "-g",
+      "-ggdb",
+      "-lc++",
+      "-lc++abi"
+    ]
   },
   "yank": {
     "enableCompletion": false

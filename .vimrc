@@ -46,7 +46,7 @@ else
     Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown'}
   endif
   Plug 'morhetz/gruvbox'
-  Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
+  " Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
   Plug 'tpope/vim-rsi'  " 可选替代 vim-husk
   " Plug 'gu-fan/riv.vim'
 
