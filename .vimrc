@@ -46,7 +46,7 @@ else
     Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown'}
   endif
   Plug 'morhetz/gruvbox'
-  " Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
+  Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
   Plug 'tpope/vim-rsi'  " 可选替代 vim-husk
   " Plug 'gu-fan/riv.vim'
 
@@ -252,6 +252,10 @@ else
 
   " 不显示 tabline
   set showtabline=0
+
+  " 换行时不自动添加注释
+  " https://vi.stackexchange.com/questions/1983/how-can-i-get-vim-to-stop-putting-comments-in-front-of-new-lines
+  au FileType * set formatoptions-=c formatoptions-=r formatoptions-=o
 
   if has("win32")
     " Windows 终端 C-z 会有问题
