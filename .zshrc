@@ -202,6 +202,11 @@ if [[ "${OS}" == "Darwin" ]]; then
   export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/usr/local/opt/openssl@1.1"
   export HOMEBREW_NO_AUTO_UPDATE=true
 
+  # GCC/Clang 默认搜索路径
+  export C_INCLUDE_PATH="$C_INCLUDE_PATH:/usr/local/include"
+  export CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/local/include"
+  export OBJC_INCLUDE_PATH="$OBJC_INCLUDE_PATH:/usr/local/lib"
+
   bindkey \^U backward-kill-line
   bindkey '\e[1~' beginning-of-line
   bindkey '\e[4~' end-of-line
