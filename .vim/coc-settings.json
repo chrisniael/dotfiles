@@ -67,8 +67,5 @@
   "rust-analyzer": {
     "serverPath": "rust-analyzer"
   },
-  "python.pythonPath": "python3",
-  "go.goplsOptions": {
-    "buildFlags": ["-tags='game'"]
-  }
+  "python.pythonPath": "python3"
 }
