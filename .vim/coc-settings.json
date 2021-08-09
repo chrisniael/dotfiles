@@ -42,7 +42,7 @@
     "json",
     "python",
     "yaml",
-    "rs"
+    "rust"
   ],
   "clangd": {
     "enabled": true,
