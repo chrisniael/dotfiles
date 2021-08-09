@@ -211,9 +211,15 @@ if [[ "${OS}" == "Darwin" ]]; then
   bindkey '\e[1~' beginning-of-line
   bindkey '\e[4~' end-of-line
 else
-  alias ls="ls -Fh --color"
-  alias ll="ls -lF --color"
-  alias la="ls -laFh --color"
+  if hash exa >/dev/null 2>&1; then
+    alias ls='exa -F'
+    alias ll='exa -lF'
+    alias la='exa -laF'
+  else
+    alias ls="ls -Fh --color"
+    alias ll="ls -lF --color"
+    alias la="ls -laFh --color"
+  fi
 
   if [[ "${OS}" == "Linux" ]]; then
     source /etc/os-release
