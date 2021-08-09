@@ -49,6 +49,7 @@ else
   Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
   Plug 'tpope/vim-rsi'  " 可选替代 vim-husk
   " Plug 'gu-fan/riv.vim'
+  Plug 'cespare/vim-toml'
 
   " Initialize plugin system
   call plug#end()
