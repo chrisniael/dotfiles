@@ -795,6 +795,9 @@ else
 	  " let g:go_get_update = 0  " 关闭自动更新依赖
 	  let g:go_echo_go_info = 0  " 关闭代码补全后的识别信息提示"
 	  let g:go_fmt_fail_silently = 1  " 隐藏 fmt 错误提示
+    let g:go_term_enabled=1  " go test 在 terminal 展示结果
+    let g:go_list_type = "quickfix"
+    let g:go_list_height = 10
 
 
     " vim-markdown 配置
