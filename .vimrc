@@ -784,14 +784,17 @@ else
     let g:go_highlight_variable_declarations = 1
     let g:go_highlight_variable_assignments = 1
 
-    let g:go_gopls_enabled = 0
-    let g:go_code_completion_enabled = 0
-    let g:go_fmt_autosave = 0  " 关闭保存文件时自动 fmt 文件
-    let g:go_def_mapping_enabled = 0  " 关闭跳转快捷键 gd
-    let g:go_doc_keywordprg_enabled = 0  " 关闭查看文档快捷键 K
-    " let g:go_get_update = 0  " 关闭自动更新依赖
-    let g:go_echo_go_info = 0  " 关闭代码补全后的识别信息提示"
-    let g:go_fmt_fail_silently = 1  " 隐藏 fmt 错误提示
+ 		let g:go_gopls_enabled = 0
+	  let g:go_code_completion_enabled = 0
+    let g:go_fmt_command = 'gofmt'
+	  let g:go_fmt_autosave = 0  " 关闭保存文件时自动 fmt 文件
+    let g:go_imports_mode = 'goimports'
+    let g:go_imports_autosave = 1
+	  let g:go_def_mapping_enabled = 0  " 关闭跳转快捷键 gd
+	  let g:go_doc_keywordprg_enabled = 0  " 关闭查看文档快捷键 K
+	  " let g:go_get_update = 0  " 关闭自动更新依赖
+	  let g:go_echo_go_info = 0  " 关闭代码补全后的识别信息提示"
+	  let g:go_fmt_fail_silently = 1  " 隐藏 fmt 错误提示
 
 
     " vim-markdown 配置
