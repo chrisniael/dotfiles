@@ -752,6 +752,7 @@ else
     nmap <silent> <leader>q :AsyncStop<CR>
     nmap <silent> <M-b> :AsyncTask build<CR>
     nmap <silent> <M-r> :AsyncTask run<CR>
+    autocmd FileType go nmap <M-t> :GoTestFunc -v<CR>
 
     " press <esc> to cancel.
     nmap f <Plug>(coc-smartf-forward)
@@ -800,6 +801,7 @@ else
     let g:go_list_height = 10
     let g:go_term_reuse = 1
     let g:go_term_close_on_exit = 0
+    let g:go_term_mode = "botright vsplit"
     let g:go_term_enabled = 1
 
 
