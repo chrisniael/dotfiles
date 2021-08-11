@@ -737,7 +737,7 @@ else
       endfor
       if a:pfx == 'l' && len(getloclist(0)) == 0
         echohl ErrorMsg
-        echo "Location List is Empty."
+        echo a:bufname.'Location List is Empty.'
         return
       endif
       " exec('topleft '.string(g:asyncrun_open).a:pfx.'open')
