@@ -740,8 +740,8 @@ else
         endif
       endfor
       if a:pfx == 'l' && len(getloclist(0)) == 0
-        echohl ErrorMsg
-        echo a:bufname.'Location List is Empty.'
+        " echohl ErrorMsg
+        " echo a:bufname.'Location List is Empty.'
         return
       endif
       " exec('topleft '.string(g:asyncrun_open).a:pfx.'open')
@@ -801,11 +801,11 @@ else
     let g:go_echo_go_info = 0  " 关闭代码补全后的识别信息提示"
     let g:go_fmt_fail_silently = 1  " 隐藏 fmt 错误提示
     let g:go_term_enabled=0  " go test 在 terminal 展示结果
-    " let g:go_list_type = 'quickfix'
+    let g:go_list_type = 'quickfix'
     let g:go_list_height = 10
     let g:go_term_reuse = 1
     let g:go_term_close_on_exit = 0
-    let g:go_term_mode = 'botright vsplit'
+    " let g:go_term_mode = 'botright vsplit'
     let g:go_term_enabled = 1
     let g:go_def_mode = 'godef'
     let g:go_referrers_mode = 'guru'
