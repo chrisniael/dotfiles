@@ -516,6 +516,10 @@ else
     " Use `:Fold` to fold current buffer
     command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
+    " use `:OR` for organize import of current buffer
+    command! -nargs=0 OR :silent call CocAction('runCommand', 'editor.action.organizeImport')
+    autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
+
     " Add status line support, for integration with other plugin, checkout `:h coc-status`
     " set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
@@ -790,7 +794,7 @@ else
     let g:go_fmt_command = 'gofmt'
     let g:go_fmt_autosave = 0  " 关闭保存文件时自动 fmt 文件
     let g:go_imports_mode = 'goimports'
-    let g:go_imports_autosave = 1
+    let g:go_imports_autosave = 0
     let g:go_def_mapping_enabled = 0  " 关闭跳转快捷键 gd
     let g:go_doc_keywordprg_enabled = 0  " 关闭查看文档快捷键 K
     " let g:go_get_update = 0  " 关闭自动更新依赖
