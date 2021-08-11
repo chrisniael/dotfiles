@@ -61,7 +61,7 @@ else
         \ 'coc-pyright', 'coc-lua', 'coc-vimlsp', 'coc-html',
         \ 'coc-prettier', 'coc-smartf', 'coc-imselect', 'coc-emoji',
         \ 'coc-word', 'coc-dictionary', 'coc-yaml', 'coc-go',
-        \ 'coc-phpactor'
+        \ 'coc-phpactor', 'coc-project'
         \ ]
 
   " 适用于所有场景的配置
