@@ -219,7 +219,7 @@ else
   endif
 
   " 设置鼠标模式
-  set mouse=h
+  set mouse=a
 
   " :make 的时候自动保存
   set autowrite
