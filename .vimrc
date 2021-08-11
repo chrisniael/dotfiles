@@ -798,6 +798,9 @@ else
     let g:go_term_enabled=0  " go test 在 terminal 展示结果
     let g:go_list_type = "quickfix"
     let g:go_list_height = 10
+    let g:go_term_reuse = 1
+    let g:go_term_close_on_exit = 0
+    let g:go_term_enabled = 1
 
 
     " vim-markdown 配置
