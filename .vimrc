@@ -299,9 +299,9 @@ else
 
     " 打开 terminal 时关闭行号和符号列, 并自动进入 insert 模式
     " 退出 terminal: <C-\><C-n>
-    " if has("nvim")
-    "   au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
-    " endif
+    if has("nvim")
+      au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
+    endif
 
     " vim-airline 配置
     " set laststatus=2  " 底部显示状态栏, 1:不显示, 2:显示
@@ -711,6 +711,7 @@ else
     let g:asynctasks_term_reuse = 1
     let g:asynctasks_term_focus = 1
     let g:asyncrun_rootmarks = ['.git', '.svn', '.root', '.project', '.hg']
+    let g:asyncrun_exit = 'silent GitGutter'  "asynctask 提交 git 的时候默认 vim-gitgutter sign 不会更新
 
     au FileType qf setlocal signcolumn=  " quickfix 窗口不显示符号列
     au FileType qf setlocal nonumber  " quickfix 窗口不显示行号
@@ -845,6 +846,5 @@ else
   " https://phpactor.readthedocs.io/en/master/lsp/vim.html#two-dollars-on-variables
   autocmd FileType php set iskeyword+=$
 
-  " asynctask 提交 git 的时候 vim-gitgutter sign 不会更新，暂时用 C-L 来手动刷新
-  nnoremap <C-L> :nohl<CR>:GitGutter<CR><C-L>
+  nnoremap <silent> <C-L> :nohl<CR><C-L>
 endif
