@@ -334,6 +334,9 @@ else
     " endif
     " let g:airline_symbols.notexists = '∄'
 
+    " vim-gitgutter 配置
+    " let g:gitgutter_set_sign_backgrounds = 1
+
     map <C-N> :cnext<CR>
     map <C-P> :cprevious<CR>
 
@@ -841,4 +844,7 @@ else
 
   " https://phpactor.readthedocs.io/en/master/lsp/vim.html#two-dollars-on-variables
   autocmd FileType php set iskeyword+=$
+
+  " asynctask 提交 git 的时候 vim-gitgutter sign 不会更新，暂时用 C-L 来手动刷新
+  nnoremap <C-L> :nohl<CR>:GitGutter<CR><C-L>
 endif
