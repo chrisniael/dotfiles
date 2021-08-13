@@ -300,7 +300,8 @@ else
     " 打开 terminal 时关闭行号和符号列, 并自动进入 insert 模式
     " 退出 terminal: <C-\><C-n>
     if has("nvim")
-      au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
+      " au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
+      au TermOpen * setlocal nonumber norelativenumber signcolumn=no
     endif
 
     " vim-airline 配置
