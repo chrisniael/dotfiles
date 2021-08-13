@@ -846,5 +846,29 @@ else
   " https://phpactor.readthedocs.io/en/master/lsp/vim.html#two-dollars-on-variables
   autocmd FileType php set iskeyword+=$
 
+  if has("win32")
+    " Windows 终端 C-z 会有问题
+    nnoremap <c-z> <nop>
+    inoremap <c-z> <nop>
+    vnoremap <c-z> <nop>
+    snoremap <c-z> <nop>
+    xnoremap <c-z> <nop>
+    cnoremap <c-z> <nop>
+    onoremap <c-z> <nop>
+  endif
+
+  " Windows Git Bash 运行 nvim-qt terminal 会被设置成 bash，但是会存在问题
+  " https://vi.stackexchange.com/q/22869
+  if has("win32")
+    let &shell='cmd.exe'
+    let &shellcmdflag='/s /c'
+    let &shellredir='>%s 2>&1'
+    set shellquote=
+    set shellxescape=
+    " set noshelltemp
+    set shellxquote=
+    let &shellpipe='>%s 2>&1'
+  endif
+
   nnoremap <silent> <C-L> :nohl<CR><C-L>
 endif
