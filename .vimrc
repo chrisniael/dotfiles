@@ -858,18 +858,5 @@ else
     onoremap <c-z> <nop>
   endif
 
-  " Windows Git Bash 运行 nvim-qt terminal 会被设置成 bash，但是会存在问题
-  " https://vi.stackexchange.com/q/22869
-  if has("win32")
-    let &shell='cmd.exe'
-    let &shellcmdflag='/s /c'
-    let &shellredir='>%s 2>&1'
-    set shellquote=
-    set shellxescape=
-    " set noshelltemp
-    set shellxquote=
-    let &shellpipe='>%s 2>&1'
-  endif
-
   nnoremap <silent> <C-L> :nohl<CR><C-L>
 endif

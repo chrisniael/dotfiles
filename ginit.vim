@@ -30,3 +30,14 @@ endif
 nnoremap <silent><RightMouse> :call GuiShowContextMenu()<CR>
 inoremap <silent><RightMouse> <Esc>:call GuiShowContextMenu()<CR>
 vnoremap <silent><RightMouse> :call GuiShowContextMenu()<CR>gv
+
+if has("win32")
+  " Windows 终端 C-z 会有问题
+  nnoremap <silent> <c-z> :<C-u>suspend<CR>
+  inoremap <silent> <c-z> :<C-u>suspend<CR>
+  vnoremap <silent> <c-z> :<C-u>suspend<CR>
+  snoremap <silent> <c-z> :<C-u>suspend<CR>
+  xnoremap <silent> <c-z> :<C-u>suspend<CR>
+  cnoremap <silent> <c-z> :<C-u>suspend<CR>
+  onoremap <silent> <c-z> :<C-u>suspend<CR>
+endif
