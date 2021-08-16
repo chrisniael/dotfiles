@@ -15,7 +15,12 @@ else
   " Specify a directory for plugins
   " - For Neovim: stdpath('data') . '/plugged'
   " - Avoid using standard Vim directory names like 'plugin'
-  call plug#begin('~/.vim/plugged')
+  if has('nvim')
+    " Linux/Unix: ~/.local/share/nvim/plugged
+    call plug#begin(stdpath('data') . '/plugged')
+  else
+    call plug#begin('~/.vim/plugged')
+  endif
 
   " 加快 git difftool 打开速度
   if !&diff
@@ -776,7 +781,14 @@ else
 
     " coc-dictionary
     " https://vim.fandom.com/wiki/Dictionary_completions
-    set dictionary+=~/.vim/dic.txt
+    if has('nvim')
+      " vim set option 不能使用 variable
+      " https://vi.stackexchange.com/a/17451/37455
+      let $VIM_CONF_DIR = stdpath('config')
+      set dictionary+=$VIM_CONF_DIR/dic.txt
+    else
+      set dictionary+=~/.vim/dic.txt
+    endif
 
     " vim-lua-foramt
     autocmd FileType lua nnoremap <buffer> <silent><leader>f :call LuaFormat()<CR>
