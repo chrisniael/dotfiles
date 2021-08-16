@@ -859,4 +859,6 @@ else
   endif
 
   nnoremap <silent> <C-L> :nohl<CR><C-L>
+
+  tnoremap <Esc> <C-\><C-n>
 endif
