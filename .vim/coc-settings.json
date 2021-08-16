@@ -67,5 +67,6 @@
   "rust-analyzer": {
     "serverPath": "rust-analyzer"
   },
-  "python.pythonPath": "python3"
+  "python.pythonPath": "python3",
+  "go.goplsPath": "gopls"
 }
