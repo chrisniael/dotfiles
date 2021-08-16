@@ -710,7 +710,7 @@ else
     endif
 
     " asynctasks 配置
-    " let g:asynctasks_config_name = '.git/tasks.ini'
+    let g:asynctasks_config_name = ['.tasks', '.vim/tasks.ini', '.git/tasks.ini', '.svn/tasks.ini']
     let g:asyncrun_open = 10
     let g:asynctasks_term_pos = 'tab'
     let g:asynctasks_term_rows = 10
