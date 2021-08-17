@@ -11,6 +11,7 @@
 		"session":              {"fg": "black",                "bg": "gruvbox:light4",        "attrs": ["bold"]},
 		"session:prefix":       {"fg": "gruvbox:dark1",        "bg": "gruvbox:bright_yellow", "attrs": ["bold"]},
 		"date":                 {"fg": "gruvbox:light4",       "bg": "gruvbox:dark1",         "attrs": []},
-		"time":                 {"fg": "black",                "bg": "gruvbox:light4",        "attrs": ["bold"]}
+		"time":                 {"fg": "gruvbox:light4",       "bg": "gruvbox:dark2",         "attrs": ["bold"]},
+		"hostname":             {"fg": "black",                "bg": "gruvbox:light4",        "attrs": ["bold"] }
 	}
 }
