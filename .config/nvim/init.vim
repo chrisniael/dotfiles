@@ -193,8 +193,11 @@ else
   " 设置匹配模式，例如当光标位于一个左括号上时，会高亮相应的那个右括号
   set showmatch
 
-  " 去除GUI版本中的toolbar
-  "set guioptions=T
+  if has("gui_running")
+    " 移除GUI版本中的 toolbar 和菜单栏
+    set guioptions=
+    silent! set guifont=Sarasa\ Term\ SC:h12
+  endif
 
   " 关闭错误响声和闪烁
   set novisualbell
