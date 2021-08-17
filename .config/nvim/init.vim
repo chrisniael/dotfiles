@@ -802,14 +802,10 @@ else
 
     " coc-dictionary
     " https://vim.fandom.com/wiki/Dictionary_completions
-    if has('nvim')
-      " vim set option 不能使用 variable
-      " https://vi.stackexchange.com/a/17451/37455
-      let $VIM_CONF_DIR = stdpath('config')
-      set dictionary+=$VIM_CONF_DIR/dic.txt
-    else
-      set dictionary+=~/.vim/dic.txt
-    endif
+    " vim set option 不能使用 variable
+    " https://vi.stackexchange.com/a/17451/37455
+    let $COC_CONFIG_HOME = coc#util#get_config_home()
+    set dictionary+=$COC_CONFIG_HOME/dic.txt
 
     " vim-lua-foramt
     autocmd FileType lua nnoremap <buffer> <silent><leader>f :call LuaFormat()<CR>
