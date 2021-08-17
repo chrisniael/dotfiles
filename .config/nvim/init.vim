@@ -197,7 +197,7 @@ else
   "set guioptions=T
 
   " 关闭错误响声和闪烁
-  set visualbell
+  set novisualbell
   if !has('nvim')
     set t_vb=
   endif
