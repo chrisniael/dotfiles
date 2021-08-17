@@ -61,12 +61,27 @@ else
 
   " coc.nvim 的插件
   let g:coc_global_extensions = [
-        \ 'coc-yank', 'coc-pairs', 'coc-lists', 'coc-clangd',
-        \ 'coc-cmake', 'coc-rust-analyzer', 'coc-tasks', 'coc-json',
-        \ 'coc-pyright', 'coc-lua', 'coc-vimlsp', 'coc-html',
-        \ 'coc-prettier', 'coc-smartf', 'coc-imselect', 'coc-emoji',
-        \ 'coc-word', 'coc-dictionary', 'coc-yaml', 'coc-go',
-        \ 'coc-phpactor'
+        \ 'coc-yank',
+        \ 'coc-pairs',
+        \ 'coc-lists',
+        \ 'coc-clangd',
+        \ 'coc-cmake',
+        \ 'coc-rust-analyzer',
+        \ 'coc-tasks',
+        \ 'coc-json',
+        \ 'coc-pyright',
+        \ 'coc-lua',
+        \ 'coc-vimlsp',
+        \ 'coc-html',
+        \ 'coc-prettier',
+        \ 'coc-smartf',
+        \ 'coc-imselect',
+        \ 'coc-emoji',
+        \ 'coc-word',
+        \ 'coc-dictionary',
+        \ 'coc-yaml',
+        \ 'coc-go',
+        \ 'coc-phpactor',
         \ ]
 
   " 适用于所有场景的配置
