@@ -227,7 +227,7 @@ else
       arch|manjaro)
         alias gdb="sudo gdb"
 
-        export GOPATH="$HOME/Documents/go"
+        export GOPATH="$HOME/.config/go"
 
         export PATH="$PATH:$GOPATH/bin"
         export PATH="/squashfs-root/usr/bin:$PATH"
