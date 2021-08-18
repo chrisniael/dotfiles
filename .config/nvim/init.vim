@@ -850,6 +850,26 @@ else
     augroup autoformat_settings
       autocmd FileType proto,arduino AutoFormatBuffer clang-format
     augroup END
+
+		" Vim 打开时将工作目录切换至工程目录
+		" https://vi.stackexchange.com/a/2559
+		" if has("win32") && has("nvim")
+		"   function InsertIfEmpty()
+		"       if @% != ""
+		" cd %:p:h
+		"       endif
+		"   endfunction
+
+		"   au VimEnter * call InsertIfEmpty()
+		" endif
+		if exists(":Rooter")
+			au VimEnter * Rooter
+		endif
+
+		" vim-instant-markdown 配置
+		" 安装外部依赖
+		" npm -g install instant-markdown-d
+		let g:instant_markdown_autostart = 0
   endif
 
   " riv 配置
@@ -861,14 +881,9 @@ else
   " highlight Normal ctermbg=NONE guibg=NONE
   " highlight NonText ctermbg=NONE guibg=NONE
 
-  " vim-instant-markdown 配置
-  " 安装外部依赖
-  " npm -g install instant-markdown-d
-  let g:instant_markdown_autostart = 0
-
-  " https://phpactor.readthedocs.io/en/master/lsp/vim.html#two-dollars-on-variables
-  autocmd FileType php set iskeyword+=$
-
+	" https://phpactor.readthedocs.io/en/master/lsp/vim.html#two-dollars-on-variables
+	autocmd FileType php set iskeyword+=$
+ 
   if has("win32")
     " Windows 终端 C-z 会有问题
     nnoremap <c-z> <nop>
@@ -882,5 +897,5 @@ else
 
   nnoremap <silent> <C-L> :nohl<CR><C-L>
 
-  tnoremap <Esc> <C-\><C-n>
+  " tnoremap <Esc> <C-\><C-n>
 endif
