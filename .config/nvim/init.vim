@@ -883,4 +883,28 @@ else  " if &diff
 	" 安装外部依赖
 	" npm -g install instant-markdown-d
 	let g:instant_markdown_autostart = 0
+
+
+	" nnoremap <silent> <leader>hl :Git pull<CR>
+  " nnoremap <silent> <leader>hh :Git push<CR>
+
+  nnoremap <space>h :<C-u>CocList --normal gstatus<CR>
+  " navigate chunks of current buffer
+  " nmap [c <Plug>(coc-git-prevchunk)
+  " nmap ]c <Plug>(coc-git-nextchunk)
+  " navigate conflicts of current buffer
+  nmap [<S-c> <Plug>(coc-git-prevconflict)
+  nmap ]<S-c> <Plug>(coc-git-nextconflict)
+  " show chunk diff at current position
+  " nmap <leader>hp <Plug>(coc-git-chunkinfo)
+  " show commit contains current position
+  " nmap <leader>hc <Plug>(coc-git-commit)
+  " create text object for git chunks
+  omap ig <Plug>(coc-git-chunk-inner)
+  xmap ig <Plug>(coc-git-chunk-inner)
+  omap ag <Plug>(coc-git-chunk-outer)
+  xmap ag <Plug>(coc-git-chunk-outer)
+
+  " nmap <leader>hu :<C-u>CocCommand git.chunkUndo<CR>
+  nnoremap <leader>hd :<C-u>Gdiffsplit<CR>
 endif  " if &diff
