@@ -75,6 +75,7 @@ let g:coc_global_extensions = [
       \ 'coc-yaml',
       \ 'coc-go',
       \ 'coc-phpactor',
+      \ 'coc-git',
       \ ]
 
 " 适用于所有场景的配置

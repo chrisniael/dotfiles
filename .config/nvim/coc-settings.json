@@ -44,12 +44,11 @@
     "yaml",
     "rust"
   ],
-  "clangd": {
-    "enabled": true,
-    "arguments": ["--clang-tidy"],
-    "disableDiagnostics": false,
-    "semanticHighlighting": false,
-    "fallbackFlags": [
+  "clangd.enabled": true,
+  "clangd.arguments": ["--clang-tidy"],
+  "clangd.disableDiagnostics": false,
+  "clangd.semanticHighlighting": false,
+  "clangd.fallbackFlags": [
       "-std=c++2a",
       "-fcoroutines-ts",
       "-stdlib=libc++",
@@ -59,14 +58,13 @@
       "-ggdb",
       "-lc++",
       "-lc++abi"
-    ]
-  },
-  "yank": {
-    "enableCompletion": false
-  },
-  "rust-analyzer": {
-    "serverPath": "rust-analyzer"
-  },
+  ],
+  "yank.enableCompletion": false,
+  "rust-analyzer.server.path": "rust-analyzer",
   "python.pythonPath": "python3",
-  "go.goplsPath": "gopls"
+  "go.goplsPath": "gopls",
+  "go.disable": {
+    "workspaceFolders": true
+  },
+  "git.enableGutters": false
 }
