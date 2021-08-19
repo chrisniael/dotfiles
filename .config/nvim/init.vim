@@ -147,6 +147,10 @@ augroup CursorLine
   au WinLeave * setlocal nocursorline
 augroup END
 
+" vim 默认打开文件时会显示文件信息 (:file), nvim 默认关闭
+" https://vi.stackexchange.com/a/17724/37455
+set shortmess+=F
+
 " 设置Backspace模式
 set backspace=indent,eol,start
 
@@ -857,10 +861,6 @@ else  " if &diff
   let g:vim_markdown_fenced_languages = ['protobuf=proto', 'bash=sh']
 
   " vim-codefmt 配置
-  augroup autoformat_settings
-    autocmd FileType proto,arduino AutoFormatBuffer clang-format
-  augroup END
-
   " vim-rooter 配置
   let g:rooter_manual_only = 1
 
