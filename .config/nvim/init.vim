@@ -318,6 +318,11 @@ let g:cpp_experimental_simple_template_highlight = 1
 " let g:cpp_experimental_template_highlight = 1
 let g:cpp_concepts_highlight = 1
 
+" windows nvim 粘贴快捷键
+if has("win32") && has("nvim")
+  inoremap <S-Insert> <C-r>*
+  cnoremap <S-Insert> <C-r>*
+endif
 
 " 仅仅适用于 diff 模式的配置
 if &diff
