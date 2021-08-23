@@ -323,6 +323,7 @@ let g:cpp_concepts_highlight = 1
 if has("win32") && has("nvim")
   inoremap <S-Insert> <C-r>*
   cnoremap <S-Insert> <C-r>*
+  inoremap <C-v> <C-r>*
 endif
 
 " 仅仅适用于 diff 模式的配置
@@ -751,7 +752,7 @@ else  " if &diff
   let g:asynctasks_term_rows = 10
   let g:asynctasks_term_reuse = 1
   let g:asynctasks_term_focus = 1
-  let g:asyncrun_rootmarks = ['.git', '.svn', '.root', '.project', '.hg']
+  let g:asyncrun_rootmarks = []
   let g:asyncrun_exit = 'silent GitGutter'  "asynctask 提交 git 的时候默认 vim-gitgutter sign 不会更新
 
   au FileType qf setlocal signcolumn=  " quickfix 窗口不显示符号列
