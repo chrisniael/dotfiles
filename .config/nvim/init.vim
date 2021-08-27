@@ -42,6 +42,7 @@ if !&diff
   Plug 'google/vim-codefmt'
   Plug 'google/vim-glaive'
   Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown'}
+  Plug 'airblade/vim-rooter'
 endif
 Plug 'morhetz/gruvbox'
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
