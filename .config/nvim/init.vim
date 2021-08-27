@@ -883,9 +883,7 @@ else  " if &diff
 
 	"   au VimEnter * call InsertIfEmpty()
 	" endif
-	if exists(":Rooter")
-		au VimEnter * Rooter
-	endif
+  au VimEnter * if exists(":Rooter") | Rooter | endif
 
 	" vim-instant-markdown 配置
 	" 安装外部依赖
