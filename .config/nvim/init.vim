@@ -324,6 +324,7 @@ if has("win32") && has("nvim")
   inoremap <S-Insert> <C-r>*
   cnoremap <S-Insert> <C-r>*
   inoremap <C-v> <C-r>*
+  cnoremap <C-v> <C-r>*
 endif
 
 " 仅仅适用于 diff 模式的配置
