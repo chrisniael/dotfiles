@@ -822,8 +822,10 @@ else  " if &diff
   " https://vim.fandom.com/wiki/Dictionary_completions
   " vim set option 不能使用 variable
   " https://vi.stackexchange.com/a/17451/37455
-  let $COC_CONFIG_HOME = coc#util#get_config_home()
-  set dictionary+=$COC_CONFIG_HOME/dic.txt
+  if exists("*coc#util#get_config_home")
+    let $COC_CONFIG_HOME = coc#util#get_config_home()
+    set dictionary+=$COC_CONFIG_HOME/dic.txt
+  endif
 
   " vim-lua-foramt
   autocmd FileType lua nnoremap <buffer> <silent><leader>f :call LuaFormat()<CR>
