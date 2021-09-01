@@ -138,16 +138,18 @@ if $TERM_PROGRAM != "Apple_Terminal"
   call s:enable_true_color()
 endif
 
+set cursorline
+
 " 设置垂直分隔符号
 set fillchars+=vert:\ 
 
 " make vim highlight the current line on only the active buffer
 " https://stackoverflow.com/a/12018552
-augroup CursorLine
-  au!
-  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-  au WinLeave * setlocal nocursorline
-augroup END
+" augroup CursorLine
+"   au!
+"   au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+"   au WinLeave * setlocal nocursorline
+" augroup END
 
 " vim 默认打开文件时会显示文件信息 (:file), nvim 默认关闭
 " https://vi.stackexchange.com/a/17724/37455
@@ -330,7 +332,6 @@ endif
 
 " 仅仅适用于 diff 模式的配置
 if &diff
-  set nocursorline
   set colorcolumn=
   set cmdheight=1
   set laststatus=1
