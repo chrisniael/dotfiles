@@ -784,7 +784,7 @@ else  " if &diff
   " asynctasks 配置
   let g:asynctasks_config_name = ['.tasks', '.vim/tasks.ini', '.git/tasks.ini', '.svn/tasks.ini']
   let g:asyncrun_open = 10
-  let g:asynctasks_term_pos = 'termhelp'
+  let g:asynctasks_term_pos = 'thelp'
   let g:asynctasks_term_rows = 10
   let g:asynctasks_term_reuse = 1
   let g:asynctasks_term_focus = 1
