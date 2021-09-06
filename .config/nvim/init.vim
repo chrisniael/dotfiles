@@ -17,15 +17,9 @@ endif
 
 " 加快 git difftool 打开速度
 if !&diff
-  " pip3 install pynvim
-  " npm install -g neovim
-  " pacman -S ripgrep
-  " pacman -S clangd
-  " npm install -g bash-language-server
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   Plug 'jackguo380/vim-lsp-cxx-highlight'
   Plug 'airblade/vim-gitgutter'
-  " vim-fugitive, vim-airline, vim-airline-themes 组合安装
   Plug 'tpope/vim-fugitive'
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
@@ -36,8 +30,9 @@ if !&diff
   Plug 'tpope/vim-obsession'
   Plug 'skywind3000/asynctasks.vim'
   Plug 'skywind3000/asyncrun.vim'
+  Plug 'skywind3000/asyncrun.extra'
+  Plug 'skywind3000/vim-terminal-help'
   Plug 'andrejlevkovitch/vim-lua-format'
-  Plug 'fatih/vim-go', { 'for': ['go'] }
   Plug 'google/vim-maktaba'
   Plug 'google/vim-codefmt'
   Plug 'google/vim-glaive'
@@ -49,6 +44,7 @@ Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
 Plug 'tpope/vim-rsi'  " 可选替代 vim-husk
 " Plug 'gu-fan/riv.vim'
 Plug 'cespare/vim-toml'
+Plug 'fatih/vim-go', { 'for': ['go'] }
 
 " Initialize plugin system
 call plug#end()
@@ -145,11 +141,11 @@ set fillchars+=vert:\
 
 " make vim highlight the current line on only the active buffer
 " https://stackoverflow.com/a/12018552
-" augroup CursorLine
-"   au!
-"   au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-"   au WinLeave * setlocal nocursorline
-" augroup END
+augroup CursorLine
+  au!
+  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  au WinLeave * setlocal nocursorline
+augroup END
 
 " vim 默认打开文件时会显示文件信息 (:file), nvim 默认关闭
 " https://vi.stackexchange.com/a/17724/37455
@@ -192,9 +188,9 @@ set smartindent
 
 " 缩进默认使用 2 Space
 set expandtab
-set tabstop=2
+" set tabstop=2
 set softtabstop=0
-set shiftwidth=2
+" set shiftwidth=2
 set smarttab
 
 " go 缩进符用 Tab
@@ -204,6 +200,7 @@ autocmd BufNewFile,BufRead *.json setlocal expandtab tabstop=2 shiftwidth=2
 " python 缩进符 4 Space
 autocmd BufNewFile,BufRead *.py setlocal expandtab tabstop=4 shiftwidth=4
 " php 缩进符 4 Spae
+autocmd BufNewFile,BufRead *.json setlocal expandtab tabstop=4 shiftwidth=4
 autocmd BufNewFile,BufRead *.php setlocal expandtab tabstop=4 shiftwidth=4
 
 " 设置匹配模式，例如当光标位于一个左括号上时，会高亮相应的那个右括号
@@ -294,10 +291,11 @@ au FileType * set formatoptions-=c formatoptions-=r formatoptions-=o
 " highlight Normal ctermbg=NONE guibg=NONE
 " highlight NonText ctermbg=NONE guibg=NONE
 
+" php $ 前缀问题
 " https://phpactor.readthedocs.io/en/master/lsp/vim.html#two-dollars-on-variables
 autocmd FileType php set iskeyword+=$
 
-if has("win32")
+if has("win32") && has("nvim")
   " Windows 终端 C-z 会有问题
   nnoremap <c-z> <nop>
   inoremap <c-z> <nop>
@@ -330,6 +328,42 @@ if has("win32") && has("nvim")
   cnoremap <C-v> <C-r>*
 endif
 
+" vim-go
+let g:go_highlight_extra_types = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_types = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_function_parameters = 1
+let g:go_highlight_variable_declarations = 1
+let g:go_highlight_variable_assignments = 1
+
+let g:go_gopls_enabled = 0
+let g:go_code_completion_enabled = 0
+let g:go_fmt_command = 'gofmt'
+let g:go_fmt_autosave = 0  " 关闭保存文件时自动 fmt 文件
+let g:go_imports_mode = 'goimports'
+let g:go_imports_autosave = 0
+let g:go_def_mapping_enabled = 0  " 关闭跳转快捷键 gd
+let g:go_doc_keywordprg_enabled = 0  " 关闭查看文档快捷键 K
+" let g:go_get_update = 0  " 关闭自动更新依赖
+let g:go_echo_go_info = 0  " 关闭代码补全后的识别信息提示"
+let g:go_fmt_fail_silently = 1  " 隐藏 fmt 错误提示
+let g:go_term_enabled=0  " go test 在 terminal 展示结果
+let g:go_list_type = 'quickfix'
+let g:go_list_height = 10
+let g:go_term_reuse = 1
+let g:go_term_close_on_exit = 0
+" let g:go_term_mode = 'botright vsplit'
+let g:go_term_enabled = 1
+let g:go_def_mode = 'godef'
+let g:go_referrers_mode = 'guru'
+let g:go_implements_mode = 'guru'
+let g:go_rename_command = 'gorename'
+
+
 " 仅仅适用于 diff 模式的配置
 if &diff
   set colorcolumn=
@@ -351,8 +385,7 @@ else  " if &diff
   " 打开 terminal 时关闭行号和符号列, 并自动进入 insert 模式
   " 退出 terminal: <C-\><C-n>
   if has("nvim")
-    " au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
-    au TermOpen * setlocal nonumber norelativenumber signcolumn=no
+    au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
   endif
 
   " vim-airline 配置
@@ -725,21 +758,21 @@ else  " if &diff
   " 同步 ssh 连接的 vim 剪切板到本地
   " https://lotabout.me/2019/Integrate-clipboard-with-SSH/
   if has("nvim")
-    if !has("win32")
     " Mac 上 XQuartz 有 bug，不能同步 clipboard，只能同步
     " primary，所以配置成都走 primary
-    let g:clipboard = {
-          \   'name': 'xclip-primary',
-          \   'copy': {
-          \      '+': 'xclip -i -selection primary',
-          \      '*': 'xclip -i -selection primary',
-          \    },
-          \   'paste': {
-          \      '+': 'xclip -o -selection primary',
-          \      '*': 'xclip -o -selection primary',
-          \   },
-          \   'cache_enabled': 0,
-          \ }
+    if !has("win32")
+      let g:clipboard = {
+        \   'name': 'xclip-primary',
+        \   'copy': {
+        \      '+': 'xclip -i -selection primary',
+        \      '*': 'xclip -i -selection primary',
+        \    },
+        \   'paste': {
+        \      '+': 'xclip -o -selection primary',
+        \      '*': 'xclip -o -selection primary',
+        \   },
+        \   'cache_enabled': 0,
+        \ }
     endif
     " 所有赋值操作都同步至 primary 剪切板 +
     set clipboard+=unnamedplus
@@ -751,23 +784,23 @@ else  " if &diff
   " asynctasks 配置
   let g:asynctasks_config_name = ['.tasks', '.vim/tasks.ini', '.git/tasks.ini', '.svn/tasks.ini']
   let g:asyncrun_open = 10
-  let g:asynctasks_term_pos = 'tab'
+  let g:asynctasks_term_pos = 'termhelp'
   let g:asynctasks_term_rows = 10
   let g:asynctasks_term_reuse = 1
   let g:asynctasks_term_focus = 1
-  let g:asyncrun_rootmarks = []
-  let g:asyncrun_exit = 'silent GitGutter'  "asynctask 提交 git 的时候默认 vim-gitgutter sign 不会更新
+  let g:asyncrun_rootmarks = ['.git', '.svn', '.root', '.project', '.hg']
+  let g:asyncrun_exit = 'silent! GitGutter'  "asynctask 提交 git 的时候默认 vim-gitgutter sign 不会更新
 
   au FileType qf setlocal signcolumn=  " quickfix 窗口不显示符号列
   au FileType qf setlocal nonumber  " quickfix 窗口不显示行号
 
   " https://vi.stackexchange.com/a/15699
-  let g:asyncrun_status = 'stopped'
-  function! AsyncrunGetStatus() abort
-    return get(g:, 'asyncrun_status', '')
-  endfunction
-  silent! call airline#parts#define_function('asyncrun_status', 'AsyncrunGetStatus')
-  silent! let g:airline_section_x = airline#section#create_right(['bookmark', 'tagbar', 'vista', 'gutentags', 'gen_tags', 'omnisharp', 'grepper', 'asyncrun_status', 'filetype'])
+  " let g:asyncrun_status = 'stopped'
+  " function! AsyncrunGetStatus() abort
+  "   return get(g:, 'asyncrun_status', '')
+  " endfunction
+  " silent! call airline#parts#define_function('asyncrun_status', 'AsyncrunGetStatus')
+  " silent! let g:airline_section_x = airline#section#create_right(['bookmark', 'tagbar', 'vista', 'gutentags', 'gen_tags', 'omnisharp', 'grepper', 'asyncrun_status', 'filetype'])
 
   nnoremap <silent> <space>t  :<C-u>CocList tasks<cr>
 
@@ -790,22 +823,33 @@ else  " if &diff
     endfor
     if a:pfx == 'l' && len(getloclist(0)) == 0
       " echohl ErrorMsg
-      " echo a:bufname.'Location List is Empty.'
+      " echo a:bufname.' is Empty.'
       return
     endif
-    " exec('topleft '.string(g:asyncrun_open).a:pfx.'open')
     exec(string(g:asyncrun_open).a:pfx.'open')
     exec('$')
     wincmd p
   endfunction
 
-  nmap <silent> <space>l :call ToggleList("Location List", 'l')<CR>
-  nmap <silent> <space>q :call ToggleList("Quickfix List", 'c')<CR>
+  " nmap <silent> <space>l :call ToggleList("Location List", 'l')<CR>
+  " nmap <silent> <space>q :call ToggleList("Quickfix List", 'c')<CR>
+
+  function! AsyncTaskRun()
+    if &filetype == 'vim'
+      source %
+    else
+      AsyncTask run
+    endif
+  endfunction
 
   nmap <silent> <leader>q :AsyncStop<CR>
   nmap <silent> <M-b> :AsyncTask build<CR>
-  nmap <silent> <M-r> :AsyncTask run<CR>
-  autocmd FileType go nmap <M-t> :GoTestFunc -v<CR>
+  nmap <M-r> :call AsyncTaskRun()<CR>
+  " autocmd FileType go nmap <M-t> :GoTestFunc -v<CR>
+
+  " vim-terminal-help
+  let g:terminal_cwd = 2 " project root
+  let g:terminal_pos = 'top'
 
   " press <esc> to cancel.
   nmap f <Plug>(coc-smartf-forward)
@@ -831,71 +875,39 @@ else  " if &diff
   autocmd FileType lua nnoremap <buffer> <silent><leader>f :call LuaFormat()<CR>
   autocmd BufWrite *.lua call LuaFormat()
 
-  " vim-go
-  let g:go_highlight_extra_types = 1
-  let g:go_highlight_operators = 1
-  let g:go_highlight_types = 1
-  let g:go_highlight_functions = 1
-  let g:go_highlight_operators = 1
-  let g:go_highlight_function_calls = 1
-  let g:go_highlight_fields = 1
-  let g:go_highlight_function_parameters = 1
-  let g:go_highlight_variable_declarations = 1
-  let g:go_highlight_variable_assignments = 1
-
-  let g:go_gopls_enabled = 0
-  let g:go_code_completion_enabled = 0
-  let g:go_fmt_command = 'gofmt'
-  let g:go_fmt_autosave = 0  " 关闭保存文件时自动 fmt 文件
-  let g:go_imports_mode = 'goimports'
-  let g:go_imports_autosave = 0
-  let g:go_def_mapping_enabled = 0  " 关闭跳转快捷键 gd
-  let g:go_doc_keywordprg_enabled = 0  " 关闭查看文档快捷键 K
-  " let g:go_get_update = 0  " 关闭自动更新依赖
-  let g:go_echo_go_info = 0  " 关闭代码补全后的识别信息提示"
-  let g:go_fmt_fail_silently = 1  " 隐藏 fmt 错误提示
-  let g:go_term_enabled=0  " go test 在 terminal 展示结果
-  let g:go_list_type = 'quickfix'
-  let g:go_list_height = 10
-  let g:go_term_reuse = 1
-  let g:go_term_close_on_exit = 0
-  " let g:go_term_mode = 'botright vsplit'
-  let g:go_term_enabled = 1
-  let g:go_def_mode = 'godef'
-  let g:go_referrers_mode = 'guru'
-  let g:go_implements_mode = 'guru'
-  let g:go_rename_command = 'gorename'
-
-
   " vim-markdown 配置
   " 兼容 github 默认识别 protobuf 高亮 Protobuf code, 而 vim 识别 proto
   " 高亮 bash code, vim 识别 sh 
   let g:vim_markdown_fenced_languages = ['protobuf=proto', 'bash=sh']
 
   " vim-codefmt 配置
+  augroup autoformat_settings
+    autocmd FileType proto,arduino AutoFormatBuffer clang-format
+  augroup END
+
+  " Vim 打开时将工作目录切换至工程目录
+  " https://vi.stackexchange.com/a/2559
+  " if has("win32") && has("nvim")
+  "   function InsertIfEmpty()
+  "       if @% != ""
+  " cd %:p:h
+  "       endif
+  "   endfunction
+
+  "   au VimEnter * call InsertIfEmpty()
+  " endif
+
+  au VimEnter * if exists(":Rooter") | Rooter | endif
+
+  " vim-instant-markdown 配置
+  " 安装外部依赖
+  " npm -g install instant-markdown-d
+  let g:instant_markdown_autostart = 0
+
   " vim-rooter 配置
   let g:rooter_manual_only = 1
 
-	" Vim 打开时将工作目录切换至工程目录
-	" https://vi.stackexchange.com/a/2559
-	" if has("win32") && has("nvim")
-	"   function InsertIfEmpty()
-	"       if @% != ""
-	" cd %:p:h
-	"       endif
-	"   endfunction
-
-	"   au VimEnter * call InsertIfEmpty()
-	" endif
-  au VimEnter * if exists(":Rooter") | Rooter | endif
-
-	" vim-instant-markdown 配置
-	" 安装外部依赖
-	" npm -g install instant-markdown-d
-	let g:instant_markdown_autostart = 0
-
-
-	" nnoremap <silent> <leader>hl :Git pull<CR>
+  " nnoremap <silent> <leader>hl :Git pull<CR>
   " nnoremap <silent> <leader>hh :Git push<CR>
 
   nnoremap <space>h :<C-u>CocList --normal gstatus<CR>
@@ -917,4 +929,4 @@ else  " if &diff
 
   " nmap <leader>hu :<C-u>CocCommand git.chunkUndo<CR>
   nnoremap <leader>hd :<C-u>Gdiffsplit<CR>
-endif  " if &diff
+endif " if &diff
