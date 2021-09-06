@@ -306,7 +306,7 @@ if has("win32") && has("nvim")
   onoremap <c-z> <nop>
 endif
 
-nnoremap <silent> <C-L> :nohl<CR><C-L>
+nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 
 " Terminal 模式使用 Esc 切换 Normal 模式，存在一定问题，例如在 Terminal 中再打开 vim
 " tnoremap <Esc> <C-\><C-n>
