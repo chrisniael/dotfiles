@@ -4,11 +4,7 @@ set mouse=a
 " Set Editor Font
 if exists(':GuiFont')
     " Use GuiFont! to ignore font errors
-    if has('win32')
-      GuiFont! Sarasa Term SC:h12
-    else
-      GuiFont! Hack Nerd Font Mono:h14
-    endif
+    GuiFont! Sarasa Term SC:h12
 endif
 
 " Disable GUI Tabline
@@ -41,3 +37,15 @@ if has("win32")
   cnoremap <silent> <c-z> :<C-u>suspend<CR>
   onoremap <silent> <c-z> :<C-u>suspend<CR>
 endif
+
+let g:is_full_screen = 0
+function! FullScreenToggle()
+  if g:is_full_screen == 0
+    call GuiWindowFullScreen(1)
+    let g:is_full_screen = 1
+  else
+    call GuiWindowFullScreen(0)
+    let g:is_full_screen = 0
+  endif
+endfunction
+nnoremap <silent><M-Enter> :<C-u>call FullScreenToggle()<CR>

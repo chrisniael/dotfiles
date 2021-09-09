@@ -30,7 +30,7 @@
     "<C-p>": "normal:k"
   },
   "list.normalMappings": {
-    "<C-o>": "insert:<C-o>"
+    "<C-o>": "command:"
   },
   "coc.preferences.formatOnSaveFiletypes": [
     "c",

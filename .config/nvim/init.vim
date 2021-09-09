@@ -12,7 +12,11 @@ if has('nvim')
   " Linux/Unix: ~/.local/share/nvim/plugged
   call plug#begin(stdpath('data') . '/plugged')
 else
-  call plug#begin('~/.vim/plugged')
+  if has("win32")
+    call plug#begin('~/vimfiles/plugged')
+  else
+    call plug#begin('~/.vim/plugged')
+  endif
 endif
 
 " 加快 git difftool 打开速度
@@ -38,13 +42,14 @@ if !&diff
   Plug 'google/vim-glaive'
   Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown'}
   Plug 'airblade/vim-rooter'
+  Plug 'voldikss/vim-floaterm'
+  Plug 'fatih/vim-go', { 'for': ['go'] }
 endif
 Plug 'morhetz/gruvbox'
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
 Plug 'tpope/vim-rsi'  " 可选替代 vim-husk
 " Plug 'gu-fan/riv.vim'
-Plug 'cespare/vim-toml'
-Plug 'fatih/vim-go', { 'for': ['go'] }
+Plug 'cespare/vim-toml', { 'for': ['toml'] }
 
 " Initialize plugin system
 call plug#end()
@@ -134,6 +139,9 @@ if $TERM_PROGRAM != "Apple_Terminal"
   call s:enable_true_color()
 endif
 
+" go 语法高亮额外的类型
+let g:go_highlight_extra_types = 1
+
 set cursorline
 
 " 设置垂直分隔符号
@@ -188,9 +196,9 @@ set smartindent
 
 " 缩进默认使用 2 Space
 set expandtab
-" set tabstop=2
+set tabstop=2
 set softtabstop=0
-" set shiftwidth=2
+set shiftwidth=2
 set smarttab
 
 " go 缩进符用 Tab
@@ -199,9 +207,12 @@ autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
 autocmd BufNewFile,BufRead *.json setlocal expandtab tabstop=2 shiftwidth=2
 " python 缩进符 4 Space
 autocmd BufNewFile,BufRead *.py setlocal expandtab tabstop=4 shiftwidth=4
-" php 缩进符 4 Spae
+" json 缩进符 4 Spae
 autocmd BufNewFile,BufRead *.json setlocal expandtab tabstop=4 shiftwidth=4
+" php 缩进符 4 Spae
 autocmd BufNewFile,BufRead *.php setlocal expandtab tabstop=4 shiftwidth=4
+" toml 缩进符 4 Spae
+autocmd BufNewFile,BufRead *.toml setlocal expandtab tabstop=4 shiftwidth=4
 
 " 设置匹配模式，例如当光标位于一个左括号上时，会高亮相应的那个右括号
 set showmatch
@@ -306,7 +317,7 @@ if has("win32") && has("nvim")
   onoremap <c-z> <nop>
 endif
 
-nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
+nnoremap <silent> <C-L> :<C-u>nohlsearch<CR><C-l>
 
 " Terminal 模式使用 Esc 切换 Normal 模式，存在一定问题，例如在 Terminal 中再打开 vim
 " tnoremap <Esc> <C-\><C-n>
@@ -328,40 +339,32 @@ if has("win32") && has("nvim")
   cnoremap <C-v> <C-r>*
 endif
 
-" vim-go
-let g:go_highlight_extra_types = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_types = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_function_calls = 1
-let g:go_highlight_fields = 1
-let g:go_highlight_function_parameters = 1
-let g:go_highlight_variable_declarations = 1
-let g:go_highlight_variable_assignments = 1
+" 同步 ssh 连接的 vim 剪切板到本地
+" https://lotabout.me/2019/Integrate-clipboard-with-SSH/
+if has("nvim")
+  " Mac 上 XQuartz 有 bug，不能同步 clipboard，只能同步
+  " primary，所以配置成都走 primary
+  if !has("win32")
+    let g:clipboard = {
+      \   'name': 'xclip-primary',
+      \   'copy': {
+      \      '+': 'xclip -i -selection primary',
+      \      '*': 'xclip -i -selection primary',
+      \    },
+      \   'paste': {
+      \      '+': 'xclip -o -selection primary',
+      \      '*': 'xclip -o -selection primary',
+      \   },
+      \   'cache_enabled': 0,
+      \ }
+  endif
 
-let g:go_gopls_enabled = 0
-let g:go_code_completion_enabled = 0
-let g:go_fmt_command = 'gofmt'
-let g:go_fmt_autosave = 0  " 关闭保存文件时自动 fmt 文件
-let g:go_imports_mode = 'goimports'
-let g:go_imports_autosave = 0
-let g:go_def_mapping_enabled = 0  " 关闭跳转快捷键 gd
-let g:go_doc_keywordprg_enabled = 0  " 关闭查看文档快捷键 K
-" let g:go_get_update = 0  " 关闭自动更新依赖
-let g:go_echo_go_info = 0  " 关闭代码补全后的识别信息提示"
-let g:go_fmt_fail_silently = 1  " 隐藏 fmt 错误提示
-let g:go_term_enabled=0  " go test 在 terminal 展示结果
-let g:go_list_type = 'quickfix'
-let g:go_list_height = 10
-let g:go_term_reuse = 1
-let g:go_term_close_on_exit = 0
-" let g:go_term_mode = 'botright vsplit'
-let g:go_term_enabled = 1
-let g:go_def_mode = 'godef'
-let g:go_referrers_mode = 'guru'
-let g:go_implements_mode = 'guru'
-let g:go_rename_command = 'gorename'
+  " 所有复制操作都同步至 primary 剪切板 +
+  set clipboard+=unnamedplus
+else
+  " :help clipboard-autoselect
+  set clipboard=unnamed
+endif
 
 
 " 仅仅适用于 diff 模式的配置
@@ -698,11 +701,11 @@ else  " if &diff
 
   " 自定义的 grep 命令，支持目录补全
   command! -nargs=+ -complete=dir CocListGrep exe 'CocList --normal grep '.<q-args>
-  nnoremap <space>g :<C-u>CocListGrep 
-  nnoremap <space>G :<C-u>CocListGrep -i 
+  nnoremap <space>g :<C-u>CocListGrep<space>
+  nnoremap <space>G :<C-u>CocListGrep -i<space>
   " Grep 光标所在单词
-  nnoremap <leader>g :<C-u>CocListGrep <C-R>=expand('<cword>')<CR> 
-  nnoremap <leader>G :<C-u>CocListGrep -i <C-R>=expand('<cword>')<CR> 
+  nnoremap <leader>g :<C-u>CocListGrep <C-R>=expand('<cword>')<CR>
+  nnoremap <leader>G :<C-u>CocListGrep -i <C-R>=expand('<cword>')<CR>
   " Grep visual 模式选择的文本
   vnoremap <leader>g :<C-u>call <SID>GrepFromSelected(visualmode())<CR>
   vnoremap <leader>G :<C-u>call <SID>GrepFromSelectedIgnoreCase(visualmode())<CR>
@@ -753,33 +756,6 @@ else  " if &diff
   " if has("nvim") && !empty($DISPLAY)
   "   let g:loaded_netrwPlugin = 1
   " endif
-
-
-  " 同步 ssh 连接的 vim 剪切板到本地
-  " https://lotabout.me/2019/Integrate-clipboard-with-SSH/
-  if has("nvim")
-    " Mac 上 XQuartz 有 bug，不能同步 clipboard，只能同步
-    " primary，所以配置成都走 primary
-    if !has("win32")
-      let g:clipboard = {
-        \   'name': 'xclip-primary',
-        \   'copy': {
-        \      '+': 'xclip -i -selection primary',
-        \      '*': 'xclip -i -selection primary',
-        \    },
-        \   'paste': {
-        \      '+': 'xclip -o -selection primary',
-        \      '*': 'xclip -o -selection primary',
-        \   },
-        \   'cache_enabled': 0,
-        \ }
-    endif
-    " 所有赋值操作都同步至 primary 剪切板 +
-    set clipboard+=unnamedplus
-  else
-    " :help clipboard-autoselect
-    set clipboard=unnamed
-  endif
 
   " asynctasks 配置
   let g:asynctasks_config_name = ['.tasks', '.vim/tasks.ini', '.git/tasks.ini', '.svn/tasks.ini']
@@ -877,7 +853,7 @@ else  " if &diff
 
   " vim-markdown 配置
   " 兼容 github 默认识别 protobuf 高亮 Protobuf code, 而 vim 识别 proto
-  " 高亮 bash code, vim 识别 sh 
+  " 高亮 bash code, vim 识别 sh
   let g:vim_markdown_fenced_languages = ['protobuf=proto', 'bash=sh']
 
   " vim-codefmt 配置
@@ -915,8 +891,8 @@ else  " if &diff
   " nmap [c <Plug>(coc-git-prevchunk)
   " nmap ]c <Plug>(coc-git-nextchunk)
   " navigate conflicts of current buffer
-  nmap [<S-c> <Plug>(coc-git-prevconflict)
-  nmap ]<S-c> <Plug>(coc-git-nextconflict)
+  nmap [x <Plug>(coc-git-prevconflict)
+  nmap ]x <Plug>(coc-git-nextconflict)
   " show chunk diff at current position
   " nmap <leader>hp <Plug>(coc-git-chunkinfo)
   " show commit contains current position
@@ -929,4 +905,39 @@ else  " if &diff
 
   " nmap <leader>hu :<C-u>CocCommand git.chunkUndo<CR>
   nnoremap <leader>hd :<C-u>Gdiffsplit<CR>
+
+  " vim-go
+  let g:go_highlight_extra_types = 1
+  let g:go_highlight_operators = 1
+  let g:go_highlight_types = 1
+  let g:go_highlight_functions = 1
+  let g:go_highlight_operators = 1
+  let g:go_highlight_function_calls = 1
+  let g:go_highlight_fields = 1
+  let g:go_highlight_function_parameters = 1
+  let g:go_highlight_variable_declarations = 1
+  let g:go_highlight_variable_assignments = 1
+
+  let g:go_gopls_enabled = 0
+  let g:go_code_completion_enabled = 0
+  let g:go_fmt_command = 'gofmt'
+  let g:go_fmt_autosave = 0  " 关闭保存文件时自动 fmt 文件
+  let g:go_imports_mode = 'goimports'
+  let g:go_imports_autosave = 0
+  let g:go_def_mapping_enabled = 0  " 关闭跳转快捷键 gd
+  let g:go_doc_keywordprg_enabled = 0  " 关闭查看文档快捷键 K
+  " let g:go_get_update = 0  " 关闭自动更新依赖
+  let g:go_echo_go_info = 0  " 关闭代码补全后的识别信息提示"
+  let g:go_fmt_fail_silently = 1  " 隐藏 fmt 错误提示
+  let g:go_term_enabled=0  " go test 在 terminal 展示结果
+  let g:go_list_type = 'quickfix'
+  let g:go_list_height = 10
+  let g:go_term_reuse = 1
+  let g:go_term_close_on_exit = 0
+  " let g:go_term_mode = 'botright vsplit'
+  let g:go_term_enabled = 1
+  let g:go_def_mode = 'godef'
+  let g:go_referrers_mode = 'guru'
+  let g:go_implements_mode = 'guru'
+  let g:go_rename_command = 'gorename'
 endif " if &diff
