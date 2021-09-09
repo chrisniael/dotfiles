@@ -1,15 +1,26 @@
+"----------------------------------------------------------------------
+" VSCode Neovim Plugin 配置
+" https://github.com/asvetliakov/vscode-neovim
+"----------------------------------------------------------------------
 if exists('g:vscode')
   set clipboard+=unnamedplus
   xmap gc  <Plug>VSCodeCommentary
   nmap gc  <Plug>VSCodeCommentary
   omap gc  <Plug>VSCodeCommentary
   nmap gcc <Plug>VSCodeCommentaryLine
+
+  " 类似于 return 结束整个脚本的执行
   finish
+
 endif
 
-" - Avoid using standard Vim directory names like 'plugin'
+"----------------------------------------------------------------------
+" vim-plugin 插件列表
+" https://github.com/junegunn/vim-plug
+" Avoid using standard Vim directory names like 'plugin'
+"----------------------------------------------------------------------
 if has('nvim')
-  " Linux/Unix: ~/.local/share/nvim/plugged
+  " Li/Unux: ~/.local/share/nvim/plugged
   call plug#begin(stdpath('data') . '/plugged')
 else
   if has("win32")
@@ -47,14 +58,17 @@ if !&diff
 endif
 Plug 'morhetz/gruvbox'
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
-Plug 'tpope/vim-rsi'  " 可选替代 vim-husk
+Plug 'tpope/vim-rsi'
 " Plug 'gu-fan/riv.vim'
 Plug 'cespare/vim-toml', { 'for': ['toml'] }
 
 " Initialize plugin system
 call plug#end()
 
-" coc.nvim 的插件
+
+"----------------------------------------------------------------------
+" coc.nvim 插件列表
+"----------------------------------------------------------------------
 let g:coc_global_extensions = [
       \ 'coc-yank',
       \ 'coc-pairs',
@@ -80,39 +94,81 @@ let g:coc_global_extensions = [
       \ 'coc-git',
       \ ]
 
-" 适用于所有场景的配置
+
+"----------------------------------------------------------------------
+" 字符缩进配置
+" TODO: 插件化
+" TODO: 可以支持项目目录本地化配置
+"----------------------------------------------------------------------
+" 缩进符号，0: 空格, 1: tab
+" let g:indent_char= 0
+
+" 缩进的字符数
+" let g:indent_char_num= 2
+
+" 缩进字符 tab
+let g:indent_tab_filetypes = ['go']
+
+" 缩进字符 2 空格
+let g:indent_2_space_filetypes = ['c', 'cpp', 'toml', 'json']
+
+" 缩进字符 4 空格
+let g:indent_4_space_filetypes = ['toml', 'php', 'python']
+
+
+"----------------------------------------------------------------------
+" 适用于 diff 与 非 diff 模式的配置
+"----------------------------------------------------------------------
+" 显示标题
+set title
+
 " vim 支持显示粗体与斜体
-" https://github.com/neovim/neovim/issues/3461#issuecomment-268640486
-" https://github.com/tmux/tmux/issues/2262#issuecomment-640166755
-" https://github.com/mhinz/dotfiles/blob/master/bin/fix-term
+" - https://github.com/neovim/neovim/issues/3461#issuecomment-268640486
+" - https://github.com/tmux/tmux/issues/2262#issuecomment-640166755
+" - https://github.com/mhinz/dotfiles/blob/master/bin/fix-term
 if !has("nvim")
   set t_ZH=[3m
   set t_ZR=[23m
 endif
 
-set title
-
-" 设置 gruvbox 主题 contrast 程度 (得放在 colorscheme 设置之前) : soft, medium (default), hard
+" 设置 gruvbox 主题 contrast 程度 (得放在 colorscheme 设置之前)
+" soft, medium (default), hard
 " let g:gruvbox_contrast_dark = 'hard'
 " let g:gruvbox_contrast_light = 'hard'
+
 " 设置 grubbox 主题支持粗体与斜体
 let g:gruvbox_bold = 1
 let g:gruvbox_italic = 1
-set t_Co=256  " 支持 xterm-256color
-syntax enable  " 语法高亮
-" 为了在没有安装 gruvbox 插件的时候不报错
+
+" 支持 xterm-256color
+set t_Co=256
+
+" 语法高亮
+syntax enable
+
+" 没有安装 gruvbox 插件的时候不报错
 silent! colorscheme gruvbox
+
 " changing coc highlight color cause light grey is invisible
 " BUT is overwritten by scheme so defining it in an autocmd after colorscheme change
 " https://github.com/neoclide/coc-highlight/issues/6
 autocmd ColorScheme * highlight CocHighlightText gui=None guibg=#665c54
+
+" 背景颜色, dark(default), light
 set background=dark
+
+" 透明背景
+" highlight Normal ctermbg=NONE guibg=NONE
+" highlight NonText ctermbg=NONE guibg=NONE
+
+" 显示行号
 set number
 
+" 开启 true color
 function! s:enable_true_color()
   if has("termguicolors")
     " fix bug for vim
-    " vim --version 查看是否有 +termguicolors，否则并不能启动 true color
+    " vim --version 查看是否有 +termguicolors, 否则并不能启动 true color
     if !has("nvim")
       set t_8f=[38;2;%lu;%lu;%lum
       set t_8b=[48;2;%lu;%lu;%lum
@@ -123,11 +179,11 @@ function! s:enable_true_color()
   endif
 endfunction
 
-" 不支持 true color 的 terminal : macOS Terminal
-" 支持 true color 的 terminal : iTerm2, Mintty, PuTTY
+" - 不支持 true color 的 terminal : macOS Terminal
+" - 支持 true color 的 terminal : iTerm2, Mintty, PuTTY
 " 暂时没有很好的方法判断 terminal 是否支持 true color
 " 暂时这样配置兼容 macOS 上的 Terminal 和 iTerm2
-" remote ssh 至 macOS 时，不存在 COLORTERM 这个环境变量
+" remote ssh 至 macOS 时, 不存在 COLORTERM 这个环境变量
 " if has("mac")
 "   if $COLORTERM == 'truecolor'
 "     call s:enable_true_color()
@@ -139,21 +195,22 @@ if $TERM_PROGRAM != "Apple_Terminal"
   call s:enable_true_color()
 endif
 
-" go 语法高亮额外的类型
-let g:go_highlight_extra_types = 1
-
+" 光标所在行突出显示
 set cursorline
 
-" 设置垂直分隔符号
-set fillchars+=vert:\ 
-
-" make vim highlight the current line on only the active buffer
+" Make vim highlight the current line on only the active buffer
 " https://stackoverflow.com/a/12018552
 augroup CursorLine
   au!
   au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
   au WinLeave * setlocal nocursorline
 augroup END
+
+" 不显示 tabline
+set showtabline=0
+
+" 设置垂直分隔符号, 配置最后有个空格字符, 使用空格作为垂直分隔符
+set fillchars+=vert:\ 
 
 " vim 默认打开文件时会显示文件信息 (:file), nvim 默认关闭
 " https://vi.stackexchange.com/a/17724/37455
@@ -162,8 +219,7 @@ set shortmess+=F
 " 设置Backspace模式
 set backspace=indent,eol,start
 
-" 启动vim时不自动折叠代码
-" 会影响 vim diff 打开速度
+" 启动vim时不自动折叠代码, 按 syntax 折叠代码会影响 vim diff 打开速度
 " set foldmethod=syntax
 set foldlevel=100
 
@@ -173,12 +229,14 @@ set foldcolumn=0
 " 帮助显示中文
 set helplang=cn
 
-" 缓冲区内容的编码，与系统当前locale相同
+" 缓冲区内容的编码, 与系统当前locale相同
 set encoding=utf-8
+
 " 读取/写入文件的编码
 set fileencoding=utf-8
 set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
-" 输出到终端内容的编码，neovim 中被移除了
+
+" 输出到终端内容的编码, neovim 中被移除了
 " set termencoding=utf-8
 
 " 自动切换工作路径
@@ -187,55 +245,68 @@ set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
 " 记录历史的行数
 set history=1000
 
-" 下面两行在进行编写代码时，在格式对起上很有用；
-" 第一行，vim使用自动对起，也就是把当前行的对起格式应用到下一行；
-" 第二行，依据上面的对起格式，智能的选择对起方式，对于类似C语言编
-" 写上很有用
+" 下面两行在进行编写代码时, 在格式对起上很有用；
+" 第一行, vim 使用自动对齐, 也就是把当前行的对起格式应用到下一行
+" 第二行, 依据上面的对起格式, 智能的选择对起方式, 对于类似 C 语言编写上很有用
 set autoindent
 set smartindent
 
-" 缩进默认使用 2 Space
+" 缩进默认使用 2 空格
 set expandtab
 set tabstop=2
 set softtabstop=0
 set shiftwidth=2
 set smarttab
 
-" go 缩进符用 Tab
-autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
-" json 缩进符 2 Space
-autocmd BufNewFile,BufRead *.json setlocal expandtab tabstop=2 shiftwidth=2
-" python 缩进符 4 Space
-autocmd BufNewFile,BufRead *.py setlocal expandtab tabstop=4 shiftwidth=4
-" json 缩进符 4 Spae
-autocmd BufNewFile,BufRead *.json setlocal expandtab tabstop=4 shiftwidth=4
-" php 缩进符 4 Spae
-autocmd BufNewFile,BufRead *.php setlocal expandtab tabstop=4 shiftwidth=4
-" toml 缩进符 4 Spae
-autocmd BufNewFile,BufRead *.toml setlocal expandtab tabstop=4 shiftwidth=4
+" 设置缩进字符
+function! SetFilesIndent(filetype_list, mode, width)
+  if len(a:filetype_list) == 0
+    return
+  endif
 
-" 设置匹配模式，例如当光标位于一个左括号上时，会高亮相应的那个右括号
+  let l:file_types_str = ""
+  for lang in a:filetype_list
+    " echom lang
+    let l:file_types_str= l:file_types_str. "," . lang
+    " echom l:file_types_str
+  endfor
+
+  " a:mode, 0: 空格, !0: Tab
+  let l:mode = "expandtab"
+  if a:mode != 0
+    let l:mode = "noexpandtab"
+  endif
+
+  execute "autocmd FileType " . l:file_types_str. " setlocal " . l:mode . " tabstop=" . a:width . " shiftwidth=" . a:width
+endfunction
+
+call SetFilesIndent(g:indent_tab_filetypes, 1, 4)
+call SetFilesIndent(g:indent_4_space_filetypes, 0, 4)
+
+" 设置匹配模式, 例如当光标位于一个左括号上时, 会高亮相应的那个右括号
 set showmatch
 
+" 移除GUI版本中的 toolbar 和菜单栏
 if has("gui_running")
-  " 移除GUI版本中的 toolbar 和菜单栏
   set guioptions=
   silent! set guifont=Sarasa\ Term\ SC:h12
 endif
 
-" 关闭错误响声和闪烁
+" 关闭错误响声
 set novisualbell
+
+" 关闭闪烁
 if !has('nvim')
   set t_vb=
 endif
 
-" 在编辑过程中，在右下角显示光标位置的状态行
+" 在编辑过程中, 在右下角显示光标位置的状态行
 set ruler
 
-" 查询时非常方便，如要查找book单词，当输入到/b时，会自动找到第一
-" 个b开头的单词，当输入到/bo时，会自动找到第一个bo开头的单词，依
-" 次类推，进行查找时，使用此设置会快速找到答案，当你找要匹配的单词
-" 时，别忘记回车
+" 查询时非常方便, 如要查找book单词, 当输入到/b时, 会自动找到第一个b开头的单词, 
+" 当输入到/bo时, 会自动找到第一个bo开头的单词, 依次类推, 进行查找时, 
+" 使用此设置会快速找到答案, 当你找要匹配的单词时, 别忘记回车
+" 关闭
 set noincsearch
 
 " 高亮查询结果
@@ -253,14 +324,17 @@ else
   set fileformats=unix
 endif
 
-" 设置鼠标模式
+" 启用鼠标
 set mouse=a
 
 " :make 的时候自动保存
 set autowrite
 
-" 重新编辑文件的时，光标定位到最后编辑的位置
+" 重新编辑文件的时, 光标定位到最后编辑的位置
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+" go 语法高亮额外的类型
+let g:go_highlight_extra_types = 1
 
 " proto文件高亮
 augroup filetype
@@ -277,37 +351,12 @@ augroup filetype
   autocmd! BufRead,BufNewFile .tasks setfiletype dosini
 augroup end
 
-" 命令行模式下，进入 popup menu 补全选择时，使用 enter 进行选择，而不是直接执行
-" nvim 5.0 <C-e> 快捷键表现与之前版本不一致，临时改成输出 Space 在删除掉一个字符
-" cnoremap <expr> <CR> pumvisible() ? "\<C-e>" : "\<CR>"
-cnoremap <expr> <CR> pumvisible() ? "\<Space><BS>" : "\<CR>"
-" TODO: <C-c> 取消 popup menu 选择，不使用任何一个补全
-" <C-k> 删除光标后面的所有字符
-" https://stackoverflow.com/a/26310522
-cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
-
-" 不显示 tabline
-set showtabline=0
-
 " 换行时不自动添加注释
 " https://vi.stackexchange.com/questions/1983/how-can-i-get-vim-to-stop-putting-comments-in-front-of-new-lines
 au FileType * set formatoptions-=c formatoptions-=r formatoptions-=o
 
-" riv 配置
-" let g:riv_highlight_code = 'lua,python,cpp,javascript,vim,sh,proto,c'
-" 处理 回车键绑定其他操作导致补全操作不符合期望的问题
-" autocmd FileType rst iunma <silent><buffer> <cr>
-
-" 透明背景
-" highlight Normal ctermbg=NONE guibg=NONE
-" highlight NonText ctermbg=NONE guibg=NONE
-
-" php $ 前缀问题
-" https://phpactor.readthedocs.io/en/master/lsp/vim.html#two-dollars-on-variables
-autocmd FileType php set iskeyword+=$
-
+" Windows 终端 C-z 会有问题
 if has("win32") && has("nvim")
-  " Windows 终端 C-z 会有问题
   nnoremap <c-z> <nop>
   inoremap <c-z> <nop>
   vnoremap <c-z> <nop>
@@ -317,19 +366,11 @@ if has("win32") && has("nvim")
   onoremap <c-z> <nop>
 endif
 
+" C-l 刷新时顺带消除搜索高亮
 nnoremap <silent> <C-L> :<C-u>nohlsearch<CR><C-l>
 
-" Terminal 模式使用 Esc 切换 Normal 模式，存在一定问题，例如在 Terminal 中再打开 vim
+" Terminal 模式使用 Esc 切换 Normal 模式, 存在一定问题, 例如在 Terminal 中再打开 vim
 " tnoremap <Esc> <C-\><C-n>
-
-" vim-cpp-enhanced-highlight 配置
-let g:cpp_class_scope_highlight = 1
-let g:cpp_member_variable_highlight = 1
-let g:cpp_class_decl_highlight = 1
-let g:cpp_posix_standard = 1
-let g:cpp_experimental_simple_template_highlight = 1
-" let g:cpp_experimental_template_highlight = 1
-let g:cpp_concepts_highlight = 1
 
 " windows nvim 粘贴快捷键
 if has("win32") && has("nvim")
@@ -342,9 +383,8 @@ endif
 " 同步 ssh 连接的 vim 剪切板到本地
 " https://lotabout.me/2019/Integrate-clipboard-with-SSH/
 if has("nvim")
-  " Mac 上 XQuartz 有 bug，不能同步 clipboard，只能同步
-  " primary，所以配置成都走 primary
-  if !has("win32")
+  " Mac 上 XQuartz 有 bug, 不能同步 clipboard, 只能同步 primary, 所以配置成都走 primary
+  if !has("win32") && !empty($SSH_CONNECTION)
     let g:clipboard = {
       \   'name': 'xclip-primary',
       \   'copy': {
@@ -367,17 +407,75 @@ else
 endif
 
 
-" 仅仅适用于 diff 模式的配置
+"----------------------------------------------------------------------
+" vim-rsi 配置
+" 可选替代 vim-husk
+"----------------------------------------------------------------------
+" 命令行模式下, 进入 popup menu 补全选择时, 使用 enter 进行选择, 而不是直接执行
+" nvim 5.0 <C-e> 快捷键表现与之前版本不一致, 临时改成输出 Space 在删除掉一个字符
+" cnoremap <expr> <CR> pumvisible() ? "\<C-e>" : "\<CR>"
+" TODO: <C-c> 取消 popup menu 选择, 不使用任何一个补全
+cnoremap <expr> <CR> pumvisible() ? "\<Space><BS>" : "\<CR>"
+
+" <C-k> 删除光标后面的所有字符
+" https://stackoverflow.com/a/26310522
+cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
+
+
+"----------------------------------------------------------------------
+" riv.vim 配置
+" https://github.com/gu-fan/riv.vim
+"----------------------------------------------------------------------
+" let g:riv_highlight_code = 'lua,python,cpp,javascript,vim,sh,proto,c'
+" 处理回车键绑定其他操作导致补全操作不符合期望的问题
+" autocmd FileType rst iunma <silent><buffer> <cr>
+
+
+"----------------------------------------------------------------------
+" coc-phpactor 配置
+"----------------------------------------------------------------------
+" php 变量补全时 $ 出现 2 个
+" https://phpactor.readthedocs.io/en/master/lsp/vim.html#two-dollars-on-variables
+autocmd FileType php set iskeyword+=$
+
+
+"----------------------------------------------------------------------
+" vim-cpp-enhanced-highlight 配置
+"----------------------------------------------------------------------
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:cpp_posix_standard = 1
+let g:cpp_experimental_simple_template_highlight = 1
+" let g:cpp_experimental_template_highlight = 1
+let g:cpp_concepts_highlight = 1
+
+
+"----------------------------------------------------------------------
+" 仅仅用于 diff 模式的配置
+"----------------------------------------------------------------------
 if &diff
+  " 不使用特定列高亮标记
   set colorcolumn=
+
+  " 命令行高度
   set cmdheight=1
-  set laststatus=1
+
+  " 不显示 status 信息，显示的话会多占用一行空间
+  set laststatus=0
+
+  " 在状态栏显示文件信息 (:file)
+  set shortmess-=F
 
   " vimdiff 折行
   au VimEnter * execute 'windo set wrap'
-else  " if &diff
+
+
+"----------------------------------------------------------------------
+" 仅仅用于非 diff 模式的配置
+"----------------------------------------------------------------------
+else 
   autocmd FileType c,cpp set colorcolumn=81
-  set cmdheight=2
   set laststatus=2
 
   " 不折行
@@ -390,8 +488,36 @@ else  " if &diff
   if has("nvim")
     au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
   endif
+ 
+  map <C-N> :cnext<CR>
+  map <C-P> :cprevious<CR>
 
-  " vim-airline 配置
+  " 自定义命令 W: 保存文件时不 format 文件
+  if !exists(':W')
+    command! W :noautocmd w
+  endif
+
+  if !exists(':Wq')
+    command! Wq :noautocmd wq
+  endif
+
+  if !exists(':Wqa')
+    command! Wqa :noautocmd wqa
+  endif
+
+  " 如果 tags 跳转存在多个选项, 则显示列表, 无则直接跳转
+  set cscopetag
+  set tags=./.tags;,.tags
+
+  " 高亮光标所在位置的单词, 并输入全文替换的命令, 替换单词代填充
+  nmap <leader>rp #<S-N>:%s/<C-R>=expand("<cword>")<CR>//g<Left><Left>
+
+  " \-x 关闭 buf
+  nmap <silent><leader>x :silent! bdelete<CR>
+
+  "----------------------------------------------------------------------
+  " vim-airline, vim-airline-theme 配置
+  "----------------------------------------------------------------------
   " set laststatus=2  " 底部显示状态栏, 1:不显示, 2:显示
   let g:airline_powerline_fonts = 1   " 使用 powerline 符号
   let g:airline_theme = "gruvbox"  " 设置主题
@@ -414,52 +540,25 @@ else  " if &diff
     nnoremap <silent> ]t :tabn<CR>
   endif
 
-  " Windows 部分字体不能显示 Ɇ 这个字符，可以改成 ∄ Ø
-  " https://github.com/vim-airline/vim-airline/issues/1729
-  " https://github.com/vim-airline/vim-airline/issues/1374
+  " Windows 部分字体不能显示 Ɇ 这个字符, 可以改成 ∄ Ø
+  " - https://github.com/vim-airline/vim-airline/issues/1729
+  " - https://github.com/vim-airline/vim-airline/issues/1374
   " if !exists('g:airline_symbols')
   "   let g:airline_symbols = {}
   " endif
   " let g:airline_symbols.notexists = '∄'
 
+
+  "----------------------------------------------------------------------
   " vim-gitgutter 配置
+  "----------------------------------------------------------------------
   " let g:gitgutter_set_sign_backgrounds = 1
 
-  map <C-N> :cnext<CR>
-  map <C-P> :cprevious<CR>
 
-  " 自定义命令 W: 保存文件时不 format 文件
-  if !exists(':W')
-    command! W :noautocmd w
-  endif
-
-  if !exists(':Wq')
-    command! Wq :noautocmd wq
-  endif
-
-  if !exists(':Wqa')
-    command! Wqa :noautocmd wqa
-  endif
-
-  " 自定义命令：Ctags 生成 tags 文件
-  func! Ctags()
-    exec '! ctags -R --c++-kinds=+pxI --fields=+niazS --extras=+q --exclude="*.json" --exclude="*.md" --exclude="*.html" --exclude="*.log" --exclude="*.make" --exclude="*.txt" --exclude="*.cmake" -o .tags'
-  endfunc
-
-  set cscopetag     " 如果 tags 跳转存在多个选项，则显示列表，无则直接跳转
-  set tags=./.tags;,.tags
-  if !exists(':Ctags')
-    command! Ctags call Ctags()
-  endif
-
-  " 高亮光标所在位置的单词，并输入全文替换的命令，替换单词代填充
-  nmap <leader>rp #<S-N>:%s/<C-R>=expand("<cword>")<CR>//g<Left><Left>
-
-  nmap <silent><leader>x :silent! bdelete<CR>
-
-
-
-  " 用两个 nvim 打开同一个文件会 coredump，关闭 swapfile 或者启动的时候不启用 coc
+  "----------------------------------------------------------------------
+  " coc.nvim 配置
+  "----------------------------------------------------------------------
+  " 用两个 nvim 打开同一个文件会 coredump, 关闭 swapfile 或者启动的时候不启用 coc
   " https://github.com/neoclide/coc.nvim/issues/1383
   let g:coc_start_at_startup = 0
   " 判断 exists 是为了在没有安装 Coc 的时候不报错
@@ -474,7 +573,7 @@ else  " if &diff
   set nowritebackup
 
   " Better display for messages
-  " set cmdheight=2
+  set cmdheight=2
 
   " You will have bad experience for diagnostic messages when it's default 4000.
   set updatetime=300
@@ -482,6 +581,7 @@ else  " if &diff
   " don't give |ins-completion-menu| messages.
   set shortmess+=c
 
+  " 显示符号列
   set signcolumn=yes
 
   " Use tab for trigger completion with characters ahead and navigate.
@@ -508,7 +608,7 @@ else  " if &diff
   " 类似 IDE 函数体 {} 自动缩进
   function! FunctionBracketAutoIndent()
     if col('.') > 1
-      " TODO(shenyu): trim 空格，判断是否最后一个字符为 }
+      " TODO(shenyu): trim 空格, 判断是否最后一个字符为 }
       let l:next_char = getline('.')[col('.')-1]
       if l:next_char == '}'
         return "\<cr>\<Esc>ko"
@@ -696,10 +796,11 @@ else  " if &diff
 
   " 文件列表
   nnoremap <silent> <space>f :<C-u>CocList files<cr>
+
   " Buffer 列表
   nnoremap <silent> <space>b :<C-u>CocList buffers<cr>
 
-  " 自定义的 grep 命令，支持目录补全
+  " 自定义的 grep 命令, 支持目录补全
   command! -nargs=+ -complete=dir CocListGrep exe 'CocList --normal grep '.<q-args>
   nnoremap <space>g :<C-u>CocListGrep<space>
   nnoremap <space>G :<C-u>CocListGrep -i<space>
@@ -740,24 +841,31 @@ else  " if &diff
     execute 'CocList --normal grep -i '.word
   endfunction
 
-
   " 历史剪切板列表
   nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
 
 
+  "----------------------------------------------------------------------
   " vim-commentary 配置
+  "----------------------------------------------------------------------
   autocmd FileType c,cpp setlocal commentstring=//%s
 
+
+  "----------------------------------------------------------------------
+  " netrwPlugin 配置
+  "----------------------------------------------------------------------
   " 关闭 netrw, neovim 使用 X11 forwarding 时会卡顿
   " neovim 5.0 已经解决这个问题
-  " https://github.com/neovim/neovim/issues/6048
-  " https://github.com/neovim/neovim/issues/11089
-  "
+  " - https://github.com/neovim/neovim/issues/6048
+  " - https://github.com/neovim/neovim/issues/11089
   " if has("nvim") && !empty($DISPLAY)
   "   let g:loaded_netrwPlugin = 1
   " endif
 
-  " asynctasks 配置
+
+  "----------------------------------------------------------------------
+  " asynctasks.vim 配置
+  "----------------------------------------------------------------------
   let g:asynctasks_config_name = ['.tasks', '.vim/tasks.ini', '.git/tasks.ini', '.svn/tasks.ini']
   let g:asyncrun_open = 10
   let g:asynctasks_term_pos = 'thelp'
@@ -823,10 +931,17 @@ else  " if &diff
   nmap <M-r> :call AsyncTaskRun()<CR>
   " autocmd FileType go nmap <M-t> :GoTestFunc -v<CR>
 
-  " vim-terminal-help
+
+  "----------------------------------------------------------------------
+  " vim-terminal-help 配置
+  "----------------------------------------------------------------------
   let g:terminal_cwd = 2 " project root
   let g:terminal_pos = 'top'
 
+
+  "----------------------------------------------------------------------
+  " coc-smartf 配置
+  "----------------------------------------------------------------------
   " press <esc> to cancel.
   nmap f <Plug>(coc-smartf-forward)
   nmap F <Plug>(coc-smartf-backward)
@@ -838,28 +953,45 @@ else  " if &diff
     autocmd User SmartfLeave :hi Conceal ctermfg=239 guifg=#504945
   augroup end
 
+  "----------------------------------------------------------------------
   " coc-dictionary
-  " https://vim.fandom.com/wiki/Dictionary_completions
+  "----------------------------------------------------------------------
   " vim set option 不能使用 variable
-  " https://vi.stackexchange.com/a/17451/37455
+  " - https://vim.fandom.com/wiki/Dictionary_completions
+  " - https://vi.stackexchange.com/a/17451/37455
   if exists("*coc#util#get_config_home")
     let $COC_CONFIG_HOME = coc#util#get_config_home()
     set dictionary+=$COC_CONFIG_HOME/dic.txt
   endif
 
-  " vim-lua-foramt
+
+  "----------------------------------------------------------------------
+  " vim-lua-foramt 配置
+  "----------------------------------------------------------------------
   autocmd FileType lua nnoremap <buffer> <silent><leader>f :call LuaFormat()<CR>
   autocmd BufWrite *.lua call LuaFormat()
 
+
+  "----------------------------------------------------------------------
   " vim-markdown 配置
+  "----------------------------------------------------------------------
   " 兼容 github 默认识别 protobuf 高亮 Protobuf code, 而 vim 识别 proto
   " 高亮 bash code, vim 识别 sh
   let g:vim_markdown_fenced_languages = ['protobuf=proto', 'bash=sh']
 
+
+  "----------------------------------------------------------------------
   " vim-codefmt 配置
+  "----------------------------------------------------------------------
   augroup autoformat_settings
     autocmd FileType proto,arduino AutoFormatBuffer clang-format
   augroup END
+
+
+  "----------------------------------------------------------------------
+  " vim-rooter 配置
+  "----------------------------------------------------------------------
+  let g:rooter_manual_only = 1
 
   " Vim 打开时将工作目录切换至工程目录
   " https://vi.stackexchange.com/a/2559
@@ -875,17 +1007,26 @@ else  " if &diff
 
   au VimEnter * if exists(":Rooter") | Rooter | endif
 
+
+  "----------------------------------------------------------------------
   " vim-instant-markdown 配置
   " 安装外部依赖
   " npm -g install instant-markdown-d
+  "----------------------------------------------------------------------
   let g:instant_markdown_autostart = 0
 
-  " vim-rooter 配置
-  let g:rooter_manual_only = 1
 
+  "----------------------------------------------------------------------
+  " vim-gitgutter 配置
+  "----------------------------------------------------------------------
   " nnoremap <silent> <leader>hl :Git pull<CR>
   " nnoremap <silent> <leader>hh :Git push<CR>
+  nnoremap <leader>hd :<C-u>Gdiffsplit<CR>
 
+
+  "----------------------------------------------------------------------
+  " coc-git 配置
+  "----------------------------------------------------------------------
   nnoremap <space>h :<C-u>CocList --normal gstatus<CR>
   " navigate chunks of current buffer
   " nmap [c <Plug>(coc-git-prevchunk)
@@ -904,9 +1045,11 @@ else  " if &diff
   xmap ag <Plug>(coc-git-chunk-outer)
 
   " nmap <leader>hu :<C-u>CocCommand git.chunkUndo<CR>
-  nnoremap <leader>hd :<C-u>Gdiffsplit<CR>
 
-  " vim-go
+
+  "----------------------------------------------------------------------
+  " vim-go 配置
+  "----------------------------------------------------------------------
   let g:go_highlight_extra_types = 1
   let g:go_highlight_operators = 1
   let g:go_highlight_types = 1
@@ -921,15 +1064,31 @@ else  " if &diff
   let g:go_gopls_enabled = 0
   let g:go_code_completion_enabled = 0
   let g:go_fmt_command = 'gofmt'
-  let g:go_fmt_autosave = 0  " 关闭保存文件时自动 fmt 文件
+
+  " 关闭保存文件时自动 fmt 文件
+  let g:go_fmt_autosave = 0
+
   let g:go_imports_mode = 'goimports'
   let g:go_imports_autosave = 0
-  let g:go_def_mapping_enabled = 0  " 关闭跳转快捷键 gd
-  let g:go_doc_keywordprg_enabled = 0  " 关闭查看文档快捷键 K
-  " let g:go_get_update = 0  " 关闭自动更新依赖
-  let g:go_echo_go_info = 0  " 关闭代码补全后的识别信息提示"
-  let g:go_fmt_fail_silently = 1  " 隐藏 fmt 错误提示
-  let g:go_term_enabled=0  " go test 在 terminal 展示结果
+
+  " 关闭跳转快捷键 gd
+  let g:go_def_mapping_enabled = 0
+
+  " 关闭查看文档快捷键 K
+  let g:go_doc_keywordprg_enabled = 0
+
+  " 关闭自动更新依赖
+  " let g:go_get_update = 0
+
+  " 关闭代码补全后的识别信息提示"
+  let g:go_echo_go_info = 0
+
+  " 隐藏 fmt 错误提示
+  let g:go_fmt_fail_silently = 1
+
+  " go test 在 terminal 展示结果
+  let g:go_term_enabled=0
+
   let g:go_list_type = 'quickfix'
   let g:go_list_height = 10
   let g:go_term_reuse = 1
@@ -940,4 +1099,4 @@ else  " if &diff
   let g:go_referrers_mode = 'guru'
   let g:go_implements_mode = 'guru'
   let g:go_rename_command = 'gorename'
-endif " if &diff
+endif
