@@ -1,14 +1,5 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-
 # Path to your oh-my-zsh installation.
 export ZSH="${HOME}/.oh-my-zsh"
-
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-# ZSH_THEME="robbyrussell"
 
 # 使用 powerline 主题时，注释掉 ZSH_THEME 和 DEFAULT_USER 变量
 # pip install powerline-status
@@ -47,69 +38,7 @@ else
   ZSH_THEME="agnoster"
 fi
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# Caution: this setting can cause issues with multiline prompts (zsh 5.7.1 and newer seem to work)
-# See https://github.com/ohmyzsh/ohmyzsh/issues/5765
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-# plugins=(git)
-
-# zsh-vim-mode 安装
+# 安装 zsh-vim-mode
 # cd $ZSH_CUSTOM/plugins
 # git clone https://github.com/softmoth/zsh-vim-mode.git
 if [ -d $HOME/.oh-my-zsh/custom/plugins/zsh-vim-mode ]; then
@@ -120,31 +49,14 @@ fi
 
 source $ZSH/oh-my-zsh.sh
 
+
+#----------------------------------------------------------------------
 # User configuration
-
+#----------------------------------------------------------------------
 # export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # 确保 source ~/.zshrc 的时候不会重复追加 PATH 的值
 if [[ -z "$TMUX" ]]; then
@@ -186,8 +98,6 @@ if [[ "${OS}" == "Darwin" ]]; then
   # Fix GitHub API rate limit exceeded
   export HOMEBREW_GITHUB_API_TOKEN=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
 
-  export GOPATH="/Users/shenyu/Documents/go"
-
   export PATH="/usr/local/sbin:$PATH"
   export PATH="/usr/local/opt/ruby/bin:$PATH"
   export PATH="/usr/local/opt/openssl/bin:$PATH"
@@ -196,7 +106,6 @@ if [[ "${OS}" == "Darwin" ]]; then
   export PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
   export PATH="/usr/local/opt/ncurses/bin:$PATH"
   export PATH=$PATH:/usr/local/opt/llvm/bin
-  export PATH=$PATH:$GOPATH/bin
   # 这个命令会让 zsh 启动变特别慢, 直接指定路径加速启动
   # export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
   export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/usr/local/opt/openssl@1.1"
@@ -206,10 +115,6 @@ if [[ "${OS}" == "Darwin" ]]; then
   export C_INCLUDE_PATH="$C_INCLUDE_PATH:/usr/local/include"
   export CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/local/include"
   export OBJC_INCLUDE_PATH="$OBJC_INCLUDE_PATH:/usr/local/lib"
-
-  bindkey \^U backward-kill-line
-  bindkey '\e[1~' beginning-of-line
-  bindkey '\e[4~' end-of-line
 else
   if hash exa >/dev/null 2>&1; then
     alias ls='exa -F'
@@ -227,17 +132,12 @@ else
       arch|manjaro)
         alias gdb="sudo gdb"
 
-        export GOPATH="$HOME/.config/go"
-
-        export PATH="$PATH:$GOPATH/bin"
-        export PATH="/squashfs-root/usr/bin:$PATH"
         export PATH="$HOME/.gem/ruby/2.7.0/bin:$PATH"
         ;
         ;;
       ubuntu)
         ;;
       centos)
-        export PATH="/squashfs-root/usr/bin:$PATH"
         ;;
       *)
         ;;
@@ -245,12 +145,17 @@ else
   fi
 fi
 
-if [[ -d $HOME/.config/bin ]]; then
-  export PATH="$HOME/.config/bin:$PATH"
+if [[ -d $HOME/.go ]]; then
+  export GOPATH="$HOME/.go"
+  export PATH="$PATH:$GOPATH/bin"
 fi
 
-if [[ -d $HOME/.vim/plugged/asynctasks.vim/bin ]]; then
-  export PATH="$HOME/.vim/plugged/asynctasks.vim/bin:$PATH"
+if [[ -d $HOME/.bin ]]; then
+  export PATH="$HOME/.bin:$PATH"
+fi
+
+if [[ -d $HOME/.local/share/nvim/plugged/asynctasks.vim/bin ]]; then
+  export PATH="$HOME/.local/share/nvim/plugged/asynctasks.vim/bin:$PATH"
   alias t='asynctask -f'
 fi
 
@@ -303,16 +208,15 @@ if [[ "$(uname -r | grep -Eo Microsoft)" == "Microsoft" ]]; then
     umask 022
   fi
 
-  # WSL local nost auto set DISPLAY variable
+  # WSL local not auto set DISPLAY variable
   if [[ -z "$SSH_CONNECTION" ]]; then
     export DISPLAY=:0.0
   fi
 fi
 
-
 if [[ -n "$NVIM_LISTEN_ADDRESS" ]]; then
-  if [ -d $HOME/.vim/plugged/vim-floaterm/bin ]; then
-    export PATH="$HOME/.vim/plugged/vim-floaterm/bin:$PATH"
+  if [ -d $HOME/.local/share/nvim/plugged/vim-floaterm/bin ]; then
+    export PATH="$HOME/.local/share/nvim/plugged/vim-floaterm/bin:$PATH"
     alias vim="floaterm"
   fi
 fi
@@ -321,12 +225,12 @@ export LANG=en_US.UTF-8
 export XAUTHORITY=$HOME/.Xauthority
 export EDITOR=nvim
 
-ulimit -c unlimited
-ulimit -n 20480
+# ulimit -c unlimited
+# ulimit -n 20480
 
-bindkey \^U backward-kill-line
-bindkey '\e[1~' beginning-of-line
-bindkey '\e[4~' end-of-line
+# Vi mode
+# https://zsh.sourceforge.io/Guide/zshguide04.html
+bindkey -v
 
 # tmux 启动的时候存在 attached 的 session 则 attach 它并剔除所有其他客户端，不存在则创建一个新的
 # 仅仅 ssh 连接时自动启动 tmux
