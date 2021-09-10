@@ -409,6 +409,7 @@ endif
 
 "----------------------------------------------------------------------
 " vim-rsi 配置
+" https://github.com/tpope/vim-rsi
 " 可选替代 vim-husk
 "----------------------------------------------------------------------
 " 命令行模式下, 进入 popup menu 补全选择时, 使用 enter 进行选择, 而不是直接执行
@@ -433,6 +434,7 @@ cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
 
 "----------------------------------------------------------------------
 " coc-phpactor 配置
+" https://github.com/phpactor/coc-phpactor
 "----------------------------------------------------------------------
 " php 变量补全时 $ 出现 2 个
 " https://phpactor.readthedocs.io/en/master/lsp/vim.html#two-dollars-on-variables
@@ -441,6 +443,7 @@ autocmd FileType php set iskeyword+=$
 
 "----------------------------------------------------------------------
 " vim-cpp-enhanced-highlight 配置
+" https://github.com/octol/vim-cpp-enhanced-highlight
 "----------------------------------------------------------------------
 let g:cpp_class_scope_highlight = 1
 let g:cpp_member_variable_highlight = 1
@@ -517,6 +520,8 @@ else
 
   "----------------------------------------------------------------------
   " vim-airline, vim-airline-theme 配置
+  " - https://github.com/vim-airline/vim-airline
+  " - https://github.com/vim-airline/vim-airline-themes
   "----------------------------------------------------------------------
   " set laststatus=2  " 底部显示状态栏, 1:不显示, 2:显示
   let g:airline_powerline_fonts = 1   " 使用 powerline 符号
@@ -551,12 +556,14 @@ else
 
   "----------------------------------------------------------------------
   " vim-gitgutter 配置
+  " https://github.com/airblade/vim-gitgutter
   "----------------------------------------------------------------------
   " let g:gitgutter_set_sign_backgrounds = 1
 
 
   "----------------------------------------------------------------------
   " coc.nvim 配置
+  " https://github.com/neoclide/coc.nvim
   "----------------------------------------------------------------------
   " 用两个 nvim 打开同一个文件会 coredump, 关闭 swapfile 或者启动的时候不启用 coc
   " https://github.com/neoclide/coc.nvim/issues/1383
@@ -739,11 +746,14 @@ else
   " autocmd FileType c,cpp nmap <silent> gh :call <SID>EditAlternate()<CR>
   autocmd FileType c,cpp nmap <silent> gh :CocCommand clangd.switchSourceHeader<CR>
 
+
+  "----------------------------------------------------------------------
   " coc-lists 配置
   " -A : 自动预览模式
   " --number-select : 显示行号, 也可以用行号选择
   " --normal : normal 模式
   " -I : interactive 模式
+  "----------------------------------------------------------------------
   " cnoreabbrev CocList CocList --number-select
 
   " 在当前 buffer 中搜索光标所在单词
@@ -847,12 +857,14 @@ else
 
   "----------------------------------------------------------------------
   " vim-commentary 配置
+  " https://github.com/tpope/vim-commentary
   "----------------------------------------------------------------------
   autocmd FileType c,cpp setlocal commentstring=//%s
 
 
   "----------------------------------------------------------------------
   " netrwPlugin 配置
+  " https://github.com/vim/vim/blob/master/runtime/plugin/netrwPlugin.vim
   "----------------------------------------------------------------------
   " 关闭 netrw, neovim 使用 X11 forwarding 时会卡顿
   " neovim 5.0 已经解决这个问题
@@ -865,6 +877,7 @@ else
 
   "----------------------------------------------------------------------
   " asynctasks.vim 配置
+  " https://github.com/skywind3000/asynctasks.vim
   "----------------------------------------------------------------------
   let g:asynctasks_config_name = ['.tasks', '.vim/tasks.ini', '.git/tasks.ini', '.svn/tasks.ini']
   let g:asyncrun_open = 10
@@ -934,6 +947,7 @@ else
 
   "----------------------------------------------------------------------
   " vim-terminal-help 配置
+  " https://github.com/skywind3000/vim-terminal-help
   "----------------------------------------------------------------------
   let g:terminal_cwd = 2 " project root
   let g:terminal_pos = 'top'
@@ -941,6 +955,7 @@ else
 
   "----------------------------------------------------------------------
   " coc-smartf 配置
+  " https://github.com/neoclide/coc-smartf
   "----------------------------------------------------------------------
   " press <esc> to cancel.
   nmap f <Plug>(coc-smartf-forward)
@@ -955,6 +970,7 @@ else
 
   "----------------------------------------------------------------------
   " coc-dictionary
+  " https://github.com/neoclide/coc-sources
   "----------------------------------------------------------------------
   " vim set option 不能使用 variable
   " - https://vim.fandom.com/wiki/Dictionary_completions
@@ -967,6 +983,7 @@ else
 
   "----------------------------------------------------------------------
   " vim-lua-foramt 配置
+  " https://github.com/andrejlevkovitch/vim-lua-format
   "----------------------------------------------------------------------
   autocmd FileType lua nnoremap <buffer> <silent><leader>f :call LuaFormat()<CR>
   autocmd BufWrite *.lua call LuaFormat()
@@ -974,6 +991,7 @@ else
 
   "----------------------------------------------------------------------
   " vim-markdown 配置
+  " https://github.com/plasticboy/vim-markdown
   "----------------------------------------------------------------------
   " 兼容 github 默认识别 protobuf 高亮 Protobuf code, 而 vim 识别 proto
   " 高亮 bash code, vim 识别 sh
@@ -982,6 +1000,7 @@ else
 
   "----------------------------------------------------------------------
   " vim-codefmt 配置
+  " https://github.com/google/vim-codefmt
   "----------------------------------------------------------------------
   augroup autoformat_settings
     autocmd FileType proto,arduino AutoFormatBuffer clang-format
@@ -990,6 +1009,7 @@ else
 
   "----------------------------------------------------------------------
   " vim-rooter 配置
+  " https://github.com/airblade/vim-rooter
   "----------------------------------------------------------------------
   let g:rooter_manual_only = 1
 
@@ -1010,6 +1030,7 @@ else
 
   "----------------------------------------------------------------------
   " vim-instant-markdown 配置
+  " https://github.com/instant-markdown/vim-instant-markdown
   " 安装外部依赖
   " npm -g install instant-markdown-d
   "----------------------------------------------------------------------
@@ -1018,6 +1039,7 @@ else
 
   "----------------------------------------------------------------------
   " vim-gitgutter 配置
+  " https://github.com/airblade/vim-gitgutter
   "----------------------------------------------------------------------
   " nnoremap <silent> <leader>hl :Git pull<CR>
   " nnoremap <silent> <leader>hh :Git push<CR>
@@ -1026,6 +1048,7 @@ else
 
   "----------------------------------------------------------------------
   " coc-git 配置
+  " https://github.com/neoclide/coc-git
   "----------------------------------------------------------------------
   nnoremap <space>h :<C-u>CocList --normal gstatus<CR>
   " navigate chunks of current buffer
@@ -1049,6 +1072,7 @@ else
 
   "----------------------------------------------------------------------
   " vim-go 配置
+  " https://github.com/fatih/vim-go
   "----------------------------------------------------------------------
   let g:go_highlight_extra_types = 1
   let g:go_highlight_operators = 1
