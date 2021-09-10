@@ -137,8 +137,12 @@ endif
 " let g:gruvbox_contrast_light = 'hard'
 
 " 设置 grubbox 主题支持粗体与斜体
+" Windows 上斜体会有显示残留问题
+" https://github.com/equalsraf/neovim-qt/issues/812
 let g:gruvbox_bold = 1
-let g:gruvbox_italic = 1
+if !has("win32")
+  let g:gruvbox_italic = 1
+endif
 
 " 支持 xterm-256color
 set t_Co=256
