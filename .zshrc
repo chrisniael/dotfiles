@@ -164,6 +164,7 @@ alias cp="cp -i"                            #"复制"
 alias mv="mv -i"                            #"移动"
 alias mkdir="mkdir -v"                      #"新建时会提示
 alias grep="grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox} --line-buffered"
+alias vim="nvim"
 
 function unproxy() {
   unset {http,https,ftp,rsync,all}_proxy
