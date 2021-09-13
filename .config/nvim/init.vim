@@ -307,8 +307,8 @@ endif
 " 在编辑过程中, 在右下角显示光标位置的状态行
 set ruler
 
-" 查询时非常方便, 如要查找book单词, 当输入到/b时, 会自动找到第一个b开头的单词, 
-" 当输入到/bo时, 会自动找到第一个bo开头的单词, 依次类推, 进行查找时, 
+" 查询时非常方便, 如要查找book单词, 当输入到/b时, 会自动找到第一个b开头的单词,
+" 当输入到/bo时, 会自动找到第一个bo开头的单词, 依次类推, 进行查找时,
 " 使用此设置会快速找到答案, 当你找要匹配的单词时, 别忘记回车
 " 关闭
 set noincsearch
@@ -465,7 +465,7 @@ if &diff
 "----------------------------------------------------------------------
 " 仅仅用于非 diff 模式的配置
 "----------------------------------------------------------------------
-else 
+else
   autocmd FileType c,cpp set colorcolumn=81
   set laststatus=2
 
@@ -479,7 +479,7 @@ else
   if has("nvim")
     au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
   endif
- 
+
   map <C-N> :cnext<CR>
   map <C-P> :cprevious<CR>
 
