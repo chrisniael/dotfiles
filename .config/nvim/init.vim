@@ -376,13 +376,13 @@ nnoremap <silent> <C-L> :<C-u>nohlsearch<CR><C-l>
 " Terminal 模式使用 Esc 切换 Normal 模式, 存在一定问题, 例如在 Terminal 中再打开 vim
 " tnoremap <Esc> <C-\><C-n>
 
-" windows nvim 粘贴快捷键
-if has("win32") && has("nvim")
+" 粘贴快捷键
+if has("nvim")
   inoremap <S-Insert> <C-r>*
   cnoremap <S-Insert> <C-r>*
-  inoremap <C-v> <C-r>*
-  cnoremap <C-v> <C-r>*
 endif
+inoremap <C-v> <C-r>*
+cnoremap <C-v> <C-r>*
 
 " 同步 ssh 连接的 vim 剪切板到本地
 " https://lotabout.me/2019/Integrate-clipboard-with-SSH/
