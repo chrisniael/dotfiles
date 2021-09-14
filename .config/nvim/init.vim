@@ -61,6 +61,7 @@ Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
 " Plug 'gu-fan/riv.vim'
 Plug 'cespare/vim-toml', { 'for': ['toml'] }
 Plug 'chrisniael/rsi.vim'
+Plug 'chrisniael/indent.vim'
 
 " Initialize plugin system
 call plug#end()
@@ -97,23 +98,16 @@ let g:coc_global_extensions = [
 
 "----------------------------------------------------------------------
 " 字符缩进配置
-" TODO: 插件化
 " TODO: 可以支持项目目录本地化配置
 "----------------------------------------------------------------------
-" 缩进符号，0: 空格, 1: tab
-" let g:indent_char= 0
-
-" 缩进的字符数
-" let g:indent_char_num= 2
-
-" 缩进字符 tab
-let g:indent_tab_filetypes = ['go']
+" 缩进字符 tab, 宽度 4
+let g:indent_tab_4w_filetypes = ['go']
 
 " 缩进字符 2 空格
-let g:indent_2_space_filetypes = ['c', 'cpp', 'toml', 'json']
+let g:indent_space_2w_filetypes = ['c', 'cpp', 'toml', 'json']
 
 " 缩进字符 4 空格
-let g:indent_4_space_filetypes = ['toml', 'php', 'python']
+let g:indent_space_4w_filetypes = ['toml', 'php', 'python']
 
 
 "----------------------------------------------------------------------
@@ -248,44 +242,6 @@ set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
 
 " 记录历史的行数
 set history=1000
-
-" 下面两行在进行编写代码时, 在格式对起上很有用；
-" 第一行, vim 使用自动对齐, 也就是把当前行的对起格式应用到下一行
-" 第二行, 依据上面的对起格式, 智能的选择对起方式, 对于类似 C 语言编写上很有用
-set autoindent
-set smartindent
-
-" 缩进默认使用 2 空格
-set expandtab
-set tabstop=2
-set softtabstop=0
-set shiftwidth=2
-set smarttab
-
-" 设置缩进字符
-function! SetFilesIndent(filetype_list, mode, width)
-  if len(a:filetype_list) == 0
-    return
-  endif
-
-  let l:file_types_str = ""
-  for lang in a:filetype_list
-    " echom lang
-    let l:file_types_str= l:file_types_str. "," . lang
-    " echom l:file_types_str
-  endfor
-
-  " a:mode, 0: 空格, !0: Tab
-  let l:mode = "expandtab"
-  if a:mode != 0
-    let l:mode = "noexpandtab"
-  endif
-
-  execute "autocmd FileType " . l:file_types_str. " setlocal " . l:mode . " tabstop=" . a:width . " shiftwidth=" . a:width
-endfunction
-
-call SetFilesIndent(g:indent_tab_filetypes, 1, 4)
-call SetFilesIndent(g:indent_4_space_filetypes, 0, 4)
 
 " 设置匹配模式, 例如当光标位于一个左括号上时, 会高亮相应的那个右括号
 set showmatch
