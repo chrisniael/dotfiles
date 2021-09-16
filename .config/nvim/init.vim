@@ -509,12 +509,6 @@ else
   " coc.nvim 配置
   " https://github.com/neoclide/coc.nvim
   "----------------------------------------------------------------------
-  " 用两个 nvim 打开同一个文件会 coredump, 关闭 swapfile 或者启动的时候不启用 coc
-  " https://github.com/neoclide/coc.nvim/issues/1383
-  let g:coc_start_at_startup = 0
-  " 判断 exists 是为了在没有安装 Coc 的时候不报错
-  autocmd VimEnter * if exists(':CocStart') | execute 'CocStart' | endif
-
   " 开启 semantic highlighting 支持
   " https://github.com/clangd/coc-clangd/issues/217#issuecomment-898130176
   let g:coc_default_semantic_highlight_groups = 1
