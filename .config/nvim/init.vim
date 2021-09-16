@@ -33,7 +33,7 @@ endif
 " 加快 git difftool 打开速度
 if !&diff
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  Plug 'jackguo380/vim-lsp-cxx-highlight'
+  " Plug 'jackguo380/vim-lsp-cxx-highlight'
   Plug 'airblade/vim-gitgutter'
   Plug 'tpope/vim-fugitive'
   Plug 'vim-airline/vim-airline'
@@ -57,7 +57,7 @@ if !&diff
   " Plug 'fatih/vim-go', { 'for': ['go'] }
 endif
 Plug 'morhetz/gruvbox'
-Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
+" Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
 " Plug 'gu-fan/riv.vim'
 Plug 'cespare/vim-toml', { 'for': ['toml'] }
 Plug 'chrisniael/rsi.vim'
@@ -515,7 +515,10 @@ else
   " 判断 exists 是为了在没有安装 Coc 的时候不报错
   autocmd VimEnter * if exists(':CocStart') | execute 'CocStart' | endif
 
-  " coc.nvim 配置, vimdiff 模式下不加载
+  " 开启 semantic highlighting 支持
+  " https://github.com/clangd/coc-clangd/issues/217#issuecomment-898130176
+  let g:coc_default_semantic_highlight_groups = 1
+
   " if hidden is not set, TextEdit might fail.
   set hidden
 
