@@ -54,7 +54,7 @@ if !&diff
   Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown'}
   Plug 'airblade/vim-rooter'
   Plug 'voldikss/vim-floaterm'
-  Plug 'fatih/vim-go', { 'for': ['go'] }
+  " Plug 'fatih/vim-go', { 'for': ['go'] }
 endif
 Plug 'morhetz/gruvbox'
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
