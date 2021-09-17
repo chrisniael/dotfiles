@@ -291,6 +291,6 @@ else
 fi
 
 # 加载自定义配置
-if [ -f "${HOME}/.zshrc_custom" ]; then
-  source "${HOME}/.zshrc_custom"
+if [ -f "${HOME}/.zshrc_local" ]; then
+  source "${HOME}/.zshrc_local"
 fi
