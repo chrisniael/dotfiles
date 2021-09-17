@@ -36,6 +36,7 @@
   "list.normalMappings": {
     "<C-o>": "command:"
   },
+  "coc.preferences.formatOnType": true,
   "coc.preferences.formatOnSaveFiletypes": [
     "c",
     "cpp",
