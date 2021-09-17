@@ -553,27 +553,11 @@ else
     inoremap <silent><expr> <c-@> coc#refresh()
   endif
 
-  " 类似 IDE 函数体 {} 自动缩进
-  function! FunctionBracketAutoIndent()
-    if col('.') > 1
-      " TODO(shenyu): trim 空格, 判断是否最后一个字符为 }
-      let l:next_char = getline('.')[col('.')-1]
-      if l:next_char == '}'
-        return "\<cr>\<Esc>ko"
-      endif
-    endif
-    return "\<C-g>u\<CR>"
-  endfunction
-
-  " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
-  " position. Coc only does snippet and additional edit on confirm.
-  " <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
-  if exists('*complete_info')
-    inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-  else
-    " inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-    inoremap <expr> <cr> pumvisible() && coc#_selected() ? "\<C-y>" : "\<C-g>u\<CR>"
-  endif
+  " Make <CR> auto-select the first completion item and notify coc.nvim to
+  " format on enter, <cr> could be remapped by other vim plugin
+  " <c-r>=coc#on_enter\<CR> 实现类似 IDE 函数体 {} 换行自动缩进
+  inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                                \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
   " Use <C-h>/<C-l> jump to next/previous placeholder.
   let g:coc_snippet_next = '<C-l>'
