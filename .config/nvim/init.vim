@@ -3,7 +3,17 @@
 " https://github.com/asvetliakov/vscode-neovim
 "----------------------------------------------------------------------
 if exists('g:vscode')
+  " 复制时同步到操作系统剪切板
   set clipboard+=unnamedplus
+
+  nnoremap <space>o <Cmd>call VSCodeCall('workbench.action.gotoSymbol')<CR>
+
+  nnoremap gd <Cmd>call VSCodeCall('editor.action.revealDefinition')<CR>
+  nnoremap gy <Cmd>call VSCodeCall('editor.action.goToTypeDefinition')<CR>
+  nnoremap gi <Cmd>call VSCodeCall('editor.action.goToImplementation')<CR>
+  nnoremap gr <Cmd>call VSCodeCall('editor.action.goToReferences')<CR>
+
+  " 注释代码快捷键
   xmap gc  <Plug>VSCodeCommentary
   nmap gc  <Plug>VSCodeCommentary
   omap gc  <Plug>VSCodeCommentary
