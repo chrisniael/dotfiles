@@ -566,7 +566,7 @@ else
   " Make <CR> auto-select the first completion item and notify coc.nvim to
   " format on enter, <cr> could be remapped by other vim plugin
   " <c-r>=coc#on_enter\<CR> 实现类似 IDE 函数体 {} 换行自动缩进
-  inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+  inoremap <silent><expr> <cr> pumvisible() && coc#_selected() ? coc#_select_confirm()
                                 \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
   " Use <C-h>/<C-l> jump to next/previous placeholder.
