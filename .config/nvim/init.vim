@@ -206,14 +206,6 @@ endif
 " 光标所在行突出显示
 set cursorline
 
-" Make vim highlight the current line on only the active buffer
-" https://stackoverflow.com/a/12018552
-augroup CursorLine
-  au!
-  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-  au WinLeave * setlocal nocursorline
-augroup END
-
 " 不显示 tabline
 set showtabline=0
 
@@ -303,8 +295,17 @@ set autowrite
 " 重新编辑文件的时, 光标定位到最后编辑的位置
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-" go 语法高亮额外的类型
+" go 语法高亮
 let g:go_highlight_extra_types = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_types = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_function_parameters = 1
+let g:go_highlight_variable_declarations = 1
+let g:go_highlight_variable_assignments = 1
 
 " proto文件高亮
 augroup filetype
@@ -432,6 +433,14 @@ if &diff
 " 仅仅用于非 diff 模式的配置
 "----------------------------------------------------------------------
 else
+  " Make vim highlight the current line on only the active buffer
+  " https://stackoverflow.com/a/12018552
+  augroup CursorLine
+    au!
+    au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+    au WinLeave * setlocal nocursorline
+  augroup END
+
   autocmd FileType c,cpp set colorcolumn=81
   set laststatus=2
 
