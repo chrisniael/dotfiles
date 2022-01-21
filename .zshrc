@@ -42,9 +42,9 @@ fi
 # cd $ZSH_CUSTOM/plugins
 # git clone https://github.com/softmoth/zsh-vim-mode.git
 if [ -d $HOME/.oh-my-zsh/custom/plugins/zsh-vim-mode ]; then
-  plugins=(docker cargo rust golang zsh-vim-mode)
+  plugins=(docker rust golang zsh-vim-mode)
 else
-  plugins=(docker cargo rust golang)
+  plugins=(docker rust golang)
 fi
 
 source $ZSH/oh-my-zsh.sh
@@ -96,7 +96,7 @@ if [[ "${OS}" == "Darwin" ]]; then
   export LSCOLORS=exfxcxdxbxegedabagacad
 
   # Fix GitHub API rate limit exceeded
-  export HOMEBREW_GITHUB_API_TOKEN=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
+  export HOMEBREW_GITHUB_API_TOKEN=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
 
   export PATH="/usr/local/sbin:$PATH"
   export PATH="/usr/local/opt/ruby/bin:$PATH"
@@ -109,7 +109,7 @@ if [[ "${OS}" == "Darwin" ]]; then
   # 这个命令会让 zsh 启动变特别慢, 直接指定路径加速启动
   # export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
   export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/usr/local/opt/openssl@1.1"
-  export HOMEBREW_NO_AUTO_UPDATE=true
+  # export HOMEBREW_NO_AUTO_UPDATE=true
 
   # GCC/Clang 默认搜索路径
   export C_INCLUDE_PATH="$C_INCLUDE_PATH:/usr/local/include"
