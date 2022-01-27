@@ -1,51 +1,28 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -n "$TMUX" ]]; then
+  if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+  fi
+else
+  if [[ "$TERM_PROGRAM" = "Apple_Terminal" ]] || [[ "$TERM_PROGRAM" = "iTerm.app" ]] ; then
+    if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+      source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    fi
+  fi
+fi
+
 # Path to your oh-my-zsh installation.
 export ZSH="${HOME}/.oh-my-zsh"
 
-# 使用 powerline 主题时，注释掉 ZSH_THEME 和 DEFAULT_USER 变量
-# pip install powerline-status
-OS=$(uname -s)
-if [[ "${OS}" == "Darwin" ]]; then
-  # 当终端是 Apple Terminal 时，不使用 powerline，powerline 暂时不能自动判断终端类型来关闭 true color
-  if [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]
-  then
-    ZSH_THEME="robbyrussell"
-  else
-    powerline-daemon -q
-    source /usr/local/lib/python3.8/site-packages/powerline/bindings/zsh/powerline.zsh
-  fi
-elif [[ "${OS}" == "Linux" ]]; then
-  source /etc/os-release
-  case "${ID}" in
-    arch | manjaro)
-      powerline-daemon -q
-      source /usr/lib/python3.9/site-packages/powerline/bindings/zsh/powerline.zsh
-      ;;
-    ubuntu)
-      powerline-daemon -q
-      source /usr/local/lib/python3.7/dist-packages/powerline/bindings/zsh/powerline.zsh
-      ;;
-    centos)
-      powerline-daemon -q
-      source /usr/local/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh
-      ;;
-    *)
-      DEFAULT_USER="shenyu"
-      ZSH_THEME="agnoster"
-      ;;
-  esac
-else
-  DEFAULT_USER="shenyu"
-  ZSH_THEME="agnoster"
-fi
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # 安装 zsh-vim-mode
-# cd $ZSH_CUSTOM/plugins
-# git clone https://github.com/softmoth/zsh-vim-mode.git
-if [ -d $HOME/.oh-my-zsh/custom/plugins/zsh-vim-mode ]; then
-  plugins=(docker rust golang zsh-vim-mode)
-else
-  plugins=(docker rust golang)
+if [[ ! -d $HOME/.oh-my-zsh/custom/plugins/zsh-vim-mode ]]; then
+  git clone https://github.com/softmoth/zsh-vim-mode.git $HOME/.oh-my-zsh/custom/plugins/zsh-vim-mode
 fi
+plugins=(docker rust golang zsh-vim-mode)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -229,12 +206,13 @@ export EDITOR=nvim
 # ulimit -c unlimited
 # ulimit -n 20480
 
-# Vi mode
-# https://zsh.sourceforge.io/Guide/zshguide04.html
-bindkey -v
+# 加载自定义配置
+if [ -f "${HOME}/.zshrc_local" ]; then
+  source "${HOME}/.zshrc_local"
+fi
 
-# tmux 启动的时候存在 attached 的 session 则 attach 它并剔除所有其他客户端，不存在则创建一个新的
-# 仅仅 ssh 连接时自动启动 tmux
+## tmux 启动的时候存在 attached 的 session 则 attach 它并剔除所有其他客户端，不存在则创建一个新的
+## 仅仅 ssh 连接时自动启动 tmux
 if [[ -z "$TMUX" ]]; then
   # 不是 vim/neovim 的 terminal 启动的 zsh
   if [[ -z "$NVIM_LISTEN_ADDRESS" ]]; then
@@ -251,19 +229,24 @@ if [[ -z "$TMUX" ]]; then
   if [[ "$TERM_PROGRAM" != "Apple_Terminal" ]] && [[ "$TERM_PROGRAM" != "iTerm.app" ]] ; then
     # 用 eval 是去除前后的空格， mac 上的 wc 命令与 linux 不太一样，会输出一些空格
     if [[ $(eval echo $(tmux list-sessions 2>/dev/null | wc -l)) = 0 ]]; then
-      tmux new-session
+      exec tmux new-session
     else
       ID="$(tmux list-sessions 2>/dev/null | grep -m1 attached | cut -d: -f1)"
       if [[ -n "$ID" ]]; then
         killall xclip >/dev/null 2>&1
-        tmux attach-session -d -x -t "$ID"
+        exec tmux attach-session -d -x -t "$ID"
       else
         killall xclip >/dev/null 2>&1
-        tmux attach-session -d -x
+        exec tmux attach-session -d -x
       fi
     fi
+  else
+    # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+    [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
   fi
 else
+  [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
   # exit ssh 连接的时候，关闭 xclip child process，否则 ssh 连接不会关掉
   # exit 的时候如果在 tmux 是最后一个 session 窗口，则关闭 xclip child process 且断开 ssh 连接
   # 不在 tmux 则只关闭 xclip child process 且 exit
@@ -288,9 +271,4 @@ else
   function preexec {
     eval "$(tmux show-environment -s)"
   }
-fi
-
-# 加载自定义配置
-if [ -f "${HOME}/.zshrc_local" ]; then
-  source "${HOME}/.zshrc_local"
 fi
