@@ -4,14 +4,6 @@ My dotfiles.
 
 Compatiable with Arch, Ubuntu 19.10 and macOS.
 
-## Install
-
-```bash
-git clone https://github.com/chrisniael/dotfiles.git ~/.dotfiles
-cd ~/.dotfiles
-./install.sh
-```
-
 ## powerline-status
 
 - python >= 3.7
