@@ -54,6 +54,8 @@ else
   export PATH=$ORIGIN_PATH
 fi
 
+OS=$(uname)
+
 if [[ "${OS}" == "Darwin" ]]; then
   # 检测是否存在 exa 命令
   if hash exa >/dev/null 2>&1; then
