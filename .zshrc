@@ -26,6 +26,8 @@ else
   fi
 fi
 
+DISABLE_AUTO_UPDATE="true"
+
 # 安装 zsh-vim-mode
 if [[ ! -d $HOME/.oh-my-zsh/custom/plugins/zsh-vim-mode ]]; then
   git clone https://github.com/softmoth/zsh-vim-mode.git $HOME/.oh-my-zsh/custom/plugins/zsh-vim-mode
