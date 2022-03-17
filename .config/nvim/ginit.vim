@@ -49,3 +49,10 @@ function! FullScreenToggle()
   endif
 endfunction
 nnoremap <silent><M-Enter> :<C-u>call FullScreenToggle()<CR>
+
+
+"----------------------------------------------------------------------
+" vim-gitgutter 配置
+" https://github.com/airblade/vim-gitgutter
+"----------------------------------------------------------------------
+let g:gitgutter_terminal_reports_focus=1

@@ -43,7 +43,6 @@ endif
 " 加快 git difftool 打开速度
 if !&diff
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  " Plug 'jackguo380/vim-lsp-cxx-highlight'
   Plug 'airblade/vim-gitgutter'
   Plug 'tpope/vim-fugitive'
   Plug 'vim-airline/vim-airline'
@@ -55,7 +54,7 @@ if !&diff
   Plug 'tpope/vim-obsession'
   Plug 'skywind3000/asynctasks.vim'
   Plug 'skywind3000/asyncrun.vim'
-  Plug 'skywind3000/asyncrun.extra'
+  " Plug 'skywind3000/asyncrun.extra'  " 作者已 archived
   Plug 'skywind3000/vim-terminal-help'
   Plug 'andrejlevkovitch/vim-lua-format'
   Plug 'google/vim-maktaba'
@@ -64,14 +63,18 @@ if !&diff
   Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown'}
   Plug 'airblade/vim-rooter'
   Plug 'voldikss/vim-floaterm'
-  " Plug 'fatih/vim-go', { 'for': ['go'] }
+  Plug 'fatih/vim-go', { 'for': ['go', 'gomod'] }
+  Plug 'sebdah/vim-delve', { 'for': ['go'] }
 endif
-Plug 'morhetz/gruvbox'
+Plug 'gruvbox-community/gruvbox'
 " Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
 " Plug 'gu-fan/riv.vim'
 Plug 'cespare/vim-toml', { 'for': ['toml'] }
 Plug 'chrisniael/rsi.vim'
 Plug 'chrisniael/indent.vim'
+" Plug 'wincent/terminus'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'lukas-reineke/indent-blankline.nvim'
 
 " Initialize plugin system
 call plug#end()
@@ -103,6 +106,9 @@ let g:coc_global_extensions = [
       \ 'coc-go',
       \ 'coc-phpactor',
       \ 'coc-git',
+      \ 'coc-db',
+      \ 'coc-explorer',
+      \ 'coc-highlight',
       \ ]
 
 
@@ -117,7 +123,7 @@ let g:indent_tab_4w_filetypes = ['go']
 let g:indent_space_2w_filetypes = ['c', 'cpp', 'toml', 'json']
 
 " 缩进字符 4 空格
-let g:indent_space_4w_filetypes = ['toml', 'php', 'python']
+let g:indent_space_4w_filetypes = ['toml', 'php', 'python', 'proto']
 
 
 "----------------------------------------------------------------------
@@ -141,12 +147,10 @@ endif
 " let g:gruvbox_contrast_light = 'hard'
 
 " 设置 grubbox 主题支持粗体与斜体
-" Windows 上斜体会有显示残留问题
+" Windows 上部分字体斜体会有显示残留问题
 " https://github.com/equalsraf/neovim-qt/issues/812
 let g:gruvbox_bold = 1
-if !has("win32")
-  let g:gruvbox_italic = 1
-endif
+let g:gruvbox_italic = 1
 
 " 支持 xterm-256color
 set t_Co=256
@@ -160,7 +164,7 @@ silent! colorscheme gruvbox
 " changing coc highlight color cause light grey is invisible
 " BUT is overwritten by scheme so defining it in an autocmd after colorscheme change
 " https://github.com/neoclide/coc-highlight/issues/6
-autocmd ColorScheme * highlight CocHighlightText gui=None guibg=#665c54
+autocmd ColorScheme * highlight CocHighlightText gui=None guibg=#504945
 
 " 背景颜色, dark(default), light
 set background=dark
@@ -171,6 +175,9 @@ set background=dark
 
 " 显示行号
 set number
+
+" 状态栏行数
+set laststatus=2
 
 " 开启 true color
 function! s:enable_true_color()
@@ -292,20 +299,21 @@ set mouse=a
 " :make 的时候自动保存
 set autowrite
 
-" 重新编辑文件的时, 光标定位到最后编辑的位置
-autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+" 编辑文件的时, 光标定位到上一次编辑的位置
+" gitcommit 文件除外
+autocmd BufReadPost * if &filetype != 'gitcommit' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 " go 语法高亮
-let g:go_highlight_extra_types = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_types = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_function_calls = 1
-let g:go_highlight_fields = 1
-let g:go_highlight_function_parameters = 1
-let g:go_highlight_variable_declarations = 1
-let g:go_highlight_variable_assignments = 1
+" let g:go_highlight_extra_types = 1
+" let g:go_highlight_operators = 1
+" let g:go_highlight_types = 1
+" let g:go_highlight_functions = 1
+" let g:go_highlight_operators = 1
+" let g:go_highlight_function_calls = 1
+" let g:go_highlight_fields = 1
+" let g:go_highlight_function_parameters = 1
+" let g:go_highlight_variable_declarations = 1
+" let g:go_highlight_variable_assignments = 1
 
 " proto文件高亮
 augroup filetype
@@ -328,13 +336,13 @@ au FileType * set formatoptions-=c formatoptions-=r formatoptions-=o
 
 " Windows 终端 C-z 会有问题
 if has("win32") && has("nvim")
-  nnoremap <c-z> <nop>
-  inoremap <c-z> <nop>
-  vnoremap <c-z> <nop>
-  snoremap <c-z> <nop>
-  xnoremap <c-z> <nop>
-  cnoremap <c-z> <nop>
-  onoremap <c-z> <nop>
+  nnoremap <C-z> <nop>
+  inoremap <C-z> <nop>
+  vnoremap <C-z> <nop>
+  snoremap <C-z> <nop>
+  xnoremap <C-z> <nop>
+  cnoremap <C-z> <nop>
+  onoremap <C-z> <nop>
 endif
 
 " C-l 刷新时顺带消除搜索高亮
@@ -342,14 +350,18 @@ nnoremap <silent> <C-L> :<C-u>nohlsearch<CR><C-l>
 
 " Terminal 模式使用 Esc 切换 Normal 模式, 存在一定问题, 例如在 Terminal 中再打开 vim
 " tnoremap <Esc> <C-\><C-n>
+tnoremap <C-o> <C-\><C-n>
 
 " 粘贴快捷键
 if has("nvim")
+  nnoremap <S-Insert> <C-r>*
   inoremap <S-Insert> <C-r>*
   cnoremap <S-Insert> <C-r>*
 endif
 inoremap <C-v> <C-r>*
 cnoremap <C-v> <C-r>*
+" 仅仅更改 coc-list 窗口 C-v 的快捷方式为粘贴
+autocmd FileType list nnoremap <buffer> <C-v> <C-r>*
 
 " 同步 ssh 连接的 vim 剪切板到本地
 " https://lotabout.me/2019/Integrate-clipboard-with-SSH/
@@ -376,6 +388,24 @@ else
   " :help clipboard-autoselect
   set clipboard=unnamed
 endif
+
+" windows 上使用 pwsh 作为默认 shell
+" if has("win32")
+"   let &shell='pwsh'
+"   let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
+"   let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+"   let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+"   set shellquote= shellxquote=
+" endif
+
+if has("win32") && !empty($SSH_CONNECTION)
+  let &shell='cmd'
+endif
+
+" popup-menu and float window 透明
+" set pumblend=10
+" set winblend=10
+" highlight PmenuSel blend=0 
 
 
 "----------------------------------------------------------------------
@@ -419,9 +449,6 @@ if &diff
   " 命令行高度
   set cmdheight=1
 
-  " 不显示 status 信息，显示的话会多占用一行空间
-  set laststatus=0
-
   " 在状态栏显示文件信息 (:file)
   set shortmess-=F
 
@@ -435,14 +462,13 @@ if &diff
 else
   " Make vim highlight the current line on only the active buffer
   " https://stackoverflow.com/a/12018552
-  augroup CursorLine
-    au!
-    au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-    au WinLeave * setlocal nocursorline
-  augroup END
+  " augroup CursorLine
+  "   au!
+  "   au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  "   au WinLeave * setlocal nocursorline
+  " augroup END
 
   autocmd FileType c,cpp set colorcolumn=81
-  set laststatus=2
 
   " 不折行
   " autocmd FileType markdown set nowrap
@@ -452,7 +478,8 @@ else
   " 打开 terminal 时关闭行号和符号列, 并自动进入 insert 模式
   " 退出 terminal: <C-\><C-n>
   if has("nvim")
-    au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
+    " au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
+    au TermOpen * setlocal nonumber norelativenumber signcolumn=no
   endif
 
   map <C-N> :cnext<CR>
@@ -521,7 +548,10 @@ else
   " vim-gitgutter 配置
   " https://github.com/airblade/vim-gitgutter
   "----------------------------------------------------------------------
-  " let g:gitgutter_set_sign_backgrounds = 1
+  if has("win32")
+    " Windows Terminal 暂时不支持 FocusGained 事件，在 nvim-qt 中依然开启
+    let g:gitgutter_terminal_reports_focus=0
+  endif
 
 
   "----------------------------------------------------------------------
@@ -530,7 +560,7 @@ else
   "----------------------------------------------------------------------
   " 开启 semantic highlighting 支持
   " https://github.com/clangd/coc-clangd/issues/217#issuecomment-898130176
-  let g:coc_default_semantic_highlight_groups = 1
+  " let g:coc_default_semantic_highlight_groups = 1
 
   " if hidden is not set, TextEdit might fail.
   set hidden
@@ -755,12 +785,27 @@ else
   nnoremap <silent> <space>b :<C-u>CocList buffers<cr>
 
   " 自定义的 grep 命令, 支持目录补全
-  command! -nargs=+ -complete=dir CocListGrep exe 'CocList --normal grep '.<q-args>
+  function! s:CocListGrep(case_ignore, args)
+    let case_arg = ''
+    if a:case_ignore == 1
+      let case_arg = ' -i'
+    endif
+    if strlen(a:args) <= 0
+      let cmd = 'CocList grep' . case_arg
+      echomsg cmd
+      execute cmd
+    else
+      exec 'CocList --normal grep' . case_arg . ' ' .a:args
+    endif
+  endfunction
+
+  command! -nargs=* -complete=dir CocListGrep :call s:CocListGrep(0, <q-args>)
+  command! -nargs=* -complete=dir CocListGrepCaseIgnore :call s:CocListGrep(1, <q-args>)
   nnoremap <space>g :<C-u>CocListGrep<space>
-  nnoremap <space>G :<C-u>CocListGrep -i<space>
+  nnoremap <space>G :<C-u>CocListGrepCaseIgnore<space>
   " Grep 光标所在单词
   nnoremap <leader>g :<C-u>CocListGrep <C-R>=expand('<cword>')<CR>
-  nnoremap <leader>G :<C-u>CocListGrep -i <C-R>=expand('<cword>')<CR>
+  nnoremap <leader>G :<C-u>CocListGrepCaseIgnore <C-R>=expand('<cword>')<CR>
   " Grep visual 模式选择的文本
   vnoremap <leader>g :<C-u>call <SID>GrepFromSelected(visualmode())<CR>
   vnoremap <leader>G :<C-u>call <SID>GrepFromSelectedIgnoreCase(visualmode())<CR>
@@ -804,6 +849,7 @@ else
   " https://github.com/tpope/vim-commentary
   "----------------------------------------------------------------------
   autocmd FileType c,cpp setlocal commentstring=//%s
+  autocmd FileType proto setlocal commentstring=//%s
 
 
   "----------------------------------------------------------------------
@@ -832,7 +878,7 @@ else
   let g:asyncrun_rootmarks = ['.git', '.svn', '.root', '.project', '.hg']
   let g:asyncrun_exit = 'silent! GitGutter'  "asynctask 提交 git 的时候默认 vim-gitgutter sign 不会更新
 
-  au FileType qf setlocal signcolumn=  " quickfix 窗口不显示符号列
+  au FileType qf setlocal signcolumn=no  " quickfix 窗口不显示符号列
   au FileType qf setlocal nonumber  " quickfix 窗口不显示行号
 
   " https://vi.stackexchange.com/a/15699
@@ -884,7 +930,7 @@ else
   endfunction
 
   nmap <silent> <leader>q :AsyncStop<CR>
-  nmap <silent> <M-b> :AsyncTask build<CR>
+  nmap <silent> <M-b> :<C-u>AsyncTask build<CR>
   nmap <M-r> :call AsyncTaskRun()<CR>
   " autocmd FileType go nmap <M-t> :GoTestFunc -v<CR>
 
@@ -895,6 +941,10 @@ else
   "----------------------------------------------------------------------
   let g:terminal_cwd = 2 " project root
   let g:terminal_pos = 'top'
+  let g:terminal_height = ''
+  " if has("win32")
+  "   let g:terminal_shell='pwsh'
+  " endif
 
 
   "----------------------------------------------------------------------
@@ -969,7 +1019,7 @@ else
   "   au VimEnter * call InsertIfEmpty()
   " endif
 
-  au VimEnter * if exists(":Rooter") | Rooter | endif
+  " au VimEnter * if exists(":Rooter") | Rooter | endif
 
 
   "----------------------------------------------------------------------
@@ -988,6 +1038,7 @@ else
   " nnoremap <silent> <leader>hl :Git pull<CR>
   " nnoremap <silent> <leader>hh :Git push<CR>
   nnoremap <leader>hd :<C-u>Gdiffsplit<CR>
+  nnoremap <leader>hh :<C-u>Git<CR>
 
 
   "----------------------------------------------------------------------
@@ -1012,4 +1063,113 @@ else
   xmap ag <Plug>(coc-git-chunk-outer)
 
   " nmap <leader>hu :<C-u>CocCommand git.chunkUndo<CR>
+
+
+  "----------------------------------------------------------------------
+  " vim-go 配置
+  " https://github.com/fatih/vim-go
+  "----------------------------------------------------------------------
+  let g:go_gopls_enabled = 0
+  let g:go_code_completion_enabled = 0
+  let g:go_fmt_command = 'gofmt'
+
+  " 关闭保存文件时自动 fmt 文件
+  let g:go_fmt_autosave = 0
+
+  let g:go_imports_mode = 'goimports'
+  let g:go_imports_autosave = 0
+
+  " 关闭跳转快捷键 gd
+  let g:go_def_mapping_enabled = 0
+
+  " 关闭查看文档快捷键 K
+  let g:go_doc_keywordprg_enabled = 0
+
+  " 关闭自动更新依赖
+  " let g:go_get_update = 0
+
+  " 关闭代码补全后的识别信息提示"
+  let g:go_echo_go_info = 0
+
+  " 隐藏 fmt 错误提示
+  let g:go_fmt_fail_silently = 1
+
+  " go test 在 terminal 展示结果
+  let g:go_term_enabled=0
+
+  let g:go_list_type = 'quickfix'
+  let g:go_list_height = 10
+  let g:go_term_reuse = 1
+  let g:go_term_close_on_exit = 0
+  " let g:go_term_mode = 'botright vsplit'
+  let g:go_term_enabled = 1
+  let g:go_def_mode = 'godef'
+  let g:go_referrers_mode = 'guru'
+  let g:go_implements_mode = 'guru'
+  let g:go_rename_command = 'gorename'
+  let g:go_test_timeout= '30s'
+
+
+  " 运行测试用例函数快捷键
+  nmap <silent> <M-t> :<C-u>GoTestFunc<CR>
+  " 运行调试
+  nmap <silent> <M-d> :<C-u>GoDebugStart<CR>
+  " Go delve stepout"
+  nmap <silent> <S-F11> :<C-u>GoDebugStepOut<CR>
+
+  "----------------------------------------------------------------------
+  " coc-explorer 配置
+  " https://github.com/weirongxu/coc-explorer
+  "----------------------------------------------------------------------
+  nmap <space>e <Cmd>CocCommand explorer<CR>
+
+
+lua <<EOF
+
+EOF
+
 endif
+
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  -- One of "all", "maintained" (parsers with maintainers), or a list of languages
+  -- ensure_installed = "maintained",
+
+  -- Install languages synchronously (only applied to `ensure_installed`)
+  -- sync_install = false,
+
+  -- List of parsers to ignore installing
+  ignore_install = {},
+
+  highlight = {
+    -- `false` will disable the whole extension
+    enable = true,
+
+    -- list of language that will be disabled
+    disable = {"vim"},
+
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+
+vim.opt.list = true
+vim.opt.listchars:append("space:⋅")
+-- vim.opt.listchars:append("eol:↴")
+vim.opt.termguicolors = true
+vim.cmd [[highlight IndentBlanklineContextChar guifg=#7c6f64 gui=nocombine]]
+vim.cmd [[highlight Whitespace guifg=#3c3836 gui=nocombine]]
+vim.cmd [[highlight IndentBlanklineChar guifg=#3c3836 gui=nocombine]]
+vim.cmd [[highlight IndentBlanklineSpaceChar guifg=#3c3836 gui=nocombine]]
+require("indent_blankline").setup {
+    -- for example, context is off by default, use this to turn it on
+    show_current_context = true,
+    show_current_context_start = false,
+    show_end_of_line = true,
+    space_char_blankline = " ",
+}
+EOF
