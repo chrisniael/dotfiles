@@ -30,13 +30,13 @@
   "list.insertMappings": {
     "<C-k>": "prompt:removetail",
     "<C-f>": "prompt:right",
-    "<C-b>": "prompt:left",
-    "<C-v>": "prompt:paste"
+    "<C-b>": "prompt:left"
   },
   "list.normalMappings": {
-    "<C-o>": "command:"
+    "<C-o>": "eval: "
   },
   "coc.preferences.formatOnType": true,
+  "coc.preferences.currentFunctionSymbolAutoUpdate": true,
   "coc.preferences.formatOnSaveFiletypes": [
     "c",
     "cpp",
@@ -71,5 +71,10 @@
   "go.disable": {
     "workspaceFolders": true
   },
-  "git.enableGutters": false
+  "go.goplsOptions": {
+    "semanticTokens": false,
+    "usePlaceholders": false
+  },
+  "git.enableGutters": false,
+  "explorer.icon.enableNerdfont": true
 }

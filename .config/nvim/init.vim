@@ -686,7 +686,7 @@ else
   autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
 
   " Add status line support, for integration with other plugin, checkout `:h coc-status`
-  " set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+  set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
   " Mappings for CoCList
   " Show all diagnostics.
@@ -1158,7 +1158,7 @@ require'nvim-treesitter.configs'.setup {
 }
 
 vim.opt.list = true
-vim.opt.listchars:append("space:⋅")
+-- vim.opt.listchars:append("space:⋅")
 -- vim.opt.listchars:append("eol:↴")
 vim.opt.termguicolors = true
 vim.cmd [[highlight IndentBlanklineContextChar guifg=#7c6f64 gui=nocombine]]
