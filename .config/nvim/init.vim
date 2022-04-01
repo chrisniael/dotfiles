@@ -116,7 +116,7 @@ let g:coc_global_extensions = [
 " TODO: 可以支持项目目录本地化配置
 "----------------------------------------------------------------------
 " 缩进字符 tab, 宽度 4
-let g:indent_tab_4w_filetypes = ['go']
+let g:indent_tab_4w_filetypes = ['go', 'gitconfig']
 
 " 缩进字符 2 空格
 let g:indent_space_2w_filetypes = ['c', 'cpp', 'toml', 'json']
