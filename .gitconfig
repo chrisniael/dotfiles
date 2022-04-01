@@ -1,6 +1,8 @@
 [user]
 	name = shenyu
 	email = shenyu@shenyu.me
+[credential]
+	helper = manager-core
 [color]
 	branch = auto
 	diff = auto
@@ -13,21 +15,22 @@
 [core]
 	editor = nvim
 	quotepath = false
+	commitGraph = true
+	longpaths = true
+  pager = delta
 [credential]
 	helper = store
 [alias]
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
 	lga = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all --
 [merge]
-	tool = vimdiff
-[mergetool "vimdiff"]
-	path = nvim
+	tool = nvimdiff
 [mergetool]
 	keepBackup = false
-[mergetool]
+	trustExitCode = true
 	prompt = true
 [diff]
-	tool = vimdiff
+	tool = nvimdiff
 [difftool]
 	prompt = true
 [filter "lfs"]
@@ -42,3 +45,18 @@
 	defaultBranch = main
 [http]
 	proxyAuthMethod = basic
+[difftool "bc"]
+	path = bComp
+[mergetool "bc"]
+	path = bComp
+
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true  # use n and N to move between diff sections
+	side-by-side = true
+	line-numbers = true
+[merge]
+	conflictstyle = diff3
+[diff]
+	colorMoved = default
