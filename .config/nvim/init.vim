@@ -54,7 +54,6 @@ if !&diff
   Plug 'tpope/vim-obsession'
   Plug 'skywind3000/asynctasks.vim'
   Plug 'skywind3000/asyncrun.vim'
-  " Plug 'skywind3000/asyncrun.extra'  " 作者已 archived
   Plug 'skywind3000/vim-terminal-help'
   Plug 'andrejlevkovitch/vim-lua-format'
   Plug 'google/vim-maktaba'
@@ -515,6 +514,14 @@ else
   "----------------------------------------------------------------------
   " set laststatus=2  " 底部显示状态栏, 1:不显示, 2:显示
   let g:airline_powerline_fonts = 1   " 使用 powerline 符号
+  let g:airline_symbols_ascii = 0
+
+  " powerline symbols
+  " let g:airline_left_sep = ''
+  " let g:airline_left_alt_sep = ''
+  " let g:airline_right_sep = ''
+  " let g:airline_right_alt_sep = ''
+
   let g:airline_theme = "gruvbox"  " 设置主题
   let g:airline#extensions#tabline#enabled = 0  " 是否开启 tabline
   let g:airline#extensions#tabline#show_buffers = 0  " 是否显示 buffer
@@ -1107,7 +1114,7 @@ else
   let g:go_referrers_mode = 'guru'
   let g:go_implements_mode = 'guru'
   let g:go_rename_command = 'gorename'
-  let g:go_test_timeout= '30s'
+  let g:go_test_timeout= '300s'
 
 
   " 运行测试用例函数快捷键
@@ -1157,7 +1164,7 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 
-vim.opt.list = true
+vim.opt.list = false
 -- vim.opt.listchars:append("space:⋅")
 -- vim.opt.listchars:append("eol:↴")
 vim.opt.termguicolors = true
@@ -1169,7 +1176,7 @@ require("indent_blankline").setup {
     -- for example, context is off by default, use this to turn it on
     show_current_context = true,
     show_current_context_start = false,
-    show_end_of_line = true,
+    show_end_of_line = false,
     space_char_blankline = " ",
 }
 EOF
