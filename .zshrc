@@ -1,29 +1,25 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -n "$TMUX" ]]; then
+if [[ -n "$TMUX" ]] ||
+  [[ "$TERM_PROGRAM" = "Apple_Terminal" ]] ||
+  [[ "$TERM_PROGRAM" = "iTerm.app" ]] ||
+  [[ "$TERMINAL_EMULATOR" = "JetBrains-JediTerm" ]] ; then
   if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-  fi
-else
-  if [[ "$TERM_PROGRAM" = "Apple_Terminal" ]] || [[ "$TERM_PROGRAM" = "iTerm.app" ]] ; then
-    if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-      source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-    fi
   fi
 fi
 
 # Path to your oh-my-zsh installation.
 export ZSH="${HOME}/.oh-my-zsh"
 
-if [[ -n "$TMUX" ]]; then
+if [[ -n "$TMUX" ]] ||
+  [[ "$TERM_PROGRAM" = "Apple_Terminal" ]] ||
+  [[ "$TERM_PROGRAM" = "iTerm.app" ]] ||
+  [[ "$TERMINAL_EMULATOR" = "JetBrains-JediTerm" ]] ; then
   ZSH_THEME="powerlevel10k/powerlevel10k"
 else
-  if [[ "$TERM_PROGRAM" = "Apple_Terminal" ]] || [[ "$TERM_PROGRAM" = "iTerm.app" ]] ; then
-    ZSH_THEME="powerlevel10k/powerlevel10k"
-  else
-    ZSH_THEME="robbyrussell"
-  fi
+  ZSH_THEME="robbyrussell"
 fi
 
 DISABLE_AUTO_UPDATE="true"
@@ -171,7 +167,9 @@ function proxy() {
   # HTTP_PROXY_PORT=7890
   if [[ -f $HOME/.proxy ]]; then
     source $HOME/.proxy
-    if [[ -n "$HTTP_PROXY_USERNAME" ]] && [[ -n "$HTTP_PROXY_IP" ]] && [[ -n "$HTTP_PROXY_PORT" ]]; then
+    if [[ -n "$HTTP_PROXY_USERNAME" ]] &&
+      [[ -n "$HTTP_PROXY_IP" ]] &&
+      [[ -n "$HTTP_PROXY_PORT" ]]; then
       unproxy
       if [[ -n "$HTTP_PROXY_PASSWORD" ]]; then
         local proxy_url=http://${HTTP_PROXY_USERNAME}:${HTTP_PROXY_PASSWORD}@${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}
@@ -238,7 +236,9 @@ if [[ -z "$TMUX" ]]; then
   # tmux 里不可以手动设置，tmux 本身配置里有对 TERM 设置
   # TERM 会影响 ohmyzsh 的 ATUO_TITLE 功能
   export TERM='xterm-256color'
-  if [[ "$TERM_PROGRAM" != "Apple_Terminal" ]] && [[ "$TERM_PROGRAM" != "iTerm.app" ]] ; then
+  if [[ "$TERM_PROGRAM" != "Apple_Terminal" ]] &&
+    [[ "$TERM_PROGRAM" != "iTerm.app" ]] &&
+    [[ "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" ]] ; then
     # 用 eval 是去除前后的空格， mac 上的 wc 命令与 linux 不太一样，会输出一些空格
     if [[ $(eval echo $(tmux list-sessions 2>/dev/null | wc -l)) = 0 ]]; then
       exec tmux new-session
@@ -267,7 +267,9 @@ else
   # 用 eval 是去除前后的空格， mac 上的 wc 命令与 linux 不太一样，会输出一些空格
   if [[ -z "$NVIM_LISTEN_ADDRESS" ]]; then
     exit() {
-      if [[ $(eval echo $(tmux list-sessions | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-windows | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-panes | wc -l)) = 1 ]]; then
+      if [[ $(eval echo $(tmux list-sessions | wc -l)) = 1 ]] &&
+        [[ $(eval echo $(tmux list-windows | wc -l)) = 1 ]] &&
+        [[ $(eval echo $(tmux list-panes | wc -l)) = 1 ]]; then
         killall xclip >/dev/null 2>&1
         clear
         tmux detach -P
