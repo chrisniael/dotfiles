@@ -75,7 +75,10 @@ if [[ "${OS}" == "Darwin" ]]; then
   export LSCOLORS=exfxcxdxbxegedabagacad
 
   # Fix GitHub API rate limit exceeded
-  export HOMEBREW_GITHUB_API_TOKEN=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
+  if [[ -f $HOME/.homebrew_github_api_token ]]; then
+    source $HOME/.homebrew_github_api_token
+    export HOMEBREW_GITHUB_API_TOKEN=$HOMEBREW_GITHUB_API_TOKEN
+  fi
 
   export PATH="/usr/local/sbin:$PATH"
   export PATH="/usr/local/opt/ruby/bin:$PATH"
