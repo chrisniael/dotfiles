@@ -8,7 +8,7 @@ $env:EDITOR= "nvim"
 $env:CC="clang.exe"
 $env:CXX="clang++.exe"
 
-# Set-Alias -Name vim -Value C:\Users\shenyu\scoop\apps\neovim\current\bin\nvim-qt.exe
+Set-Alias -Name nvim -Value nvim-qt
 Set-Alias -Name vim -Value nvim
 Set-Alias -Name grep -Value findstr
 
