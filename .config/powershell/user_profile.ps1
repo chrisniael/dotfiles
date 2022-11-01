@@ -8,7 +8,7 @@ $env:EDITOR= "nvim"
 $env:CC="clang.exe"
 $env:CXX="clang++.exe"
 
-Set-Alias -Name nvim -Value nvim-qt
+Set-Alias -Name nvim -Value C:\Users\shenyu\scoop\apps\neovim\current\bin\nvim-qt.exe
 Set-Alias -Name vim -Value nvim
 Set-Alias -Name grep -Value findstr
 
@@ -19,11 +19,10 @@ Set-PSReadLineOption -EditMode Emacs
 # Set-PSReadLineOption -PredictionSource History
 # Set-PSReadLineOption -PredictionViewStyle ListView
 
-Import-Module -Name Terminal-Icons
+Import-Module Terminal-Icons
 # Set-TerminalIconsTheme -DisableIconTheme
 
-Import-Module oh-my-posh
-oh-my-posh --init --shell pwsh --config $env:POSH_THEMES_PATH\pure.omp.json | Invoke-Expression
+oh-my-posh init pwsh --config $env:POSH_THEMES_PATH\pure.omp.json | Invoke-Expression
 
 function proxy {
   $env:http_proxy="http://127.0.0.1:7890";$env:https_proxy="http://127.0.0.1:7890"
