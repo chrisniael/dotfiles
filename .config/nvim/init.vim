@@ -257,14 +257,19 @@ set showmatch
 " 移除GUI版本中的 toolbar 和菜单栏
 if has("gui_running")
   set guioptions=
-  silent! set guifont=Sarasa\ Term\ SC:h12
+endif
+
+" guifont 仅仅影响 vim-gui, 不影响 neovim-qt
+if has("win32")
+  silent! set guifont=Hack\ NF:h9
+  silent! set guifontwide=Microsoft\ YaHei\ UI:h9
 endif
 
 " 关闭错误响声
 set novisualbell
 
 " 关闭闪烁
-if !has('nvim')
+if !has("nvim")
   set t_vb=
 endif
 
@@ -588,32 +593,35 @@ else
   " 显示符号列
   set signcolumn=yes
 
+  
   " Use tab for trigger completion with characters ahead and navigate.
-  " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+  " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+  " other plugin before putting this into your config.
   inoremap <silent><expr> <TAB>
-        \ pumvisible() ? "\<C-n>" :
-        \ <SID>check_back_space() ? "\<TAB>" :
+        \ coc#pum#visible() ? coc#pum#next(1):
+        \ CheckBackspace() ? "\<Tab>" :
         \ coc#refresh()
-  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+  inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
-  function! s:check_back_space() abort
+  " Make <CR> to accept selected completion item or notify coc.nvim to format
+  " <C-g>u breaks current undo, please make your own choice.
+  " <c-r>=coc#on_enter\<CR> 实现类似 IDE 函数体 {} 换行自动缩进
+  " inoremap <silent><expr> <cr> pumvisible() && coc#_selected() ? coc#_select_confirm()
+  "                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+  inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                                \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+  function! CheckBackspace() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~# '\s'
   endfunction
 
   " Use <c-space> to trigger completion.
   if has('nvim')
-    " inoremap <silent><expr> <c-space> coc#refresh()
-    inoremap <silent><expr> <c-q> coc#refresh()
+    inoremap <silent><expr> <c-space> coc#refresh()
   else
     inoremap <silent><expr> <c-@> coc#refresh()
   endif
-
-  " Make <CR> auto-select the first completion item and notify coc.nvim to
-  " format on enter, <cr> could be remapped by other vim plugin
-  " <c-r>=coc#on_enter\<CR> 实现类似 IDE 函数体 {} 换行自动缩进
-  inoremap <silent><expr> <cr> pumvisible() && coc#_selected() ? coc#_select_confirm()
-                                \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
   " Use <C-h>/<C-l> jump to next/previous placeholder.
   let g:coc_snippet_next = '<C-l>'
@@ -1129,11 +1137,6 @@ else
   " https://github.com/weirongxu/coc-explorer
   "----------------------------------------------------------------------
   nmap <space>e <Cmd>CocCommand explorer<CR>
-
-
-lua <<EOF
-
-EOF
 
 endif
 
