@@ -97,7 +97,6 @@ let g:coc_global_extensions = [
       \ 'coc-html',
       \ 'coc-prettier',
       \ 'coc-smartf',
-      \ 'coc-imselect',
       \ 'coc-emoji',
       \ 'coc-word',
       \ 'coc-dictionary',
