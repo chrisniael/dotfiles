@@ -12,16 +12,25 @@ Set-Alias -Name nvim -Value C:\Users\shenyu\scoop\apps\neovim\current\bin\nvim-q
 Set-Alias -Name vim -Value nvim
 Set-Alias -Name grep -Value findstr
 
+# posh-git
+# https://github.com/dahlbyk/posh-git
 Import-Module posh-git
 
+# PSReadLine
+# https://github.com/PowerShell/PSReadLine
 Import-Module PSReadLine
 Set-PSReadLineOption -EditMode Emacs
 # Set-PSReadLineOption -PredictionSource History
 # Set-PSReadLineOption -PredictionViewStyle ListView
 
+# Terminal-Icons
+# https://github.com/devblackops/Terminal-Icons
 Import-Module Terminal-Icons
 # Set-TerminalIconsTheme -DisableIconTheme
 
+# oh-my-posh 
+# https://github.com/JanDeDobbeleer/oh-my-posh
+# winget install JanDeDobbeleer.OhMyPosh -s winget
 oh-my-posh init pwsh --config $env:POSH_THEMES_PATH\pure.omp.json | Invoke-Expression
 
 function proxy {
