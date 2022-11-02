@@ -284,14 +284,10 @@ set hlsearch
 " 不产生备份文件
 set nobackup
 
-" 使用的换行符类型
-if has("win32")
-  set fileformat=dos
-  set fileformats=dos
-else
-  set fileformat=unix
-  set fileformats=unix
-endif
+
+" windows 上新建 go 相关文件使用 \n 作为换行符
+autocmd! BufNewFile *.go,go.mod,go.sum,go.work,go.work.sum setlocal fileformat=unix
+
 
 " 启用鼠标
 set mouse=a
