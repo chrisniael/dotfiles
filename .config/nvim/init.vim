@@ -105,7 +105,6 @@ let g:coc_global_extensions = [
       \ 'coc-phpactor',
       \ 'coc-git',
       \ 'coc-db',
-      \ 'coc-explorer',
       \ 'coc-highlight',
       \ ]
 
@@ -1130,12 +1129,6 @@ else
   nmap <silent> <M-d> :<C-u>GoDebugStart<CR>
   " Go delve stepout"
   nmap <silent> <S-F11> :<C-u>GoDebugStepOut<CR>
-
-  "----------------------------------------------------------------------
-  " coc-explorer 配置
-  " https://github.com/weirongxu/coc-explorer
-  "----------------------------------------------------------------------
-  nmap <space>e <Cmd>CocCommand explorer<CR>
 
 endif
 
