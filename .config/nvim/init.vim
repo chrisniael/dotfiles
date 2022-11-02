@@ -6,7 +6,7 @@ if exists('g:vscode')
   " 复制时同步到操作系统剪切板
   set clipboard+=unnamedplus
 
-  nnoremap <space>o <Cmd>call VSCodeCall('workbench.action.gotoSymbol')<CR>
+  nnoremap <Space>o <Cmd>call VSCodeCall('workbench.action.gotoSymbol')<CR>
 
   nnoremap gd <Cmd>call VSCodeCall('editor.action.revealDefinition')<CR>
   nnoremap gy <Cmd>call VSCodeCall('editor.action.goToTypeDefinition')<CR>
@@ -341,7 +341,7 @@ if has("win32") && has("nvim")
 endif
 
 " C-l 刷新时顺带消除搜索高亮
-nnoremap <silent> <C-L> :<C-u>nohlsearch<CR><C-l>
+nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 
 " Terminal 模式使用 Esc 切换 Normal 模式, 存在一定问题, 例如在 Terminal 中再打开 vim
 " tnoremap <Esc> <C-\><C-n>
@@ -409,7 +409,7 @@ endif
 "----------------------------------------------------------------------
 " let g:riv_highlight_code = 'lua,python,cpp,javascript,vim,sh,proto,c'
 " 处理回车键绑定其他操作导致补全操作不符合期望的问题
-" autocmd FileType rst iunma <silent><buffer> <cr>
+" autocmd FileType rst iunma <silent><buffer> <CR>
 
 
 "----------------------------------------------------------------------
@@ -477,8 +477,8 @@ else
     au TermOpen * setlocal nonumber norelativenumber signcolumn=no
   endif
 
-  map <C-N> :cnext<CR>
-  map <C-P> :cprevious<CR>
+  map <C-n> :cnext<CR>
+  map <C-p> :cprevious<CR>
 
   " 自定义命令 W: 保存文件时不 format 文件
   if !exists(':W')
@@ -498,10 +498,10 @@ else
   set tags=./.tags;,.tags
 
   " 高亮光标所在位置的单词, 并输入全文替换的命令, 替换单词代填充
-  nmap <leader>rp #<S-N>:%s/<C-R>=expand("<cword>")<CR>//g<Left><Left>
+  nmap <Leader>rp #<S-N>:%s/<C-r>=expand("<cword>")<CR>//g<Left><Left>
 
   " \-x 关闭 buf
-  nmap <silent><leader>x :silent! bdelete<CR>
+  nmap <silent><Leader>x :silent! bdelete<CR>
 
   "----------------------------------------------------------------------
   " vim-airline, vim-airline-theme 配置
@@ -630,11 +630,11 @@ else
   autocmd CursorHold * silent call CocActionAsync('highlight')
 
   " Symbol renaming.
-  nmap <leader>rn <Plug>(coc-rename)
+  nmap <Leader>rn <Plug>(coc-rename)
 
   " Formatting selected code.
-  xmap <leader>f  <Plug>(coc-format-selected)
-  nmap <leader>f  <Plug>(coc-format-selected)
+  xmap <Leader>f  <Plug>(coc-format-selected)
+  nmap <Leader>f  <Plug>(coc-format-selected)
 
   augroup mygroup
     autocmd!
@@ -645,17 +645,17 @@ else
   augroup end
 
   " Applying codeAction to the selected region.
-  " Example: `<leader>aap` for current paragraph
-  xmap <leader>a  <Plug>(coc-codeaction-selected)
-  nmap <leader>a  <Plug>(coc-codeaction-selected)
+  " Example: `<Leader>aap` for current paragraph
+  xmap <Leader>a  <Plug>(coc-codeaction-selected)
+  nmap <Leader>a  <Plug>(coc-codeaction-selected)
 
   " Remap keys for applying codeAction to the current buffer.
-  nmap <leader>ac  <Plug>(coc-codeaction)
+  nmap <Leader>ac  <Plug>(coc-codeaction)
   " Apply AutoFix to problem on the current line.
-  nmap <leader>qf  <Plug>(coc-fix-current)
+  nmap <Leader>qf  <Plug>(coc-fix-current)
 
   " Run the Code Lens action on the current line.
-  nmap <leader>cl  <Plug>(coc-codelens-action)
+  nmap <Leader>cl  <Plug>(coc-codelens-action)
 
   " Map function and class text objects
   " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
@@ -672,8 +672,8 @@ else
   if has('nvim-0.4.0') || has('patch-8.2.0750')
     nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
     nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-    inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
-    inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+    inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<CR>" : "\<Right>"
+    inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<CR>" : "\<Left>"
     vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
     vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
   endif
@@ -699,21 +699,21 @@ else
 
   " Mappings for CoCList
   " Show all diagnostics.
-  nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+  nnoremap <silent><nowait> <Space>a  :<C-u>CocList diagnostics<CR>
   " Manage extensions.
-  nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+  nnoremap <silent><nowait> <Space>e  :<C-u>CocList extensions<CR>
   " Show commands.
-  nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+  nnoremap <silent><nowait> <Space>c  :<C-u>CocList commands<CR>
   " Find symbol of current document.
-  nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+  nnoremap <silent><nowait> <Space>o  :<C-u>CocList outline<CR>
   " Search workspace symbols.
-  nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+  nnoremap <silent><nowait> <Space>s  :<C-u>CocList -I symbols<CR>
   " Do default action for next item.
-  nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+  nnoremap <silent><nowait> <Space>j  :<C-u>CocNext<CR>
   " Do default action for previous item.
-  nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+  nnoremap <silent><nowait> <Space>k  :<C-u>CocPrev<CR>
   " Resume latest coc list.
-  nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+  nnoremap <silent><nowait> <Space>p  :<C-u>CocListResume<CR>
 
   " 开启 semantic highlighting 支持
   " https://github.com/clangd/coc-clangd/issues/217#issuecomment-898130176
@@ -743,38 +743,11 @@ else
   "----------------------------------------------------------------------
   " cnoreabbrev CocList CocList --number-select
 
+  nnoremap <Space>w :<C-u>CocList -I --ignore-case words<CR>
   " 在当前 buffer 中搜索光标所在单词
-  command! -nargs=+ -complete=custom,s:WordsArgs CocListWords call CocListWordsOpt(<q-args>)
-
-  function! CocListWordsOpt(...)
-    if a:0 <= 0  " 参数个数
-      return
-    endif
-    let arg_list = split(a:1)
-    let i = 0
-    let options = ''
-    if len(arg_list) <= 0
-      return
-    endif
-    while i < len(arg_list) - 1
-      let arg = arg_list[i]
-      let options .= arg . ' '
-      let i += 1
-    endwhile
-    exe 'CocList --normal '.options.' --input='.arg_list[i].' words'
-  endfunction
-
-  function! s:WordsArgs(...)
-    let list = ['--ignore-case']
-    return join(list, "\n")
-  endfunction
-
-  " nnoremap <space>W :CocList --normal --ignore-case --input=<C-R>=expand('<cword>')<CR> words<Left><Left><Left><Left><Left><Left>
-  nnoremap <space>w :<C-u>CocList -I --ignore-case words<CR>
-  " 在当前 buffer 中搜索光标所在单词
-  nnoremap <leader>w :<C-u>CocListWords <C-R>=expand('<cword>')<CR>
+  nnoremap <Leader>w :<C-u>CocList -I --input=<C-r>=expand('<cword>')<CR> words<CR>
   " 在当前 buffer 中搜索 visual 模式选择的文本
-  vnoremap <leader>w :<C-u>call <SID>WordsFromSelected(visualmode())<CR>
+  vnoremap <Leader>w :<C-u>call <SID>WordsFromSelected(visualmode())<CR>
 
   function! s:WordsFromSelected(type)
     let saved_unnamed_register = @@
@@ -788,14 +761,14 @@ else
     let word = substitute(@@, '\n$', '', 'g')
     let word = escape(word, '| ')
     let @@ = saved_unnamed_register
-    execute 'CocList --normal --input='.word.' words'
+    execute 'CocList -I --input='.word.' words'
   endfunction
 
   " 文件列表
-  nnoremap <silent> <space>f :<C-u>CocList files<cr>
+  nnoremap <silent> <Space>f :<C-u>CocList files<CR>
 
   " Buffer 列表
-  nnoremap <silent> <space>b :<C-u>CocList buffers<cr>
+  nnoremap <silent> <Space>b :<C-u>CocList buffers<CR>
 
   " 自定义的 grep 命令, 支持目录补全
   function! s:CocListGrep(case_ignore, args)
@@ -814,14 +787,14 @@ else
 
   command! -nargs=* -complete=dir CocListGrep :call s:CocListGrep(0, <q-args>)
   command! -nargs=* -complete=dir CocListGrepCaseIgnore :call s:CocListGrep(1, <q-args>)
-  nnoremap <space>g :<C-u>CocListGrep<space>
-  nnoremap <space>G :<C-u>CocListGrepCaseIgnore<space>
+  nnoremap <Space>g :<C-u>CocList -I grep -i<CR>
+  nnoremap <Space>G :<C-u>CocList -I grep<CR>
   " Grep 光标所在单词
-  nnoremap <leader>g :<C-u>CocListGrep <C-R>=expand('<cword>')<CR>
-  nnoremap <leader>G :<C-u>CocListGrepCaseIgnore <C-R>=expand('<cword>')<CR>
+  nnoremap <Leader>g :<C-u>CocList grep -i <C-r>=expand('<cword>')<CR><CR>
+  nnoremap <Leader>G :<C-u>CocList grep <C-r>=expand('<cword>')<CR><CR>
   " Grep visual 模式选择的文本
-  vnoremap <leader>g :<C-u>call <SID>GrepFromSelected(visualmode())<CR>
-  vnoremap <leader>G :<C-u>call <SID>GrepFromSelectedIgnoreCase(visualmode())<CR>
+  vnoremap <Leader>g :<C-u>call <SID>GrepFromSelectedIgnoreCase(visualmode())<CR>
+  vnoremap <Leader>G :<C-u>call <SID>GrepFromSelected(visualmode())<CR>
 
   function! s:GrepFromSelected(type)
     let saved_unnamed_register = @@
@@ -835,7 +808,7 @@ else
     let word = substitute(@@, '\n$', '', 'g')
     let word = escape(word, '| ')
     let @@ = saved_unnamed_register
-    execute 'CocList --normal grep '.word
+    execute 'CocList grep '.word
   endfunction
 
   function! s:GrepFromSelectedIgnoreCase(type)
@@ -850,11 +823,11 @@ else
     let word = substitute(@@, '\n$', '', 'g')
     let word = escape(word, '| ')
     let @@ = saved_unnamed_register
-    execute 'CocList --normal grep -i '.word
+    execute 'CocList grep -i '.word
   endfunction
 
   " 历史剪切板列表
-  nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
+  nnoremap <silent> <Space>y  :<C-u>CocList -A -I yank<CR>
 
 
   "----------------------------------------------------------------------
@@ -902,7 +875,7 @@ else
   " silent! call airline#parts#define_function('asyncrun_status', 'AsyncrunGetStatus')
   " silent! let g:airline_section_x = airline#section#create_right(['bookmark', 'tagbar', 'vista', 'gutentags', 'gen_tags', 'omnisharp', 'grepper', 'asyncrun_status', 'filetype'])
 
-  nnoremap <silent> <space>t  :<C-u>CocList tasks<cr>
+  nnoremap <silent> <Space>t  :<C-u>CocList tasks<CR>
 
   " quickfix list 与 localtion list toggle 快捷键
   " https://vim.fandom.com/wiki/Toggle_to_open_or_close_the_quickfix_window
@@ -931,8 +904,8 @@ else
     wincmd p
   endfunction
 
-  " nmap <silent> <space>l :call ToggleList("Location List", 'l')<CR>
-  " nmap <silent> <space>q :call ToggleList("Quickfix List", 'c')<CR>
+  " nmap <silent> <Space>l :call ToggleList("Location List", 'l')<CR>
+  " nmap <silent> <Space>q :call ToggleList("Quickfix List", 'c')<CR>
 
   function! AsyncTaskRun()
     if &filetype == 'vim'
@@ -942,7 +915,7 @@ else
     endif
   endfunction
 
-  nmap <silent> <leader>q :AsyncStop<CR>
+  nmap <silent> <Leader>q :AsyncStop<CR>
   nmap <silent> <M-b> :<C-u>AsyncTask build<CR>
   nmap <M-r> :call AsyncTaskRun()<CR>
   " autocmd FileType go nmap <M-t> :GoTestFunc -v<CR>
@@ -992,7 +965,7 @@ else
   " vim-lua-foramt 配置
   " https://github.com/andrejlevkovitch/vim-lua-format
   "----------------------------------------------------------------------
-  autocmd FileType lua nnoremap <buffer> <silent><leader>f :call LuaFormat()<CR>
+  autocmd FileType lua nnoremap <buffer> <silent><Leader>f :call LuaFormat()<CR>
   autocmd BufWrite *.lua call LuaFormat()
 
 
@@ -1048,17 +1021,17 @@ else
   " vim-gitgutter 配置
   " https://github.com/airblade/vim-gitgutter
   "----------------------------------------------------------------------
-  " nnoremap <silent> <leader>hl :Git pull<CR>
-  " nnoremap <silent> <leader>hh :Git push<CR>
-  nnoremap <leader>hd :<C-u>Gdiffsplit<CR>
-  nnoremap <leader>hh :<C-u>Git<CR>
+  " nnoremap <silent> <Leader>hl :Git pull<CR>
+  " nnoremap <silent> <Leader>hh :Git push<CR>
+  nnoremap <Leader>hd :<C-u>Gdiffsplit<CR>
+  nnoremap <Leader>hh :<C-u>Git<CR>
 
 
   "----------------------------------------------------------------------
   " coc-git 配置
   " https://github.com/neoclide/coc-git
   "----------------------------------------------------------------------
-  nnoremap <space>h :<C-u>CocList --normal gstatus<CR>
+  nnoremap <Space>h :<C-u>CocList --normal gstatus<CR>
   " navigate chunks of current buffer
   " nmap [c <Plug>(coc-git-prevchunk)
   " nmap ]c <Plug>(coc-git-nextchunk)
@@ -1066,16 +1039,16 @@ else
   nmap [x <Plug>(coc-git-prevconflict)
   nmap ]x <Plug>(coc-git-nextconflict)
   " show chunk diff at current position
-  " nmap <leader>hp <Plug>(coc-git-chunkinfo)
+  " nmap <Leader>hp <Plug>(coc-git-chunkinfo)
   " show commit contains current position
-  " nmap <leader>hc <Plug>(coc-git-commit)
+  " nmap <Leader>hc <Plug>(coc-git-commit)
   " create text object for git chunks
   omap ig <Plug>(coc-git-chunk-inner)
   xmap ig <Plug>(coc-git-chunk-inner)
   omap ag <Plug>(coc-git-chunk-outer)
   xmap ag <Plug>(coc-git-chunk-outer)
 
-  " nmap <leader>hu :<C-u>CocCommand git.chunkUndo<CR>
+  " nmap <Leader>hu :<C-u>CocCommand git.chunkUndo<CR>
 
 
   "----------------------------------------------------------------------
