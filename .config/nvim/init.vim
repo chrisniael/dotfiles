@@ -745,7 +745,7 @@ else
 
   nnoremap <Space>w :<C-u>CocList -I --ignore-case words<CR>
   " 在当前 buffer 中搜索光标所在单词
-  nnoremap <Leader>w :<C-u>CocList -I --input=<C-r>=expand('<cword>')<CR> words<CR>
+  nnoremap <Leader>w :<C-u>CocList -I --normal --input=<C-r>=expand('<cword>')<CR> words<CR>
   " 在当前 buffer 中搜索 visual 模式选择的文本
   vnoremap <Leader>w :<C-u>call <SID>WordsFromSelected(visualmode())<CR>
 
@@ -761,7 +761,7 @@ else
     let word = substitute(@@, '\n$', '', 'g')
     let word = escape(word, '| ')
     let @@ = saved_unnamed_register
-    execute 'CocList -I --input='.word.' words'
+    execute 'CocList -I --normal --input='.word.' words'
   endfunction
 
   " 文件列表
