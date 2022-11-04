@@ -20,8 +20,7 @@ Import-Module posh-git
 # https://github.com/PowerShell/PSReadLine
 Import-Module PSReadLine
 Set-PSReadLineOption -EditMode Emacs
-# Set-PSReadLineOption -PredictionSource History
-# Set-PSReadLineOption -PredictionViewStyle ListView
+Set-PSReadLineOption -PredictionSource None
 
 # Terminal-Icons
 # https://github.com/devblackops/Terminal-Icons
