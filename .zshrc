@@ -1,28 +1,18 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -n "$TMUX" ]] || [[ "$TERM_PROGRAM" = "Apple_Terminal" ]] || [[ "$TERM_PROGRAM" = "iTerm.app" ]] || [[ "$TERMINAL_EMULATOR" = "JetBrains-JediTerm" ]] ; then
-  if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-  fi
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # Path to your oh-my-zsh installation.
 export ZSH="${HOME}/.oh-my-zsh"
 
-if [[ -n "$TMUX" ]] || [[ "$TERM_PROGRAM" = "Apple_Terminal" ]] || [[ "$TERM_PROGRAM" = "iTerm.app" ]] || [[ "$TERMINAL_EMULATOR" = "JetBrains-JediTerm" ]] ; then
-  ZSH_THEME="powerlevel10k/powerlevel10k"
-else
-  ZSH_THEME="robbyrussell"
-fi
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 DISABLE_AUTO_UPDATE="true"
 
-# 安装 zsh-vim-mode
-if [[ ! -d $HOME/.oh-my-zsh/custom/plugins/zsh-vim-mode ]]; then
-  git clone https://github.com/softmoth/zsh-vim-mode.git $HOME/.oh-my-zsh/custom/plugins/zsh-vim-mode
-fi
-plugins=(docker rust golang zsh-vim-mode)
+plugins=(docker rust golang)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -30,18 +20,12 @@ source $ZSH/oh-my-zsh.sh
 #----------------------------------------------------------------------
 # User configuration
 #----------------------------------------------------------------------
-# export MANPATH="/usr/local/man:$MANPATH"
-
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
 # 确保 source ~/.zshrc 的时候不会重复追加 PATH 的值
-if [[ -z "$TMUX" ]]; then
-  if [[ -z "$ORIGIN_PATH" ]]; then
-    export ORIGIN_PATH=$PATH
-  else
-    export PATH=$ORIGIN_PATH
-  fi
+if [[ -z "$TMUX" ]] && [[ -z "$ORIGIN_PATH" ]]; then
+  export ORIGIN_PATH=$PATH
 else
   export PATH=$ORIGIN_PATH
 fi
@@ -49,16 +33,6 @@ fi
 OS=$(uname)
 
 if [[ "${OS}" == "Darwin" ]]; then
-  # 检测是否存在 exa 命令
-  if hash exa >/dev/null 2>&1; then
-    alias ls='exa -F'
-    alias ll='exa -lF'
-    alias la='exa -laF'
-  else
-    alias ls="ls -FhOT"
-    alias ll="ls -lFhOT"
-    alias la="ls -laFhOT"
-  fi
   alias lldb="PATH=/usr/bin /usr/bin/lldb"
   alias ssh-over-ss="ssh -o ProxyCommand='nc -x 127.0.0.1:1081 %h %p'"
   alias htop="TERM=xterm-256color htop"
@@ -97,34 +71,23 @@ if [[ "${OS}" == "Darwin" ]]; then
   export C_INCLUDE_PATH="$C_INCLUDE_PATH:/usr/local/include"
   export CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/local/include"
   export OBJC_INCLUDE_PATH="$OBJC_INCLUDE_PATH:/usr/local/lib"
-else
-  if hash exa >/dev/null 2>&1; then
-    alias ls='exa -F'
-    alias ll='exa -lF'
-    alias la='exa -laF'
-  else
-    alias ls="ls -Fh --color"
-    alias ll="ls -lF --color"
-    alias la="ls -laFh --color"
-  fi
+elif [[ "${OS}" == "Linux" ]]; then
+  source /etc/os-release
+  case "${ID}" in
+    arch|manjaro)
+      alias gdb="sudo gdb"
 
-  if [[ "${OS}" == "Linux" ]]; then
-    source /etc/os-release
-    case "${ID}" in
-      arch|manjaro)
-        alias gdb="sudo gdb"
-
-        export PATH="$HOME/.gem/ruby/2.7.0/bin:$PATH"
-        ;
-        ;;
-      ubuntu)
-        ;;
-      centos)
-        ;;
-      *)
-        ;;
-    esac
-  fi
+      NPM_PACKAGES="${HOME}/.npm"
+      export PATH="$PATH:$NPM_PACKAGES/bin"
+      export MANPATH="${MANPATH}:$NPM_PACKAGES/share/man"
+      ;;
+    ubuntu)
+      ;;
+    centos)
+      ;;
+    *)
+      ;;
+  esac
 fi
 
 if [[ -d $HOME/.go ]]; then
@@ -141,10 +104,14 @@ if [[ -d $HOME/.local/share/nvim/plugged/asynctasks.vim/bin ]]; then
   alias t='asynctask -f'
 fi
 
-alias rm="rm -i"                            #"删除"
-alias cp="cp -i"                            #"复制"
-alias mv="mv -i"                            #"移动"
-alias mkdir="mkdir -v"                      #"新建时会提示
+
+alias ls='exa -F'
+alias ll='exa -lF'
+alias la='exa -laF'
+alias rm="rm -i"
+alias cp="cp -i"
+alias mv="mv -i"
+alias mkdir="mkdir -v"
 alias grep="grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox} --line-buffered"
 alias vim="nvim"
 
@@ -216,8 +183,7 @@ if [ -f "${HOME}/.zshrc_local" ]; then
   source "${HOME}/.zshrc_local"
 fi
 
-## tmux 启动的时候存在 attached 的 session 则 attach 它并剔除所有其他客户端，不存在则创建一个新的
-## 仅仅 ssh 连接时自动启动 tmux
+# tmux 启动的时候存在 attached 的 session 则 attach 它并剔除所有其他客户端，不存在则创建一个新的
 if [[ -z "$TMUX" ]]; then
   # 不是 vim/neovim 的 terminal 启动的 zsh
   if [[ -z "$NVIM_LISTEN_ADDRESS" ]]; then
@@ -227,26 +193,25 @@ if [[ -z "$TMUX" ]]; then
       exit
     }
   fi
+
   # XShell 终端类型里没有 xterm-256color 选项，需要手动设置
   # tmux 里不可以手动设置，tmux 本身配置里有对 TERM 设置
   # TERM 会影响 ohmyzsh 的 ATUO_TITLE 功能
   export TERM='xterm-256color'
-  if [[ "$TERM_PROGRAM" != "Apple_Terminal" ]] && [[ "$TERM_PROGRAM" != "iTerm.app" ]] && [[ "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" ]] ; then
-    # JetBrains IDE not compatible
-    # https://youtrack.jetbrains.com/articles/IDEA-A-19/Shell-Environment-Loading
-    if [ -z "$INTELLIJ_ENVIRONMENT_READER" ]; then
-      # 用 eval 是去除前后的空格， mac 上的 wc 命令与 linux 不太一样，会输出一些空格
-      if [[ $(eval echo $(tmux list-sessions 2>/dev/null | wc -l)) = 0 ]]; then
-        exec tmux new-session
+
+  # 仅仅通过 ssh 连接时自动启动 tmux
+  if [[ -n "$SSH_CONNECTION" ]]; then
+    # 用 eval 是去除前后的空格， mac 上的 wc 命令与 linux 不太一样，会输出一些空格
+    if [[ $(eval echo $(tmux list-sessions 2>/dev/null | wc -l)) = 0 ]]; then
+      exec tmux new-session
+    else
+      ID="$(tmux list-sessions 2>/dev/null | grep -m1 attached | cut -d: -f1)"
+      if [[ -n "$ID" ]]; then
+        killall xclip >/dev/null 2>&1
+        exec tmux attach-session -d -x -t "$ID"
       else
-        ID="$(tmux list-sessions 2>/dev/null | grep -m1 attached | cut -d: -f1)"
-        if [[ -n "$ID" ]]; then
-          killall xclip >/dev/null 2>&1
-          exec tmux attach-session -d -x -t "$ID"
-        else
-          killall xclip >/dev/null 2>&1
-          exec tmux attach-session -d -x
-        fi
+        killall xclip >/dev/null 2>&1
+        exec tmux attach-session -d -x
       fi
     fi
   else
