@@ -80,6 +80,9 @@ elif [[ "${OS}" == "Linux" ]]; then
       NPM_PACKAGES="${HOME}/.npm"
       export PATH="$PATH:$NPM_PACKAGES/bin"
       export MANPATH="${MANPATH}:$NPM_PACKAGES/share/man"
+
+      export GEM_HOME=$HOME/.gems
+      export PATH="$PATH:$GEM_HOME/bin"
       ;;
     ubuntu)
       ;;

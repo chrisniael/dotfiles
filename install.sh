@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo pacman -S zsh neovim clang nodejs npm ripgrep xsel ttf-hack-nerd git exa tmux
+sudo pacman -S zsh neovim clang nodejs npm ripgrep xsel ttf-hack-nerd git exa tmux tree-sitter
 
 git clone https://github.com/chrisniael/dotfiles.git $HOME/dotfiles
 
@@ -19,21 +19,20 @@ ln -s $HOME/.dotfiles/.npmrc $HOME/
 NPM_PACKAGES="${HOME}/.npm"
 /bin/mkdir -p $NPM_PACKAGES
 npm config set prefix $NPM_PACKAGES
-npm install neovim -g
-
-# Install pynvim
-pip install pynvim
 
 # gem config
 ln -s $HOME/.dotfiles/.gemrc $HOME/
 
-
 # Neovim config
+pip install pynvim
+npm install neovim -g
+gem install neovim
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 ln -s $HOME/.dosfiles/.config/nvim  $HOME/.config/
 nvim -c 'PlugInstall --sync|qa'
 nvim -c 'CocUpdateSync|q'
+nvim -c 'TSInstallSync all|q'
 
 
 # tmux config
