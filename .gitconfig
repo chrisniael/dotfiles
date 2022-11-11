@@ -17,7 +17,7 @@
 	quotepath = false
 	commitGraph = true
 	longpaths = true
-  pager = delta
+	pager = delta
 [credential]
 	helper = store
 [alias]
