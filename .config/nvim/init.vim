@@ -1060,7 +1060,7 @@ vim.cmd [[highlight IndentBlanklineContextChar guifg=#7c6f64 gui=nocombine]]
 vim.cmd [[highlight Whitespace guifg=#3c3836 gui=nocombine]]
 vim.cmd [[highlight IndentBlanklineChar guifg=#3c3836 gui=nocombine]]
 vim.cmd [[highlight IndentBlanklineSpaceChar guifg=#3c3836 gui=nocombine]]
-require("indent_blankline").setup {
+require'indent_blankline'.setup {
     -- for example, context is off by default, use this to turn it on
     show_current_context = true,
     show_current_context_start = false,
