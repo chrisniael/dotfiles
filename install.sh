@@ -2,7 +2,7 @@
 
 sudo pacman -S base-devel zsh neovim clang nodejs npm ripgrep xclip ttf-hack-nerd git exa tmux tree-sitter delve fzf
 
-git clone https://github.com/chrisniael/dotfiles.git $HOME/dotfiles
+git clone https://github.com/chrisniael/dotfiles.git $HOME/.dotfiles
 
 # Install ohmyzh
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -40,4 +40,3 @@ nvim -c 'TSInstallSync all|q'
 # TODO: 安装 tmux 插件
 ln -s $HOME/.dotfiles/.tmux.conf $HOME/
 git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
-
