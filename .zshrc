@@ -93,19 +93,13 @@ elif [[ "${OS}" == "Linux" ]]; then
   esac
 fi
 
-if [[ -d $HOME/.go ]]; then
-  export GOPATH="$HOME/.go"
-  export PATH="$PATH:$GOPATH/bin"
-fi
+export GOPATH="$HOME/.go"
+export PATH="$PATH:$GOPATH/bin"
 
-if [[ -d $HOME/.bin ]]; then
-  export PATH="$HOME/.bin:$PATH"
-fi
+export PATH="$HOME/.bin:$PATH"
 
-if [[ -d $HOME/.local/share/nvim/plugged/asynctasks.vim/bin ]]; then
-  export PATH="$HOME/.local/share/nvim/plugged/asynctasks.vim/bin:$PATH"
-  alias t='asynctask -f'
-fi
+export PATH="$HOME/.local/share/nvim/plugged/asynctasks.vim/bin:$PATH"
+alias t='asynctask -f'
 
 
 alias ls='exa -F'
@@ -116,7 +110,6 @@ alias cp="cp -i"
 alias mv="mv -i"
 alias mkdir="mkdir -v"
 alias grep="grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox} --line-buffered"
-alias vim="nvim"
 
 function unproxy() {
   unset {http,https,ftp,rsync,all}_proxy
