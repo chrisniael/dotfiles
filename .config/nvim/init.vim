@@ -1,18 +1,15 @@
+" 不兼容 vim
+if !has("nvim")
+  finish
+endif
+
 "----------------------------------------------------------------------
 " vim-plugin 插件列表
 " https://github.com/junegunn/vim-plug
 " Avoid using standard Vim directory names like 'plugin'
 "----------------------------------------------------------------------
-if has('nvim')
-  " Li/Unux: ~/.local/share/nvim/plugged
-  call plug#begin(stdpath('data') . '/plugged')
-else
-  if has("win32")
-    call plug#begin('~/vimfiles/plugged')
-  else
-    call plug#begin('~/.vim/plugged')
-  endif
-endif
+" Linux/Unix: ~/.local/share/nvim/plugged
+call plug#begin(stdpath('data') . '/plugged')
 
 " 加快 git difftool 打开速度
 if !&diff
@@ -104,15 +101,6 @@ let g:indent_space_4w_filetypes = ['toml', 'php', 'python', 'proto']
 " 显示标题
 set title
 
-" vim 支持显示粗体与斜体
-" - https://github.com/neovim/neovim/issues/3461#issuecomment-268640486
-" - https://github.com/tmux/tmux/issues/2262#issuecomment-640166755
-" - https://github.com/mhinz/dotfiles/blob/master/bin/fix-term
-if !has("nvim")
-  set t_ZH=[3m
-  set t_ZR=[23m
-endif
-
 " 设置 gruvbox 主题 contrast 程度 (得放在 colorscheme 设置之前)
 " soft, medium (default), hard
 " let g:gruvbox_contrast_dark = 'hard'
@@ -152,20 +140,6 @@ set number
 set laststatus=2
 
 " 开启 true color
-function! s:enable_true_color()
-  if has("termguicolors")
-    " fix bug for vim
-    " vim --version 查看是否有 +termguicolors, 否则并不能启动 true color
-    if !has("nvim")
-      set t_8f=[38;2;%lu;%lu;%lum
-      set t_8b=[48;2;%lu;%lu;%lum
-    endif
-
-    " enable true color
-    set termguicolors
-  endif
-endfunction
-
 " - 不支持 true color 的 terminal : macOS Terminal
 " - 支持 true color 的 terminal : iTerm2, Mintty, PuTTY
 " 暂时没有很好的方法判断 terminal 是否支持 true color
@@ -173,13 +147,13 @@ endfunction
 " remote ssh 至 macOS 时, 不存在 COLORTERM 这个环境变量
 " if has("mac")
 "   if $COLORTERM == 'truecolor'
-"     call s:enable_true_color()
+"     set termguicolors
 "   endif
 " else
-"   call s:enable_true_color()
+"   set termguicolors
 " endif
 if $TERM_PROGRAM != "Apple_Terminal"
-  call s:enable_true_color()
+  set termguicolors
 endif
 
 " 光标所在行突出显示
@@ -237,11 +211,6 @@ endif
 
 " 关闭错误响声
 set novisualbell
-
-" 关闭闪烁
-if !has("nvim")
-  set t_vb=
-endif
 
 " 在编辑过程中, 在右下角显示光标位置的状态行
 set ruler
@@ -305,7 +274,7 @@ augroup end
 au FileType * set formatoptions-=c formatoptions-=r formatoptions-=o
 
 " Windows 终端 C-z 会有问题
-if has("win32") && has("nvim")
+if has("win32")
   nnoremap <C-z> <nop>
   inoremap <C-z> <nop>
   vnoremap <C-z> <nop>
@@ -323,11 +292,9 @@ nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 tnoremap <C-o> <C-\><C-n>
 
 " 粘贴快捷键
-if has("nvim")
-  nnoremap <S-Insert> <C-r>*
-  inoremap <S-Insert> <C-r>*
-  cnoremap <S-Insert> <C-r>*
-endif
+nnoremap <S-Insert> <C-r>*
+inoremap <S-Insert> <C-r>*
+cnoremap <S-Insert> <C-r>*
 inoremap <C-v> <C-r>*
 cnoremap <C-v> <C-r>*
 " 仅仅更改 coc-list 窗口 C-v 的快捷方式为粘贴
@@ -335,29 +302,24 @@ autocmd FileType list nnoremap <buffer> <C-v> <C-r>*
 
 " 同步 ssh 连接的 vim 剪切板到本地
 " https://lotabout.me/2019/Integrate-clipboard-with-SSH/
-if has("nvim")
-  " Mac 上 XQuartz 有 bug, 不能同步 clipboard, 只能同步 primary, 所以配置成都走 primary
-  if !has("win32") && !empty($SSH_CONNECTION)
-    let g:clipboard = {
-      \   'name': 'xclip-primary',
-      \   'copy': {
-      \      '+': 'xclip -i -selection primary',
-      \      '*': 'xclip -i -selection primary',
-      \    },
-      \   'paste': {
-      \      '+': 'xclip -o -selection primary',
-      \      '*': 'xclip -o -selection primary',
-      \   },
-      \   'cache_enabled': 0,
-      \ }
-  endif
-
-  " 所有复制操作都同步至 primary 剪切板 +
-  set clipboard+=unnamedplus
-else
-  " :help clipboard-autoselect
-  set clipboard=unnamed
+" Mac 上 XQuartz 有 bug, 不能同步 clipboard, 只能同步 primary, 所以配置成都走 primary
+if !has("win32") && !empty($SSH_CONNECTION)
+  let g:clipboard = {
+    \   'name': 'xclip-primary',
+    \   'copy': {
+    \      '+': 'xclip -i -selection primary',
+    \      '*': 'xclip -i -selection primary',
+    \    },
+    \   'paste': {
+    \      '+': 'xclip -o -selection primary',
+    \      '*': 'xclip -o -selection primary',
+    \   },
+    \   'cache_enabled': 0,
+    \ }
 endif
+
+" 所有复制操作都同步至 primary 剪切板 +
+set clipboard+=unnamedplus
 
 " windows 上使用 pwsh 作为默认 shell
 " if has("win32")
@@ -447,10 +409,8 @@ else
 
   " 打开 terminal 时关闭行号和符号列, 并自动进入 insert 模式
   " 退出 terminal: <C-\><C-n>
-  if has("nvim")
-    " au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
-    au TermOpen * setlocal nonumber norelativenumber signcolumn=no
-  endif
+  " au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
+  au TermOpen * setlocal nonumber norelativenumber signcolumn=no
 
   map <C-n> :cnext<CR>
   map <C-p> :cprevious<CR>
@@ -573,11 +533,7 @@ else
   endfunction
 
   " Use <c-space> to trigger completion.
-  if has('nvim')
-    inoremap <silent><expr> <c-space> coc#refresh()
-  else
-    inoremap <silent><expr> <c-@> coc#refresh()
-  endif
+  inoremap <silent><expr> <c-space> coc#refresh()
 
   " Use `[g` and `]g` to navigate diagnostics
   " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
@@ -644,7 +600,7 @@ else
   omap ac <Plug>(coc-classobj-a)
 
   " Remap <C-f> and <C-b> for scroll float windows/popups.
-  if has('nvim-0.4.0') || has('patch-8.2.0750')
+  if has("nvim-0.4.0") || has("patch-8.2.0750")
     nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
     nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
     inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<CR>" : "\<Right>"
@@ -821,7 +777,7 @@ else
   " neovim 5.0 已经解决这个问题
   " - https://github.com/neovim/neovim/issues/6048
   " - https://github.com/neovim/neovim/issues/11089
-  " if has("nvim") && !empty($DISPLAY)
+  " if !empty($DISPLAY)
   "   let g:loaded_netrwPlugin = 1
   " endif
 
@@ -969,17 +925,6 @@ else
   let g:rooter_manual_only = 1
 
   " Vim 打开时将工作目录切换至工程目录
-  " https://vi.stackexchange.com/a/2559
-  " if has("win32") && has("nvim")
-  "   function InsertIfEmpty()
-  "       if @% != ""
-  " cd %:p:h
-  "       endif
-  "   endfunction
-
-  "   au VimEnter * call InsertIfEmpty()
-  " endif
-
   " au VimEnter * if exists(":Rooter") | Rooter | endif
 
 
