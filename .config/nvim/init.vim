@@ -1050,12 +1050,12 @@ else
         \   wilder#branch(
         \     wilder#cmdline_pipeline({
         \       'language': 'python',
-        \       'fuzzy': 1,
+        \       'fuzzy': 2,
         \     }),
         \     wilder#python_search_pipeline({
         \       'pattern': wilder#python_fuzzy_pattern(),
         \       'sorter': wilder#python_difflib_sorter(),
-        \       'engine': 're',
+        \       'engine': 're2',
         \     }),
         \   ),
         \ ])

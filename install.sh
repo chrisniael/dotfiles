@@ -25,6 +25,7 @@ ln -s $HOME/.dotfiles/.gemrc $HOME/
 
 # Neovim config
 pip install pynvim
+pip install pyre2
 npm install neovim -g
 gem install neovim
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
