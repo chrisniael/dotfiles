@@ -35,6 +35,14 @@ if !&diff
   Plug 'voldikss/vim-floaterm'
   Plug 'fatih/vim-go', { 'for': ['go', 'gomod'] }
   Plug 'sebdah/vim-delve', { 'for': ['go'] }
+
+  function! UpdateRemotePlugins(...)
+    " Needed to refresh runtime files
+    let &rtp=&rtp
+    UpdateRemotePlugins
+  endfunction
+
+  Plug 'gelguy/wilder.nvim', { 'do': function('UpdateRemotePlugins') }
 endif
 Plug 'gruvbox-community/gruvbox'
 " Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
@@ -1015,13 +1023,42 @@ else
   let g:go_rename_command = 'gorename'
   let g:go_test_timeout= '300s'
 
-
   " 运行测试用例函数快捷键
   nmap <silent> <M-t> :<C-u>GoTestFunc<CR>
   " 运行调试
   nmap <silent> <M-d> :<C-u>GoDebugStart<CR>
   " Go delve stepout"
   nmap <silent> <S-F11> :<C-u>GoDebugStepOut<CR>
+
+
+  "----------------------------------------------------------------------
+  " wilder.nvim 配置
+  " https://github.com/gelguy/wilder.nvim
+  "----------------------------------------------------------------------
+  call wilder#setup({
+        \ 'modes': [':', '/', '?'],
+        \ })
+  " 'highlighter' : applies highlighting to the candidates
+  call wilder#set_option('renderer', wilder#popupmenu_renderer({
+        \ 'highlighter': wilder#basic_highlighter(),
+        \ 'highlights': {
+        \   'accent': wilder#make_hl('WilderAccent', 'Pmenu', [{}, {}, {'foreground': '#f4468f'}]),
+        \ },
+        \ }))
+
+  call wilder#set_option('pipeline', [
+        \   wilder#branch(
+        \     wilder#cmdline_pipeline({
+        \       'language': 'python',
+        \       'fuzzy': 1,
+        \     }),
+        \     wilder#python_search_pipeline({
+        \       'pattern': wilder#python_fuzzy_pattern(),
+        \       'sorter': wilder#python_difflib_sorter(),
+        \       'engine': 're',
+        \     }),
+        \   ),
+        \ ])
 
 endif
 
