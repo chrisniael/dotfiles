@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo pacman -S zsh neovim clang nodejs npm ripgrep xsel ttf-hack-nerd git exa tmux tree-sitter
+sudo pacman -S base-devel zsh neovim clang nodejs npm ripgrep xclip ttf-hack-nerd git exa tmux tree-sitter delve fzf
 
 git clone https://github.com/chrisniael/dotfiles.git $HOME/dotfiles
 
