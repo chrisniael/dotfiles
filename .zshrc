@@ -96,7 +96,7 @@ fi
 export GOPATH="$HOME/.go"
 export PATH="$PATH:$GOPATH/bin"
 
-export PATH="$HOME/.bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 
 export PATH="$HOME/.local/share/nvim/plugged/asynctasks.vim/bin:$PATH"
 alias t='asynctask -f'

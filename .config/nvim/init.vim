@@ -19,17 +19,13 @@ if !&diff
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
   Plug 'tpope/vim-commentary'
-  Plug 'godlygeek/tabular'
+  " Plug 'godlygeek/tabular'
   Plug 'plasticboy/vim-markdown', { 'for': ['markdown'] }
   Plug 'MTDL9/vim-log-highlighting', { 'for': ['log'] }
   Plug 'tpope/vim-obsession'
   Plug 'skywind3000/asynctasks.vim'
   Plug 'skywind3000/asyncrun.vim'
   Plug 'skywind3000/vim-terminal-help'
-  Plug 'andrejlevkovitch/vim-lua-format'
-  Plug 'google/vim-maktaba'
-  Plug 'google/vim-codefmt'
-  Plug 'google/vim-glaive'
   Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown'}
   Plug 'airblade/vim-rooter'
   Plug 'voldikss/vim-floaterm'
@@ -45,7 +41,6 @@ if !&diff
   Plug 'gelguy/wilder.nvim', { 'do': function('UpdateRemotePlugins') }
 endif
 Plug 'gruvbox-community/gruvbox'
-" Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
 " Plug 'gu-fan/riv.vim'
 Plug 'cespare/vim-toml', { 'for': ['toml'] }
 Plug 'chrisniael/rsi.vim'
@@ -766,7 +761,7 @@ else
   endfunction
 
   " 历史剪切板列表
-  nnoremap <silent> <Space>y  :<C-u>CocList -A -I yank<CR>
+  nnoremap <silent> <Space>y  :<C-u>CocList -A yank<CR>
 
 
   "----------------------------------------------------------------------
@@ -1038,6 +1033,7 @@ else
   call wilder#setup({
         \ 'modes': [':', '/', '?'],
         \ })
+
   " 'highlighter' : applies highlighting to the candidates
   call wilder#set_option('renderer', wilder#popupmenu_renderer({
         \ 'highlighter': wilder#basic_highlighter(),
@@ -1046,6 +1042,8 @@ else
         \ },
         \ }))
 
+  " partial fuzzy search
+  " https://github.com/gelguy/wilder.nvim/issues/66#issuecomment-1032889652
   call wilder#set_option('pipeline', [
         \   wilder#branch(
         \     wilder#cmdline_pipeline({
@@ -1053,7 +1051,9 @@ else
         \       'fuzzy': 2,
         \     }),
         \     wilder#python_search_pipeline({
-        \       'pattern': wilder#python_fuzzy_pattern(),
+        \       'pattern': wilder#python_fuzzy_pattern({
+        \         'start_at_boundary': 0,
+        \       }),
         \       'sorter': wilder#python_difflib_sorter(),
         \       'engine': 're2',
         \     }),
