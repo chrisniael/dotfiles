@@ -913,15 +913,6 @@ else
 
 
   "----------------------------------------------------------------------
-  " vim-codefmt 配置
-  " https://github.com/google/vim-codefmt
-  "----------------------------------------------------------------------
-  augroup autoformat_settings
-    autocmd FileType proto,arduino AutoFormatBuffer clang-format
-  augroup END
-
-
-  "----------------------------------------------------------------------
   " vim-rooter 配置
   " https://github.com/airblade/vim-rooter
   "----------------------------------------------------------------------
