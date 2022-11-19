@@ -34,7 +34,6 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
 mkdir $HOME/.config
 ln -s $HOME/.dotfiles/.config/nvim  $HOME/.config/
 nvim -c 'PlugInstall --sync|qa'
-nvim -c 'CocUpdateSync|q'
 nvim -c 'TSInstallSync all|q'
 
 
