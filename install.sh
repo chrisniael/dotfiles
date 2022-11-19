@@ -15,10 +15,10 @@ ln -s $HOME/.dotfiles/.p10k.zsh $HOME/
 source $HOME/.zshrc
 
 # npm config
+# NPM_PACKAGES="${HOME}/.npm"
+# /bin/mkdir -p $NPM_PACKAGES
+# npm config set prefix $NPM_PACKAGES
 ln -s $HOME/.dotfiles/.npmrc $HOME/
-NPM_PACKAGES="${HOME}/.npm"
-/bin/mkdir -p $NPM_PACKAGES
-npm config set prefix $NPM_PACKAGES
 
 # gem config
 ln -s $HOME/.dotfiles/.gemrc $HOME/
