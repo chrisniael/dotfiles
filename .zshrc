@@ -20,6 +20,10 @@ source $ZSH/oh-my-zsh.sh
 #----------------------------------------------------------------------
 # User configuration
 #----------------------------------------------------------------------
+# Ctrl-u 行为与 bash 一致
+# https://stackoverflow.com/a/3483679
+bindkey \^U backward-kill-line
+
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
