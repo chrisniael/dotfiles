@@ -62,7 +62,6 @@ let g:coc_global_extensions = [
       \ 'coc-vimlsp',
       \ 'coc-html',
       \ 'coc-prettier',
-      \ 'coc-smartf',
       \ 'coc-emoji',
       \ 'coc-word',
       \ 'coc-dictionary',
