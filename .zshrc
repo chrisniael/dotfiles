@@ -186,7 +186,7 @@ fi
 # tmux 启动的时候存在 attached 的 session 则 attach 它并剔除所有其他客户端，不存在则创建一个新的
 if [[ -z "$TMUX" ]]; then
   # 不是 vim/neovim 的 terminal 启动的 zsh
-  if [[ -z "$NVIM_LISTEN_ADDRESS" ]]; then
+  if [[ -z "$NVIM" ]]; then
     exit() {
       killall xclip >/dev/null 2>&1
       unset -f exit
@@ -200,7 +200,7 @@ if [[ -z "$TMUX" ]]; then
   export TERM='xterm-256color'
 
   # 仅仅通过 ssh 连接时自动启动 tmux
-  if [[ -n "$SSH_CONNECTION" ]]; then
+  if [[ -n "$SSH_CONNECTION" ]] && [[ "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" ]]; then
     # 用 eval 是去除前后的空格， mac 上的 wc 命令与 linux 不太一样，会输出一些空格
     if [[ $(eval echo $(tmux list-sessions 2>/dev/null | wc -l)) = 0 ]]; then
       exec tmux new-session
@@ -227,7 +227,7 @@ else
   #
   # 关闭 xclip child process 的原因是因为 xclip 会保持和 X Server 的连接，exit 的时候会不能正常关闭 SSH 连接
   # 用 eval 是去除前后的空格， mac 上的 wc 命令与 linux 不太一样，会输出一些空格
-  if [[ -z "$NVIM_LISTEN_ADDRESS" ]]; then
+  if [[ -z "$NVIM" ]]; then
     exit() {
       if [[ $(eval echo $(tmux list-sessions | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-windows | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-panes | wc -l)) = 1 ]]; then
         killall xclip >/dev/null 2>&1
