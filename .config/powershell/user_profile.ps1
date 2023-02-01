@@ -5,12 +5,14 @@ $env:LANG= "en_US.UTF-8"
 $env:EDITOR= "nvim"
 
 # C/CXX Compiler
-$env:CC="clang.exe"
-$env:CXX="clang++.exe"
+# $env:CC="clang.exe"
+# $env:CXX="clang++.exe"
 
 Set-Alias -Name nvim -Value C:\Users\shenyu\scoop\apps\neovim\current\bin\nvim-qt.exe
 Set-Alias -Name vim -Value nvim
 Set-Alias -Name grep -Value findstr
+
+[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 
 # posh-git
 # https://github.com/dahlbyk/posh-git
@@ -39,10 +41,4 @@ function proxy {
 
 function unproxy {
   $env:http_proxy="";$env:https_proxy=""
-}
-
-# Utilities
-function which ($command) {
-  Get-Command -Name $command -ErrorAction SilentlyContinue |
-    Select-Object -ExpandProperty Path -ErrorAction SilentlyContinue
 }
