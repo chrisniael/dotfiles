@@ -12,7 +12,12 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 DISABLE_AUTO_UPDATE="true"
 
-plugins=(docker rust golang)
+plugins=()
+
+# zsh-completions
+# 命令补全
+# https://github.com/zsh-users/zsh-completions
+fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 
 source $ZSH/oh-my-zsh.sh
 
