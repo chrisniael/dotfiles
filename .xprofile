@@ -1,1 +1,1 @@
-source /home/shenyu/.zshenv
+source $HOME/.zshenv

@@ -33,6 +33,26 @@ export LANG=en_US.UTF-8
 export XAUTHORITY=$HOME/.Xauthority
 export EDITOR=nvim
 
+# luarocks 配置
+# luarocks path
+export PATH="$PATH:$HOME/.luarocks/bin"
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+NPM_PACKAGES="${HOME}/.npm"
+export PATH="$PATH:$NPM_PACKAGES/bin"
+export MANPATH="${MANPATH}:$NPM_PACKAGES/share/man"
+
+export PATH="$PATH:$GEM_HOME/bin"
+
+export PATH="$PATH:$GOPATH/bin"
+
+export PATH="$HOME/.local/bin:$PATH"
+
+# Add by Toolbox App
+export PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts"
+
 alias gdb="sudo gdb"
 alias ls='exa -F'
 alias ll='exa -lF'

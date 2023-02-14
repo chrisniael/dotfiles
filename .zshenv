@@ -1,53 +1,13 @@
-# Fcitix 5 配置
-export GTK_IM_MODULE=fcitx
-export QT_IM_MODULE=fcitx
-export XMODIFIERS=@im=fcitx
-export INPUT_METHOD=fcitx
-export SDL_IM_MODULE=fcitx
-export GLFW_IM_MODULE=ibus
+# 需要 export 给 X11 应用程序的环境变量设置在这里
 
-# Toolbox App
-export PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts"
+# go
+export GOPATH="$HOME/.go"
 
-# luarocks 配置
-export LUA_PATH='/usr/share/lua/5.4/?.lua;/usr/share/lua/5.4/?/init.lua;/usr/lib/lua/5.4/?.lua;/usr/lib/lua/5.4/?/init.lua;./?.lua;./?/init.lua;$HOME/.luarocks/share/lua/5.4/?.lua;$HOME/.luarocks/share/lua/5.4/?/init.lua'
-export LUA_CPATH='/usr/lib/lua/5.4/?.so;/usr/lib/lua/5.4/loadall.so;./?.so;$HOME/.luarocks/lib/lua/5.4/?.so'
-export PATH="$HOME/.luarocks/bin:$PATH"
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-NPM_PACKAGES="${HOME}/.npm"
-export PATH="$PATH:$NPM_PACKAGES/bin"
-export MANPATH="${MANPATH}:$NPM_PACKAGES/share/man"
+# luarocks
+export LUA_PATH="/usr/share/lua/5.4/?.lua;$HOME/.luarocks/share/lua/5.4/?.lua;$HOME/.luarocks/share/lua/5.4/?/init.lua;/usr/share/lua/5.4/?/init.lua"
+export LUA_CPATH="/usr/lib/lua/5.4/?.so;$HOME/.luarocks/lib/lua/5.4/?.so"
 
 # Install Ruby Gems to ~/.gems
 # https://stackoverflow.com/a/55076591
 export GEM_HOME=$HOME/.gems
-export PATH="$PATH:$GEM_HOME/bin"
 
-export GOPATH="$HOME/.go"
-export PATH="$PATH:$GOPATH/bin"
-
-export PATH="$HOME/.local/bin:$PATH"
-
-export PATH="$HOME/.local/share/nvim/plugged/asynctasks.vim/bin:$PATH"
-
-# 设置 JetBrains IDE JDK 路径
-# https://github.com/RikudouPatrickstar/JetBrainsRuntime-for-Linux-x64
-# JET_BRAINS_IDES=(
-#   CLION
-#   DATAGRIP
-#   GOLAND
-#   IDEA
-#   MPS
-#   PHPSTORM
-#   PYCHARM
-#   RIDER
-#   RUBYMINE
-#   WEBIDE
-# )
-#
-# for IDE in "${JET_BRAINS_IDES[@]}"; do
-#   export ${IDE}_JDK=${HOME}/.jbr
-# done
