@@ -29,10 +29,11 @@ source $ZSH/oh-my-zsh.sh
 # https://stackoverflow.com/a/3483679
 bindkey \^U backward-kill-line
 
+export LANG=en_US.UTF-8
+export XAUTHORITY=$HOME/.Xauthority
+export EDITOR=nvim
 
 alias gdb="sudo gdb"
-
-
 alias ls='exa -F'
 alias ll='exa -lF'
 alias la='exa -laF'

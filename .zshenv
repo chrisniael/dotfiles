@@ -1,7 +1,3 @@
-export LANG=en_US.UTF-8
-export XAUTHORITY=$HOME/.Xauthority
-export EDITOR=nvim
-
 # Fcitix 5 配置
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
@@ -37,3 +33,21 @@ export PATH="$HOME/.local/bin:$PATH"
 
 export PATH="$HOME/.local/share/nvim/plugged/asynctasks.vim/bin:$PATH"
 
+# 设置 JetBrains IDE JDK 路径
+# https://github.com/RikudouPatrickstar/JetBrainsRuntime-for-Linux-x64
+# JET_BRAINS_IDES=(
+#   CLION
+#   DATAGRIP
+#   GOLAND
+#   IDEA
+#   MPS
+#   PHPSTORM
+#   PYCHARM
+#   RIDER
+#   RUBYMINE
+#   WEBIDE
+# )
+#
+# for IDE in "${JET_BRAINS_IDES[@]}"; do
+#   export ${IDE}_JDK=${HOME}/.jbr
+# done
