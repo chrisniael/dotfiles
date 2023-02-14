@@ -33,6 +33,13 @@ export LANG=en_US.UTF-8
 export XAUTHORITY=$HOME/.Xauthority
 export EDITOR=nvim
 
+# 确保 source ~/.zshrc 和 tmux 启动的时候不会重复追加 PATH 的值
+if [[ -z "$TMUX" ]] && [[ -z "$SYSTEM_PATH" ]]; then
+  export SYSTEM_PATH=$PATH
+else
+  export PATH=$SYSTEM_PATH
+fi
+
 # luarocks 配置
 # luarocks path
 export PATH="$PATH:$HOME/.luarocks/bin"
