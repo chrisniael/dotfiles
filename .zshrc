@@ -90,6 +90,8 @@ elif [[ "${OS}" == "Linux" ]]; then
       export PATH="$PATH:$NPM_PACKAGES/bin"
       export MANPATH="${MANPATH}:$NPM_PACKAGES/share/man"
 
+      # Install Ruby Gems to ~/.gems
+      # https://stackoverflow.com/a/55076591
       export GEM_HOME=$HOME/.gems
       export PATH="$PATH:$GEM_HOME/bin"
       ;;
