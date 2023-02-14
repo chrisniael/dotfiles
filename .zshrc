@@ -29,88 +29,8 @@ source $ZSH/oh-my-zsh.sh
 # https://stackoverflow.com/a/3483679
 bindkey \^U backward-kill-line
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
 
-# 确保 source ~/.zshrc 的时候不会重复追加 PATH 的值
-if [[ -z "$TMUX" ]] && [[ -z "$ORIGIN_PATH" ]]; then
-  export ORIGIN_PATH=$PATH
-else
-  export PATH=$ORIGIN_PATH
-fi
-
-OS=$(uname)
-
-if [[ "${OS}" == "Darwin" ]]; then
-  alias lldb="PATH=/usr/bin /usr/bin/lldb"
-  alias ssh-over-ss="ssh -o ProxyCommand='nc -x 127.0.0.1:1081 %h %p'"
-  alias htop="TERM=xterm-256color htop"
-
-  # 更新所有 cask
-  function brew-cask-upgrade() {
-    # 去除末尾的空格
-    local cask_list=$(eval echo $(brew outdated --cask --greedy --verbose | grep -v '!= latest' | awk -F ' ' '{print $1}' | tr '\n' ' '))
-    # 不用 eval 会导致多个 token 的时候不被当成多参数
-    eval brew upgrade --cask $cask_list
-  }
-
-  export CLICOLOR=1
-  export LSCOLORS=exfxcxdxbxegedabagacad
-
-  # Fix GitHub API rate limit exceeded
-  if [[ -f $HOME/.homebrew_github_api_token ]]; then
-    source $HOME/.homebrew_github_api_token
-    export HOMEBREW_GITHUB_API_TOKEN=$HOMEBREW_GITHUB_API_TOKEN
-  fi
-
-  export PATH="/usr/local/sbin:$PATH"
-  export PATH="/usr/local/opt/ruby/bin:$PATH"
-  export PATH="/usr/local/opt/openssl/bin:$PATH"
-  export PATH="/usr/local/opt/sqlite/bin:$PATH"
-  # export PATH="/usr/local/opt/sphinx-doc/bin:$PATH"
-  export PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
-  export PATH="/usr/local/opt/ncurses/bin:$PATH"
-  export PATH=$PATH:/usr/local/opt/llvm/bin
-  # 这个命令会让 zsh 启动变特别慢, 直接指定路径加速启动
-  # export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
-  export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/usr/local/opt/openssl@1.1"
-  # export HOMEBREW_NO_AUTO_UPDATE=true
-
-  # GCC/Clang 默认搜索路径
-  export C_INCLUDE_PATH="$C_INCLUDE_PATH:/usr/local/include"
-  export CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/local/include"
-  export OBJC_INCLUDE_PATH="$OBJC_INCLUDE_PATH:/usr/local/lib"
-elif [[ "${OS}" == "Linux" ]]; then
-  source /etc/os-release
-  case "${ID}" in
-    arch|manjaro)
-      alias gdb="sudo gdb"
-
-      NPM_PACKAGES="${HOME}/.npm"
-      export PATH="$PATH:$NPM_PACKAGES/bin"
-      export MANPATH="${MANPATH}:$NPM_PACKAGES/share/man"
-
-      # Install Ruby Gems to ~/.gems
-      # https://stackoverflow.com/a/55076591
-      export GEM_HOME=$HOME/.gems
-      export PATH="$PATH:$GEM_HOME/bin"
-      ;;
-    ubuntu)
-      ;;
-    centos)
-      ;;
-    *)
-      ;;
-  esac
-fi
-
-export GOPATH="$HOME/.go"
-export PATH="$PATH:$GOPATH/bin"
-
-export PATH="$HOME/.local/bin:$PATH"
-
-export PATH="$HOME/.local/share/nvim/plugged/asynctasks.vim/bin:$PATH"
-alias t='asynctask -f'
+alias gdb="sudo gdb"
 
 
 alias ls='exa -F'
@@ -158,29 +78,6 @@ function proxy() {
     fi
   fi
 }
-
-if [[ "$(uname -r | grep -Eo Microsoft)" == "Microsoft" ]]; then
-  # WSL not apply umask corrent.
-  if [[ "$(umask)" = "000" ]]; then
-    umask 022
-  fi
-
-  # WSL local not auto set DISPLAY variable
-  if [[ -z "$SSH_CONNECTION" ]]; then
-    export DISPLAY=:0.0
-  fi
-fi
-
-if [[ -n "$NVIM_LISTEN_ADDRESS" ]]; then
-  if [ -d $HOME/.local/share/nvim/plugged/vim-floaterm/bin ]; then
-    export PATH="$HOME/.local/share/nvim/plugged/vim-floaterm/bin:$PATH"
-    alias vim="floaterm"
-  fi
-fi
-
-export LANG=en_US.UTF-8
-export XAUTHORITY=$HOME/.Xauthority
-export EDITOR=nvim
 
 # ulimit -c unlimited
 # ulimit -n 20480
