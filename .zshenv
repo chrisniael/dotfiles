@@ -4,8 +4,8 @@
 export GOPATH="$HOME/.go"
 
 # luarocks
-export LUA_PATH="/usr/share/lua/5.4/?.lua;$HOME/.luarocks/share/lua/5.4/?.lua;$HOME/.luarocks/share/lua/5.4/?/init.lua;/usr/share/lua/5.4/?/init.lua"
-export LUA_CPATH="/usr/lib/lua/5.4/?.so;$HOME/.luarocks/lib/lua/5.4/?.so"
+export LUA_PATH=";;$HOME/.luarocks/share/lua/5.4/?.lua;$HOME/.luarocks/share/lua/5.4/?/init.lua"
+export LUA_CPATH=";;$HOME/.luarocks/lib/lua/5.4/?.so"
 
 # Install Ruby Gems to ~/.gems
 # https://stackoverflow.com/a/55076591
