@@ -3,6 +3,8 @@ if !has("nvim")
   finish
 endif
 
+set nocompatible
+
 "----------------------------------------------------------------------
 " vim-plugin 插件列表
 " https://github.com/junegunn/vim-plug
@@ -19,7 +21,7 @@ if !&diff
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
   Plug 'tpope/vim-commentary'
-  " Plug 'godlygeek/tabular'
+  "" Plug 'godlygeek/tabular'
   Plug 'plasticboy/vim-markdown', { 'for': ['markdown'] }
   Plug 'MTDL9/vim-log-highlighting', { 'for': ['log'] }
   Plug 'tpope/vim-obsession'
@@ -33,11 +35,11 @@ if !&diff
   Plug 'sebdah/vim-delve', { 'for': ['go'] }
 endif
 Plug 'gruvbox-community/gruvbox'
-" Plug 'gu-fan/riv.vim'
+"" Plug 'gu-fan/riv.vim'
 Plug 'cespare/vim-toml', { 'for': ['toml'] }
 Plug 'chrisniael/rsi.vim'
 Plug 'chrisniael/indent.vim'
-" Plug 'wincent/terminus'
+"" Plug 'wincent/terminus'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'lukas-reineke/indent-blankline.nvim'
 
@@ -58,12 +60,11 @@ let g:coc_global_extensions = [
       \ 'coc-tasks',
       \ 'coc-json',
       \ 'coc-pyright',
-      \ 'coc-lua',
+      \ 'coc-sumneko-lua',
       \ 'coc-vimlsp',
       \ 'coc-html',
       \ 'coc-prettier',
       \ 'coc-emoji',
-      \ 'coc-word',
       \ 'coc-dictionary',
       \ 'coc-yaml',
       \ 'coc-go',
@@ -86,12 +87,14 @@ let g:indent_tab_4w_filetypes = ['go', 'gitconfig']
 let g:indent_space_2w_filetypes = ['c', 'cpp', 'toml', 'json']
 
 " 缩进字符 4 空格
-let g:indent_space_4w_filetypes = ['toml', 'php', 'python', 'proto']
+let g:indent_space_4w_filetypes = ['toml', 'php', 'python', 'proto', "lua", "markdown"]
 
 
 "----------------------------------------------------------------------
 " 适用于 diff 与 非 diff 模式的配置
 "----------------------------------------------------------------------
+filetype plugin indent on
+
 " 显示标题
 set title
 
@@ -199,8 +202,8 @@ endif
 
 " guifont 仅仅影响 vim-gui, 不影响 neovim-qt
 if has("win32")
-  silent! set guifont=Hack\ NF:h9
-  silent! set guifontwide=Microsoft\ YaHei\ UI:h9
+  silent! set guifont=Hack\ NFM:h11
+  silent! set guifontwide=Microsoft\ YaHei\ UI:h11
 endif
 
 " 关闭错误响声
@@ -315,23 +318,40 @@ endif
 " 所有复制操作都同步至 primary 剪切板 +
 set clipboard+=unnamedplus
 
-" windows 上使用 pwsh 作为默认 shell
+" windows 上使用 powershell 作为默认 shell
 " if has("win32")
-"   let &shell='pwsh'
+"   let &shell='powershell'
 "   let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
 "   let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
 "   let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
 "   set shellquote= shellxquote=
 " endif
 
-if has("win32") && !empty($SSH_CONNECTION)
-  let &shell='cmd'
+" windows 上使用 cmd 作为默认 shell
+" 比如从 git-bash 打开 nvim，会使用当前环境变量 SHELL 的值作为 nvim 的 shell，而 git-bash 在 nvim 中使用有一些问题
+if has("win32")
+  let &shell='cmd.exe'
+  let &shellcmdflag = '/s /c'
+  let &shellredir = '>%s 2>&1'
+  let &shellpipe = '>%s 2>&1'
+  let &shellslash = 0
+  let &shelltemp = 1
+  let &shellxquote = '"'
+  set shellquote= shellxescape=
 endif
+
+
+
+" Windows 非远程登录使用 cmd 作为默认 shell
+" if has("win32") && !empty($SSH_CONNECTION)
+"   let &shell='cmd'
+" endif
 
 " popup-menu and float window 透明
 " set pumblend=10
 " set winblend=10
 " highlight PmenuSel blend=0 
+
 
 
 "----------------------------------------------------------------------
@@ -438,7 +458,7 @@ else
   " - https://github.com/vim-airline/vim-airline-themes
   "----------------------------------------------------------------------
   " set laststatus=2  " 底部显示状态栏, 1:不显示, 2:显示
-  let g:airline_powerline_fonts = 1   " 使用 powerline 符号
+  let g:airline_powerline_fonts = 0   " 使用 powerline 符号
   let g:airline_symbols_ascii = 0
 
   " powerline symbols
@@ -559,7 +579,8 @@ else
 
   " Formatting selected code.
   xmap <Leader>f  <Plug>(coc-format-selected)
-  nmap <Leader>f  <Plug>(coc-format-selected)
+  " nmap <Leader>f  <Plug>(coc-format-selected)
+  nmap <Leader>f <Plug>(coc-format)
 
   augroup mygroup
     autocmd!
@@ -857,22 +878,7 @@ else
   "   let g:terminal_shell='pwsh'
   " endif
 
-
-  "----------------------------------------------------------------------
-  " coc-smartf 配置
-  " https://github.com/neoclide/coc-smartf
-  "----------------------------------------------------------------------
-  " press <esc> to cancel.
-  nmap f <Plug>(coc-smartf-forward)
-  nmap F <Plug>(coc-smartf-backward)
-  nmap ; <Plug>(coc-smartf-repeat)
-  nmap , <Plug>(coc-smartf-repeat-opposite)
-
-  augroup Smartf
-    autocmd User SmartfEnter :hi Conceal ctermfg=220 guifg=#6638F0
-    autocmd User SmartfLeave :hi Conceal ctermfg=239 guifg=#504945
-  augroup end
-
+  
   "----------------------------------------------------------------------
   " coc-dictionary
   " https://github.com/neoclide/coc-sources
@@ -884,14 +890,6 @@ else
     let $COC_CONFIG_HOME = coc#util#get_config_home()
     set dictionary+=$COC_CONFIG_HOME/dic.txt
   endif
-
-
-  "----------------------------------------------------------------------
-  " vim-lua-foramt 配置
-  " https://github.com/andrejlevkovitch/vim-lua-format
-  "----------------------------------------------------------------------
-  autocmd FileType lua nnoremap <buffer> <silent><Leader>f :call LuaFormat()<CR>
-  autocmd BufWrite *.lua call LuaFormat()
 
 
   "----------------------------------------------------------------------
@@ -1026,7 +1024,7 @@ require'nvim-treesitter.configs'.setup {
     enable = true,
 
     -- list of language that will be disabled
-    disable = {"vim"},
+    disable = {"vim", "lua"},
 
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).

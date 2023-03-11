@@ -30,5 +30,6 @@
   "rust-analyzer.server.path": "rust-analyzer",
   "python.pythonPath": "python3",
   "go.goplsPath": "gopls",
-  "git.enableGutters": false
+  "git.enableGutters": false,
+  "Lua.semantic.enable": false
 }
