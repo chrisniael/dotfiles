@@ -24,7 +24,9 @@
     "-g",
     "-ggdb",
     "-lc++",
-    "-lc++abi"
+    "-lc++abi",
+    "--include-directory=/usr/include/c++/12.2.1",
+    "--include-directory=/usr/include/c++/12.2.1/x86_64-pc-linux-gnu"
   ],
   "yank.enableCompletion": false,
   "rust-analyzer.server.path": "rust-analyzer",
