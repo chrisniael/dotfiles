@@ -15,23 +15,12 @@
   "clangd.enabled": true,
   "clangd.arguments": ["--clang-tidy"],
   "clangd.disableDiagnostics": false,
-  "clangd.fallbackFlags": [
-    "-std=c++2a",
-    "-fcoroutines-ts",
-    "-stdlib=libc++",
-    "-pthread",
-    "-O0",
-    "-g",
-    "-ggdb",
-    "-lc++",
-    "-lc++abi",
-    "--include-directory=/usr/include/c++/12.2.1",
-    "--include-directory=/usr/include/c++/12.2.1/x86_64-pc-linux-gnu"
-  ],
+  "clangd.fallbackFlags": ["-std=c++2a", "-fcoroutines"],
   "yank.enableCompletion": false,
   "rust-analyzer.server.path": "rust-analyzer",
   "python.pythonPath": "python3",
   "go.goplsPath": "gopls",
   "git.enableGutters": false,
-  "Lua.semantic.enable": false
+  "Lua.semantic.enable": false,
+  "clangd.path": "clangd"
 }
