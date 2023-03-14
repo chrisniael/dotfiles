@@ -15,7 +15,7 @@
   "clangd.enabled": true,
   "clangd.arguments": ["--clang-tidy"],
   "clangd.disableDiagnostics": false,
-  "clangd.fallbackFlags": ["-std=c++2a", "-fcoroutines"],
+  "clangd.fallbackFlags": ["-std=c++2a", "-fcoroutines-ts"],
   "yank.enableCompletion": false,
   "rust-analyzer.server.path": "rust-analyzer",
   "python.pythonPath": "python3",
