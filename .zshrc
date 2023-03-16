@@ -60,7 +60,7 @@ export PATH="$HOME/.local/bin:$PATH"
 # Add by Toolbox App
 export PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts"
 
-alias gdb="sudo gdb"
+alias gdb='EDITOR="nvim -R" gdb'
 alias ls='exa -F'
 alias ll='exa -lF'
 alias la='exa -laF'
