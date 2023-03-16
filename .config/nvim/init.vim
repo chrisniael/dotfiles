@@ -84,7 +84,7 @@ let g:indent_tab_4w_filetypes = ['go', 'gitconfig']
 let g:indent_space_2w_filetypes = ['c', 'cpp', 'toml', 'json']
 
 " 缩进字符 4 空格
-let g:indent_space_4w_filetypes = ['toml', 'php', 'python', 'proto', "lua", "markdown"]
+let g:indent_space_4w_filetypes = ['toml', 'php', 'python', 'proto', "lua", "markdown", "zsh", "sh"]
 
 
 "----------------------------------------------------------------------
