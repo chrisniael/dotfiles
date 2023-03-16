@@ -13,13 +13,17 @@
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
   "coc.preferences.formatOnSave": true,
   "clangd.enabled": true,
-  "clangd.arguments": ["--clang-tidy"],
+  "clangd.arguments": [
+    "--clang-tidy"
+  ],
   "clangd.disableDiagnostics": false,
-  "clangd.fallbackFlags": ["-std=c++2a", "-fcoroutines-ts"],
+  "clangd.fallbackFlags": [
+    "-std=c++2a",
+    "-fcoroutines-ts"
+  ],
   "yank.enableCompletion": false,
   "rust-analyzer.server.path": "rust-analyzer",
   "python.pythonPath": "python3",
-  "go.goplsPath": "gopls",
   "git.enableGutters": false,
   "Lua.semantic.enable": false,
   "clangd.path": "clangd"

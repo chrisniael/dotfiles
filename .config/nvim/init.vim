@@ -41,7 +41,6 @@ Plug 'chrisniael/rsi.vim'
 Plug 'chrisniael/indent.vim'
 "" Plug 'wincent/terminus'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'lukas-reineke/indent-blankline.nvim'
 
 " Initialize plugin system
 call plug#end()
@@ -54,24 +53,22 @@ let g:coc_global_extensions = [
       \ 'coc-yank',
       \ 'coc-pairs',
       \ 'coc-lists',
+      \ 'coc-emoji',
+      \ 'coc-tasks',
+      \ 'coc-git',
+      \ 'coc-highlight',
       \ 'coc-clangd',
       \ 'coc-cmake',
       \ 'coc-rust-analyzer',
-      \ 'coc-tasks',
       \ 'coc-json',
       \ 'coc-pyright',
       \ 'coc-sumneko-lua',
       \ 'coc-vimlsp',
       \ 'coc-html',
-      \ 'coc-prettier',
-      \ 'coc-emoji',
-      \ 'coc-dictionary',
       \ 'coc-yaml',
       \ 'coc-go',
       \ 'coc-phpactor',
-      \ 'coc-git',
       \ 'coc-db',
-      \ 'coc-highlight',
       \ 'coc-sh',
       \ ]
 
@@ -1024,7 +1021,7 @@ require'nvim-treesitter.configs'.setup {
     enable = true,
 
     -- list of language that will be disabled
-    disable = {"vim", "lua"},
+    disable = {"vim", "lua", "json"},
 
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
@@ -1032,21 +1029,5 @@ require'nvim-treesitter.configs'.setup {
     -- Instead of true it can also be a list of languages
     additional_vim_regex_highlighting = false,
   },
-}
-
-vim.opt.list = false
--- vim.opt.listchars:append("space:⋅")
--- vim.opt.listchars:append("eol:↴")
-vim.opt.termguicolors = true
-vim.cmd [[highlight IndentBlanklineContextChar guifg=#7c6f64 gui=nocombine]]
-vim.cmd [[highlight Whitespace guifg=#3c3836 gui=nocombine]]
-vim.cmd [[highlight IndentBlanklineChar guifg=#3c3836 gui=nocombine]]
-vim.cmd [[highlight IndentBlanklineSpaceChar guifg=#3c3836 gui=nocombine]]
-require'indent_blankline'.setup {
-    -- for example, context is off by default, use this to turn it on
-    show_current_context = true,
-    show_current_context_start = false,
-    show_end_of_line = false,
-    space_char_blankline = " ",
 }
 EOF
