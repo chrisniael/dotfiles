@@ -1,4 +1,7 @@
 {
+  "coc.preferences.formatOnType": true,
+  "coc.preferences.currentFunctionSymbolAutoUpdate": true,
+  "coc.preferences.formatOnSave": true,
   "list.previousKeymap": "<C-p>",
   "list.nextKeymap": "<C-n>",
   "list.insertMappings": {
@@ -9,9 +12,9 @@
   "list.normalMappings": {
     "<C-o>": "eval: "
   },
-  "coc.preferences.formatOnType": true,
-  "coc.preferences.currentFunctionSymbolAutoUpdate": true,
-  "coc.preferences.formatOnSave": true,
+  "yank.enableCompletion": false,
+  "git.enableGutters": false,
+  "clangd.path": "clangd",
   "clangd.enabled": true,
   "clangd.arguments": [
     "--clang-tidy"
@@ -21,10 +24,7 @@
     "-std=c++2a",
     "-fcoroutines-ts"
   ],
-  "yank.enableCompletion": false,
   "rust-analyzer.server.path": "rust-analyzer",
   "python.pythonPath": "python3",
-  "git.enableGutters": false,
-  "Lua.semantic.enable": false,
-  "clangd.path": "clangd"
+  "Lua.semantic.enable": false
 }
