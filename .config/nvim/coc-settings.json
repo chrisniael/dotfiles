@@ -16,7 +16,8 @@
   "clangd.path": "clangd",
   "clangd.enabled": true,
   "clangd.arguments": [
-    "--clang-tidy"
+    "--clang-tidy",
+    "--completion-style=detailed"
   ],
   "clangd.disableDiagnostics": false,
   "clangd.fallbackFlags": [
