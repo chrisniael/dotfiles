@@ -360,6 +360,13 @@ endif
 
 
 "----------------------------------------------------------------------
+" coc-go 配置
+" https://github.com/josa42/coc-go
+"----------------------------------------------------------------------
+autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
+
+
+"----------------------------------------------------------------------
 " coc-phpactor 配置
 " https://github.com/phpactor/coc-phpactor
 "----------------------------------------------------------------------
