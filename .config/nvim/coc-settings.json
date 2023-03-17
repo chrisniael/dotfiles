@@ -23,6 +23,9 @@
     "-std=c++2a",
     "-fcoroutines-ts"
   ],
+  "go.goplsOptions": {
+    "semanticTokens": true
+  },
   "rust-analyzer.server.path": "rust-analyzer",
   "python.pythonPath": "python3",
   "Lua.semantic.enable": false
