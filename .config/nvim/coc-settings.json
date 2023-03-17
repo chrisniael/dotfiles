@@ -2,6 +2,7 @@
   "coc.preferences.formatOnType": true,
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
   "coc.preferences.formatOnSave": true,
+  "semanticTokens.enable": true,
   "list.insertMappings": {
     "<C-k>": "prompt:removetail",
     "<C-f>": "prompt:right",
