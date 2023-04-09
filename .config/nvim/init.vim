@@ -446,10 +446,6 @@ else
     command! Wqa :noautocmd wqa
   endif
 
-  " 如果 tags 跳转存在多个选项, 则显示列表, 无则直接跳转
-  set cscopetag
-  set tags=./.tags;,.tags
-
   " 高亮光标所在位置的单词, 并输入全文替换的命令, 替换单词代填充
   nmap <Leader>rp #<S-N>:%s/<C-r>=expand("<cword>")<CR>//g<Left><Left>
 
