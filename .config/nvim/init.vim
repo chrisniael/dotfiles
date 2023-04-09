@@ -69,6 +69,7 @@ let g:coc_global_extensions = [
       \ 'coc-phpactor',
       \ 'coc-db',
       \ 'coc-sh',
+      \ 'coc-tsserver',
       \ ]
 
 
