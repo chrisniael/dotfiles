@@ -29,16 +29,12 @@ source $ZSH/oh-my-zsh.sh
 # https://stackoverflow.com/a/3483679
 bindkey \^U backward-kill-line
 
+# 取消 Ctrl-x 快捷键
+bindkey -r \^X
+
 export LANG=en_US.UTF-8
 export XAUTHORITY=$HOME/.Xauthority
 export EDITOR=nvim
-
-# 确保 source ~/.zshrc 和 tmux 启动的时候不会重复追加 PATH 的值
-if [[ -z "$TMUX" ]] && [[ -z "$SYSTEM_PATH" ]]; then
-    export SYSTEM_PATH=$PATH
-else
-    export PATH=$SYSTEM_PATH
-fi
 
 # luarocks 配置
 # luarocks path
@@ -115,66 +111,16 @@ if [ -f "${HOME}/.zshrc_local" ]; then
     source "${HOME}/.zshrc_local"
 fi
 
-# tmux 启动的时候存在 attached 的 session 则 attach 它并剔除所有其他客户端，不存在则创建一个新的
-if [[ -z "$TMUX" ]]; then
-    # 不是 vim/neovim 的 terminal 启动的 zsh
-    if [[ -z "$NVIM" ]]; then
-        exit() {
-            killall xclip >/dev/null 2>&1
-            unset -f exit
-            exit
-        }
-    fi
+# # XShell 终端类型里没有 xterm-256color 选项，需要手动设置
+# # tmux 里不可以手动设置，tmux 本身配置里有对 TERM 设置
+# # TERM 会影响 ohmyzsh 的 ATUO_TITLE 功能
+# export TERM='xterm-256color'
 
-  # XShell 终端类型里没有 xterm-256color 选项，需要手动设置
-  # tmux 里不可以手动设置，tmux 本身配置里有对 TERM 设置
-  # TERM 会影响 ohmyzsh 的 ATUO_TITLE 功能
-  export TERM='xterm-256color'
+# # 手动更新 tmux session 的 zsh 环境变量
+# # https://babushk.in/posts/renew-environment-tmux.html
+# function preexec {
+#     eval "$(tmux show-environment -s)"
+# }
 
-  # 仅仅通过 ssh 连接时自动启动 tmux
-  if [[ -n "$SSH_CONNECTION" ]] && [[ "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" ]]; then
-      # 用 eval 是去除前后的空格， mac 上的 wc 命令与 linux 不太一样，会输出一些空格
-      if [[ $(eval echo $(tmux list-sessions 2>/dev/null | wc -l)) = 0 ]]; then
-          exec tmux new-session
-      else
-          ID="$(tmux list-sessions 2>/dev/null | grep -m1 attached | cut -d: -f1)"
-          if [[ -n "$ID" ]]; then
-              killall xclip >/dev/null 2>&1
-              exec tmux attach-session -d -x -t "$ID"
-          else
-              killall xclip >/dev/null 2>&1
-              exec tmux attach-session -d -x
-          fi
-      fi
-  else
-      # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-      [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-  fi
-else
-    [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-    # exit ssh 连接的时候，关闭 xclip child process，否则 ssh 连接不会关掉
-    # exit 的时候如果在 tmux 是最后一个 session 窗口，则关闭 xclip child process 且断开 ssh 连接
-    # 不在 tmux 则只关闭 xclip child process 且 exit
-    #
-    # 关闭 xclip child process 的原因是因为 xclip 会保持和 X Server 的连接，exit 的时候会不能正常关闭 SSH 连接
-    # 用 eval 是去除前后的空格， mac 上的 wc 命令与 linux 不太一样，会输出一些空格
-    if [[ -z "$NVIM" ]]; then
-        exit() {
-            if [[ $(eval echo $(tmux list-sessions | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-windows | wc -l)) = 1 ]] && [[ $(eval echo $(tmux list-panes | wc -l)) = 1 ]]; then
-                killall xclip >/dev/null 2>&1
-                clear
-                tmux detach -P
-            else
-                unset -f exit
-                exit
-            fi
-        }
-    fi
-
-    # 手动更新 tmux session 的 zsh 环境变量
-    # https://babushk.in/posts/renew-environment-tmux.html
-    function preexec {
-        eval "$(tmux show-environment -s)"
-    }
-fi
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

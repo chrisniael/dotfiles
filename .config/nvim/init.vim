@@ -296,23 +296,22 @@ autocmd FileType list nnoremap <buffer> <C-v> <C-r>*
 
 " 同步 ssh 连接的 vim 剪切板到本地
 " https://lotabout.me/2019/Integrate-clipboard-with-SSH/
-" Mac 上 XQuartz 有 bug, 不能同步 clipboard, 只能同步 primary, 所以配置成都走 primary
 if !has("win32") && !empty($SSH_CONNECTION)
   let g:clipboard = {
-    \   'name': 'xclip-primary',
+    \   'name': 'xclip-clipboard',
     \   'copy': {
-    \      '+': 'xclip -i -selection primary',
-    \      '*': 'xclip -i -selection primary',
+    \      '+': 'xclip -i -selection clipboard',
+    \      '*': 'xclip -i -selection clipboard',
     \    },
     \   'paste': {
-    \      '+': 'xclip -o -selection primary',
-    \      '*': 'xclip -o -selection primary',
+    \      '+': 'xclip -o -selection clipboard',
+    \      '*': 'xclip -o -selection clipboard',
     \   },
     \   'cache_enabled': 0,
     \ }
 endif
 
-" 所有复制操作都同步至 primary 剪切板 +
+" 所有复制操作都同步至 clipboard 剪切板 +
 set clipboard+=unnamedplus
 
 " windows 上使用 powershell 作为默认 shell
