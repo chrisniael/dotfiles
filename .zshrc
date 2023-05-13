@@ -1,30 +1,16 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+# powerlevel10k 主题
+[[ ! -f ~/.powerlevel10k/powerlevel10k.zsh-theme ]] || source ~/.powerlevel10k/powerlevel10k.zsh-theme
 
-# Path to your oh-my-zsh installation.
-export ZSH="${HOME}/.oh-my-zsh"
+# 启用补全
+autoload -Uz compinit
+compinit
+zstyle ':completion:*' menu select
+zstyle ':completion::complete:*' gain-privileges 1
 
-ZSH_THEME="powerlevel10k/powerlevel10k"
+# 记录历史记录
+SAVEHIST=999999999
+HISTFILE=$HOME/.zsh_history
 
-DISABLE_AUTO_UPDATE="true"
-
-plugins=()
-
-# zsh-completions
-# 命令补全
-# https://github.com/zsh-users/zsh-completions
-fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
-
-source $ZSH/oh-my-zsh.sh
-
-
-#----------------------------------------------------------------------
-# User configuration
-#----------------------------------------------------------------------
 # Ctrl-u 行为与 bash 一致
 # https://stackoverflow.com/a/3483679
 bindkey \^U backward-kill-line
