@@ -8,15 +8,12 @@ zstyle ':completion:*' menu select
 zstyle ':completion::complete:*' gain-privileges 1
 
 # 记录历史记录
-SAVEHIST=999999999
+SAVEHIST=50000
 HISTFILE=$HOME/.zsh_history
 
 # Ctrl-u 行为与 bash 一致
 # https://stackoverflow.com/a/3483679
 bindkey \^U backward-kill-line
-
-# 取消 Ctrl-x 快捷键
-bindkey -r \^X
 
 export LANG=en_US.UTF-8
 export XAUTHORITY=$HOME/.Xauthority
