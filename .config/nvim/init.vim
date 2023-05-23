@@ -199,7 +199,7 @@ endif
 
 " guifont 仅仅影响 vim-gui, 不影响 neovim-qt
 if has("win32")
-  silent! set guifont=Hack\ NFM:h11
+  silent! set guifont=Hack\ Nerd\ Font\ Mono:h11
   silent! set guifontwide=Microsoft\ YaHei\ UI:h11
 endif
 
@@ -571,7 +571,7 @@ else
   endfunction
 
   " Highlight the symbol and its references when holding the cursor.
-  autocmd CursorHold * silent call CocActionAsync('highlight')
+  autocmd CursorHold * silent! call CocActionAsync('highlight')
 
   " Symbol renaming.
   nmap <Leader>rn <Plug>(coc-rename)
