@@ -1,4 +1,9 @@
 # powerlevel10k 主题
+# https://github.com/romkatv/powerlevel10k
+# 安装
+# git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
+# 更新
+# git -C ~/.powerlevel10k pull
 [[ ! -f ~/.powerlevel10k/powerlevel10k.zsh-theme ]] || source ~/.powerlevel10k/powerlevel10k.zsh-theme
 
 # 启用补全
