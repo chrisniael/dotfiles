@@ -34,15 +34,9 @@ export PATH="$PATH:$HOME/.luarocks/bin"
 NPM_PACKAGES="${HOME}/.npm"
 export PATH="$PATH:$NPM_PACKAGES/bin"
 export MANPATH="${MANPATH}:$NPM_PACKAGES/share/man"
-
 export PATH="$PATH:$GEM_HOME/bin"
-
 export PATH="$PATH:$GOPATH/bin"
-
 export PATH="$HOME/.local/bin:$PATH"
-
-# Add by Toolbox App
-export PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts"
 
 alias gdb='EDITOR="nvim -R" gdb'
 alias ls='exa -F'
