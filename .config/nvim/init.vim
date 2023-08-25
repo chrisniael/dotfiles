@@ -226,8 +226,8 @@ set nobackup
 autocmd! BufNewFile *.go,go.mod,go.sum,go.work,go.work.sum setlocal fileformat=unix
 
 
-" 启用鼠标
-set mouse=a
+" 禁用鼠标
+set mouse=
 
 " :make 的时候自动保存
 set autowrite
