@@ -3,7 +3,7 @@
 git clone https://github.com/chrisniael/dotfiles.git $HOME/.dotfiles
 
 # 系统常用软件
-sudo pacman -S base-devel net-tools
+sudo pacman -S base-devel net-tools tree
 
 # Install man page
 sudo pacman -S man-db man-pages
