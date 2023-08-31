@@ -1,17 +1,10 @@
-" 不兼容 vim
-if !has("nvim")
-  finish
-endif
-
-set nocompatible
-
 "----------------------------------------------------------------------
 " vim-plugin 插件列表
 " https://github.com/junegunn/vim-plug
 " Avoid using standard Vim directory names like 'plugin'
 "----------------------------------------------------------------------
 " Linux/Unix: ~/.local/share/nvim/plugged
-call plug#begin(stdpath('data') . '/plugged')
+call plug#begin()
 
 " 加快 git difftool 打开速度
 if !&diff
@@ -296,23 +289,27 @@ autocmd FileType list nnoremap <buffer> <C-v> <C-r>*
 
 " 同步 ssh 连接的 vim 剪切板到本地
 " https://lotabout.me/2019/Integrate-clipboard-with-SSH/
-if !has("win32") && !empty($SSH_CONNECTION)
-  let g:clipboard = {
-    \   'name': 'xclip-clipboard',
-    \   'copy': {
-    \      '+': 'xclip -i -selection clipboard',
-    \      '*': 'xclip -i -selection clipboard',
-    \    },
-    \   'paste': {
-    \      '+': 'xclip -o -selection clipboard',
-    \      '*': 'xclip -o -selection clipboard',
-    \   },
-    \   'cache_enabled': 0,
-    \ }
-endif
+" if !has("win32") && !empty($SSH_CONNECTION)
+"   let g:clipboard = {
+"     \   'name': 'xclip-clipboard',
+"     \   'copy': {
+"     \      '+': 'xclip -i -selection clipboard',
+"     \      '*': 'xclip -i -selection clipboard',
+"     \    },
+"     \   'paste': {
+"     \      '+': 'xclip -o -selection clipboard',
+"     \      '*': 'xclip -o -selection clipboard',
+"     \   },
+"     \   'cache_enabled': 0,
+"     \ }
+" endif
 
 " 所有复制操作都同步至 clipboard 剪切板 +
-set clipboard+=unnamedplus
+if has('nvim')
+  set clipboard+=unnamedplus
+else
+  set clipboard=unnamed
+endif
 
 " windows 上使用 powershell 作为默认 shell
 " if has("win32")
@@ -426,8 +423,9 @@ else
 
   " 打开 terminal 时关闭行号和符号列, 并自动进入 insert 模式
   " 退出 terminal: <C-\><C-n>
-  " au TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
-  au TermOpen * setlocal nonumber norelativenumber signcolumn=no
+  if has('nvim')
+    autocmd TermOpen * setlocal nonumber norelativenumber signcolumn=no | startinsert
+  endif
 
   map <C-n> :cnext<CR>
   map <C-p> :cprevious<CR>
