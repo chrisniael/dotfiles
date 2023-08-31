@@ -13,8 +13,12 @@ zstyle ':completion:*' menu select
 zstyle ':completion::complete:*' gain-privileges 1
 
 # 记录历史记录
-SAVEHIST=50000
 HISTFILE=$HOME/.zsh_history
+# 历史记录命令数量
+SAVEHIST=50000
+# 加载入内存的历史命令数量
+HISTSIZE=50000
+alias history="history 0"
 
 # Ctrl-u 行为与 bash 一致
 # https://stackoverflow.com/a/3483679
@@ -41,7 +45,7 @@ export PATH="$HOME/.local/bin:$PATH"
 alias gdb='EDITOR="nvim -R" gdb'
 alias ls='exa -F'
 alias ll='exa -lF'
-alias la='exa -laF'
+alias la='exa -alF -a'
 alias rm="rm -i"
 alias cp="cp -i"
 alias mv="mv -i"
@@ -64,12 +68,12 @@ function proxy() {
     # HTTP_PROXY_PORT=7890
     if [[ -f $HOME/.proxy ]]; then
         source $HOME/.proxy
-        if [[ -n "$HTTP_PROXY_USERNAME" ]] && [[ -n "$HTTP_PROXY_IP" ]] && [[ -n "$HTTP_PROXY_PORT" ]]; then
+        if  [[ -n "$HTTP_PROXY_IP" ]] && [[ -n "$HTTP_PROXY_PORT" ]]; then
             unproxy
-            if [[ -n "$HTTP_PROXY_PASSWORD" ]]; then
+            if [[ -n "$HTTP_PROXY_USERNAME" ]] && [[ -n "$HTTP_PROXY_PASSWORD" ]]; then
                 local proxy_url=http://${HTTP_PROXY_USERNAME}:${HTTP_PROXY_PASSWORD}@${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}
             else
-                local proxy_url=http://${HTTP_PROXY_USERNAME}@${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}
+                local proxy_url=http://${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}
             fi
 
             export {http,https,ftp,rsync,all}_proxy=$proxy_url
