@@ -1,3 +1,8 @@
+# git clone git@github.com:chrisniael/dotfiles.git ~/.dotfiles
+# Windows PowerShell 设置配置
+# New-Item -Path C:\Users\shenyu\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1 -ItemType SymbolicLink -Value C:\Users\shenyu\Documents\git-repo\dotfiles\.config\powershell\Microsoft.PowerShell_profile.ps1
+# PowerShell 设置配置
+# New-Item -Path C:\Users\shenyu\Documents\PowerShell\Microsoft.PowerShell_profile.ps1 -ItemType SymbolicLink -Value C:\Users\shenyu\Documents\git-repo\dotfiles\.config\powershell\Microsoft.PowerShell_profile.ps1
 $env:TERM = "xterm-256color"
 $env:LANG= "en_US.UTF-8"
 
