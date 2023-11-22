@@ -1,8 +1,8 @@
-# git clone git@github.com:chrisniael/dotfiles.git ~/.dotfiles
+# git clone git@github.com:chrisniael/dotfiles.git $HOME/.dotfiles 
 # Windows PowerShell 设置配置
-# New-Item -Path C:\Users\shenyu\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1 -ItemType SymbolicLink -Value C:\Users\shenyu\Documents\git-repo\dotfiles\.config\powershell\Microsoft.PowerShell_profile.ps1
+# sudo New-Item -Path $HOME\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1 -ItemType SymbolicLink -Value $HOME\.dotfiles\.config\powershell\Microsoft.PowerShell_profile.ps1
 # PowerShell 设置配置
-# New-Item -Path C:\Users\shenyu\Documents\PowerShell\Microsoft.PowerShell_profile.ps1 -ItemType SymbolicLink -Value C:\Users\shenyu\Documents\git-repo\dotfiles\.config\powershell\Microsoft.PowerShell_profile.ps1
+# sudo New-Item -Path $HOME\Documents\PowerShell\Microsoft.PowerShell_profile.ps1 -ItemType SymbolicLink -Value $HOME\.dotfiles\.config\powershell\Microsoft.PowerShell_profile.ps1
 $env:TERM = "xterm-256color"
 $env:LANG= "en_US.UTF-8"
 
@@ -15,7 +15,9 @@ $env:EDITOR= "nvim"
 
 Set-Alias -Name grep -Value findstr
 
-# [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
+# 命令行遇到如下提示：
+# 请求被中止: 未能创建 SSL/TLS 安全通道。 
+[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 
 # posh-git
 # https://github.com/dahlbyk/posh-git
