@@ -24,6 +24,9 @@ alias history="history 0"
 # https://stackoverflow.com/a/3483679
 bindkey \^U backward-kill-line
 
+# Shift-Tab 快捷键
+bindkey '^[[Z' reverse-menu-complete
+
 export LANG=en_US.UTF-8
 export XAUTHORITY=$HOME/.Xauthority
 export EDITOR=nvim
