@@ -17,7 +17,9 @@
   "clangd.enabled": true,
   "clangd.arguments": [
     "--clang-tidy",
-    "--completion-style=detailed"
+    "--completion-style=detailed",
+    "--background-index",
+    "--pch-storage=memory"
   ],
   "clangd.disableDiagnostics": false,
   "clangd.fallbackFlags": [
