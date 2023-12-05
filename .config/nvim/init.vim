@@ -63,6 +63,7 @@ let g:coc_global_extensions = [
       \ 'coc-db',
       \ 'coc-sh',
       \ 'coc-tsserver',
+      \ 'coc-explorer',
       \ ]
 
 
@@ -644,7 +645,7 @@ else
   " Show all diagnostics.
   nnoremap <silent><nowait> <Space>a  :<C-u>CocList diagnostics<CR>
   " Manage extensions.
-  nnoremap <silent><nowait> <Space>e  :<C-u>CocList extensions<CR>
+  " nnoremap <silent><nowait> <Space>e  :<C-u>CocList extensions<CR>
   " Show commands.
   nnoremap <silent><nowait> <Space>c  :<C-u>CocList commands<CR>
   " Find symbol of current document.
@@ -1001,5 +1002,11 @@ else
   nmap <silent> <M-d> :<C-u>GoDebugStart<CR>
   " Go delve stepout"
   nmap <silent> <S-F11> :<C-u>GoDebugStepOut<CR>
+
+  "----------------------------------------------------------------------
+  " coc-explorer 配置
+  " https://github.com/weirongxu/coc-explorer
+  "----------------------------------------------------------------------
+  nmap <space>e <Cmd>CocCommand explorer<CR>
 
 endif
