@@ -23,8 +23,7 @@
   ],
   "clangd.disableDiagnostics": false,
   "clangd.fallbackFlags": [
-    "-std=c++2a",
-    "-fcoroutines-ts"
+    "-std=c++2a"
   ],
   "go.goplsOptions": {
     "semanticTokens": true

@@ -314,7 +314,7 @@ endif
 
 " windows 上使用 powershell 作为默认 shell
 " if has("win32")
-"   let &shell='powershell'
+"   let &shell='pwsh.exe'
 "   let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
 "   let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
 "   let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
