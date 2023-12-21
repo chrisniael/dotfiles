@@ -11,3 +11,10 @@ export LUA_CPATH=";;$HOME/.luarocks/lib/lua/5.4/?.so"
 # https://stackoverflow.com/a/55076591
 export GEM_HOME=$HOME/.gems
 
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+export INPUT_METHOD=fcitx
+export SDL_IM_MODULE=fcitx
+export GLFW_IM_MODULE=ibus
+
