@@ -20,6 +20,9 @@ SAVEHIST=50000
 HISTSIZE=50000
 alias history="history 0"
 
+# https://stackoverflow.com/a/43087047
+bindkey -e
+
 # Ctrl-u 行为与 bash 一致
 # https://stackoverflow.com/a/3483679
 bindkey \^U backward-kill-line
