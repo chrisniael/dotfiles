@@ -1,4 +1,4 @@
-# 需要 export 给 X11 应用程序的环境变量设置在这里
+# 需要 export 给 X11/Wayland 桌面应用程序的环境变量设置在这里
 
 # go
 export GOPATH="$HOME/.go"
