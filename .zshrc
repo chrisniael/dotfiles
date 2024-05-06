@@ -30,6 +30,13 @@ bindkey \^U backward-kill-line
 # Shift-Tab 快捷键
 bindkey '^[[Z' reverse-menu-complete
 
+# 设置终端 title
+# https://github.com/ohmyzsh/ohmyzsh/issues/5700#issuecomment-316111109
+function precmd () {
+    local window_title="\033]0;${PWD##*/}\007"
+    echo -ne "$window_title"
+}
+
 export LANG=en_US.UTF-8
 export XAUTHORITY=$HOME/.Xauthority
 export EDITOR=nvim
