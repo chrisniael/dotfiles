@@ -19,14 +19,15 @@
     "--clang-tidy",
     "--completion-style=detailed",
     "--background-index",
-    "--pch-storage=memory"
+    "--pch-storage=memory",
+    "--function-arg-placeholders=1"
   ],
   "clangd.disableDiagnostics": false,
-  "clangd.fallbackFlags": [
-    "-std=c++2a"
-  ],
+  "clangd.fallbackFlags": [],
+  "go.goplsPath": "gopls",
   "go.goplsOptions": {
-    "semanticTokens": true
+    "semanticTokens": true,
+    "usePlaceholders": false
   },
   "rust-analyzer.server.path": "rust-analyzer",
   "python.pythonPath": "python3",

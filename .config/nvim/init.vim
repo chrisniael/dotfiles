@@ -552,6 +552,10 @@ else
   nmap <silent> [g <Plug>(coc-diagnostic-prev)
   nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
+  " Jump snippet placeholders
+  let g:coc_snippet_next = '<TAB>'
+  let g:coc_snippet_prev = '<S-TAB>'
+
   " GoTo code navigation.
   nmap <silent> gd <Plug>(coc-definition)
   nmap <silent> gy <Plug>(coc-type-definition)
