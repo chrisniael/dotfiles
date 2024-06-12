@@ -46,17 +46,18 @@ ln -s $HOME/.dotfiles/.gemrc $HOME/
 #------------------------------------------------
 sudo pacman -S neovim
 sudo pacman -S ripgrep
-sudo pacman -S clang
 sudo pacman -S xclip
-sudo pacman -S delve
 sudo pacman -S ttf-hack-nerd
 
-pip install --break-system-packages --user pynvim
+# 安装各种语言的 LSP
+sudo pacman -S clang
+sudo pacman -S delve
 pip install --break-system-packages --user cmakelang
-
-npm install neovim -g
 npm install bash-language-server -g
 
+# 可选，安装各种语言的 Provider
+npm install neovim -g
+pip install --break-system-packages --user pynvim
 gem install neovim
 
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
