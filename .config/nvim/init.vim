@@ -33,6 +33,7 @@ Plug 'cespare/vim-toml', { 'for': ['toml'] }
 Plug 'chrisniael/rsi.vim'
 Plug 'chrisniael/indent.vim'
 "" Plug 'wincent/terminus'
+Plug 'honza/vim-snippets'
 
 " Initialize plugin system
 call plug#end()
@@ -64,6 +65,7 @@ let g:coc_global_extensions = [
       \ 'coc-sh',
       \ 'coc-tsserver',
       \ 'coc-explorer',
+      \ 'coc-snippets',
       \ ]
 
 
@@ -528,11 +530,15 @@ else
   " no select by `"suggest.noselect": true` in your configuration file.
   " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
   " other plugin before putting this into your config.
-  inoremap <silent><expr> <TAB>
-        \ coc#pum#visible() ? coc#pum#next(1) :
-        \ CheckBackspace() ? "\<Tab>" :
-        \ coc#refresh()
-  inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+  " inoremap <silent><expr> <TAB>
+  "       " \ coc#pum#visible() ? coc#_select_confirm() :
+  "       \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+  "       \ "\<Tab>"
+  " inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+  " Jump snippet placeholders
+  let g:coc_snippet_next = '<TAB>'
+  let g:coc_snippet_prev = '<S-TAB>'
 
   " Make <CR> to accept selected completion item or notify coc.nvim to format
   " <C-g>u breaks current undo, please make your own choice.
@@ -551,10 +557,6 @@ else
   " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
   nmap <silent> [g <Plug>(coc-diagnostic-prev)
   nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-  " Jump snippet placeholders
-  let g:coc_snippet_next = '<TAB>'
-  let g:coc_snippet_prev = '<S-TAB>'
 
   " GoTo code navigation.
   nmap <silent> gd <Plug>(coc-definition)
