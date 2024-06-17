@@ -510,6 +510,8 @@ else
   " coc.nvim 配置
   " https://github.com/neoclide/coc.nvim
   "---------------------------------------------------------------------- 
+  " Disabled completion sources
+  autocmd BufEnter * let b:coc_disabled_sources = ['around', 'buffer', 'file']
   " May need for vim (not neovim) since coc.nvim calculate byte offset by count
   " utf-8 byte sequence.
   set encoding=utf-8
