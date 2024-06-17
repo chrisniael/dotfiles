@@ -59,7 +59,7 @@
   },
   "rust-analyzer.server.path": "rust-analyzer",
   "python.pythonPath": "python3",
-  "Lua.semantic.enable": false,
+  "Lua.semantic.enable": true,
   "Lua.completion.callSnippet": "Replace",
   "snippets.ultisnips.pythonPrompt": false
 }
