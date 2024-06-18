@@ -34,6 +34,7 @@ Plug 'chrisniael/rsi.vim'
 Plug 'chrisniael/indent.vim'
 "" Plug 'wincent/terminus'
 Plug 'honza/vim-snippets'
+Plug 'ojroques/vim-oscyank', {'branch': 'main'}
 
 " Initialize plugin system
 call plug#end()
@@ -282,13 +283,8 @@ nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 tnoremap <C-o> <C-\><C-n>
 
 " 粘贴快捷键
-nnoremap <S-Insert> <C-r>*
-inoremap <S-Insert> <C-r>*
-cnoremap <S-Insert> <C-r>*
 inoremap <C-v> <C-r>*
 cnoremap <C-v> <C-r>*
-" 仅仅更改 coc-list 窗口 C-v 的快捷方式为粘贴
-autocmd FileType list nnoremap <buffer> <C-v> <C-r>*
 
 " 同步 ssh 连接的 vim 剪切板到本地
 " https://lotabout.me/2019/Integrate-clipboard-with-SSH/
@@ -1016,5 +1012,20 @@ else
   " https://github.com/weirongxu/coc-explorer
   "----------------------------------------------------------------------
   nmap <space>e <Cmd>CocCommand explorer<CR>
+
+  "----------------------------------------------------------------------
+  " vim-oscyank 配置
+  " https://github.com/ojroques/vim-oscyank
+  "----------------------------------------------------------------------
+  let s:VimOSCYankPostRegisters = ['', '+', '*']
+  function! s:VimOSCYankPostCallback(event)
+    if a:event.operator == 'y' && index(s:VimOSCYankPostRegisters, a:event.regname) != -1
+      call OSCYankRegister(a:event.regname)
+    endif
+  endfunction
+  augroup VimOSCYankPost
+    autocmd!
+    autocmd TextYankPost * call s:VimOSCYankPostCallback(v:event)
+  augroup END
 
 endif

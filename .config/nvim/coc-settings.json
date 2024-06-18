@@ -34,7 +34,8 @@
   "list.insertMappings": {
     "<C-k>": "prompt:removetail",
     "<C-f>": "prompt:right",
-    "<C-b>": "prompt:left"
+    "<C-b>": "prompt:left",
+    "<C-v>": "eval:@@"
   },
   "list.normalMappings": {
     "<C-o>": "eval: "
