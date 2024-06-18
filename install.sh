@@ -46,7 +46,7 @@ ln -s $HOME/.dotfiles/.gemrc $HOME/
 #------------------------------------------------
 sudo pacman -S neovim
 sudo pacman -S ripgrep
-sudo pacman -S xclip
+sudo pacman -S wl-clipboard  # wayland 桌面
 sudo pacman -S ttf-hack-nerd
 
 # 安装各种语言的 LSP
