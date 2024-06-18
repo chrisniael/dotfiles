@@ -1017,7 +1017,10 @@ else
   " vim-oscyank 配置
   " https://github.com/ojroques/vim-oscyank
   "----------------------------------------------------------------------
-  if !has('clipboard_working')
+  " 当 clipboard providor 不存在时，使用 osc52 复制内容，:checkhealth 查看 clipboard providor
+  " Wayland 桌面安装了 wl-clipboard 情况下，本地打开 nvim，不会使用 osc52
+  " ssh 到 linux 上，打开 nvim，则会使用 osc52 复制内容
+  if has('nvim') && !has('clipboard') || !has('nvim') && !has('clipboard_working')
     " In the event that the clipboard isn't working, it's quite likely that
     " the + and * registers will not be distinct from the unnamed register. In
     " this case, a:event.regname will always be '' (empty string). However, it
