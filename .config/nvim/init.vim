@@ -115,10 +115,8 @@ set background=dark
 " 没有安装 gruvbox 插件的时候不报错
 silent! colorscheme gruvbox
 
-" changing coc highlight color cause light grey is invisible
-" BUT is overwritten by scheme so defining it in an autocmd after colorscheme change
-" https://github.com/neoclide/coc-highlight/issues/6
-autocmd ColorScheme * highlight CocHighlightText gui=None guibg=#504945
+" Popup Menu 选择框颜色
+highlight CocMenuSel ctermbg=237 guibg=#13354A
 
 " 透明背景
 " highlight Normal ctermbg=NONE guibg=NONE
