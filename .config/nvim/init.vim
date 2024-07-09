@@ -35,6 +35,7 @@ Plug 'chrisniael/indent.vim'
 "" Plug 'wincent/terminus'
 Plug 'honza/vim-snippets'
 Plug 'ojroques/vim-oscyank', {'branch': 'main'}
+Plug 'LunarWatcher/auto-pairs'
 
 " Initialize plugin system
 call plug#end()
@@ -45,7 +46,6 @@ call plug#end()
 "----------------------------------------------------------------------
 let g:coc_global_extensions = [
       \ 'coc-yank',
-      \ 'coc-pairs',
       \ 'coc-lists',
       \ 'coc-emoji',
       \ 'coc-tasks',
@@ -383,6 +383,16 @@ let g:cpp_concepts_highlight = 1
 
 
 "----------------------------------------------------------------------
+" auto-pairs 配置
+" https://github.com/LunarWatcher/auto-pairs
+" 默认的快捷键前缀是 <C-p> 与 Popup Menu 选择键冲突，这里关闭所有快捷键
+let g:AutoPairsShortcutIgnore = ""
+let g:AutoPairsShortcutJump = ""
+let g:AutoPairsShortcutToggleMultilineClose = ""
+let g:AutoPairsShortcutToggle = ""
+let g:AutoPairsMoveExpression = ""
+
+"----------------------------------------------------------------------
 " 仅仅用于 diff 模式的配置
 "----------------------------------------------------------------------
 if &diff
@@ -538,9 +548,10 @@ else
 
   " Make <CR> to accept selected completion item or notify coc.nvim to format
   " <C-g>u breaks current undo, please make your own choice.
+  let g:AutoPairsMapCR = 0
   inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() :
         \ pumvisible() ? "\<C-y>" :
-        \ "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+        \ "\<C-g>u\<CR>\<Plug>AutoPairsReturn"
 
   function! CheckBackspace() abort
     let col = col('.') - 1
