@@ -27,7 +27,7 @@ if !&diff
   Plug 'fatih/vim-go', { 'for': ['go', 'gomod'] }
   Plug 'sebdah/vim-delve', { 'for': ['go'] }
 endif
-Plug 'gruvbox-community/gruvbox'
+Plug 'chrisniael/gruvbox.nvim'
 "" Plug 'gu-fan/riv.vim'
 Plug 'cespare/vim-toml', { 'for': ['toml'] }
 Plug 'chrisniael/rsi.vim'
@@ -109,6 +109,9 @@ set t_Co=256
 " 语法高亮
 syntax enable
 
+" 背景颜色, dark(default), light
+set background=dark
+
 " 没有安装 gruvbox 插件的时候不报错
 silent! colorscheme gruvbox
 
@@ -116,9 +119,6 @@ silent! colorscheme gruvbox
 " BUT is overwritten by scheme so defining it in an autocmd after colorscheme change
 " https://github.com/neoclide/coc-highlight/issues/6
 autocmd ColorScheme * highlight CocHighlightText gui=None guibg=#504945
-
-" 背景颜色, dark(default), light
-set background=dark
 
 " 透明背景
 " highlight Normal ctermbg=NONE guibg=NONE
@@ -342,7 +342,7 @@ endif
 " popup-menu and float window 透明
 " set pumblend=10
 " set winblend=10
-" highlight PmenuSel blend=0 
+" highlight PmenuSel blend=0
 
 
 
@@ -505,7 +505,7 @@ else
   "----------------------------------------------------------------------
   " coc.nvim 配置
   " https://github.com/neoclide/coc.nvim
-  "---------------------------------------------------------------------- 
+  "----------------------------------------------------------------------
   " Disabled completion sources
   autocmd BufEnter * let b:coc_disabled_sources = ['around', 'buffer', 'file']
   " May need for vim (not neovim) since coc.nvim calculate byte offset by count
@@ -667,7 +667,7 @@ else
   " 开启 semantic highlighting 支持
   " https://github.com/clangd/coc-clangd/issues/217#issuecomment-898130176
   " let g:coc_default_semantic_highlight_groups = 1
- 
+
   " coc.nvim c/c++ 头文件跳转
   " llvm 9.0 里 .h/.cpp 文件结构复杂时可能不能正常使用
   " llvm 10.0 修复了这个 bug
@@ -881,7 +881,7 @@ else
   "   let g:terminal_shell='pwsh'
   " endif
 
-  
+
   "----------------------------------------------------------------------
   " coc-dictionary
   " https://github.com/neoclide/coc-sources
@@ -1037,5 +1037,5 @@ else
         autocmd!
         autocmd TextYankPost * call s:VimOSCYankPostCallback(v:event)
     augroup END
-  endif 
+  endif
 endif
