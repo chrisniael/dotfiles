@@ -391,6 +391,8 @@ let g:AutoPairsShortcutJump = ""
 let g:AutoPairsShortcutToggleMultilineClose = ""
 let g:AutoPairsShortcutToggle = ""
 let g:AutoPairsMoveExpression = ""
+" 自动删除配对的符号
+let g:AutoPairsMapBS = 1
 
 "----------------------------------------------------------------------
 " 仅仅用于 diff 模式的配置
