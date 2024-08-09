@@ -31,7 +31,7 @@ Plug 'chrisniael/gruvbox.nvim'
 "" Plug 'gu-fan/riv.vim'
 Plug 'cespare/vim-toml', { 'for': ['toml'] }
 Plug 'chrisniael/rsi.vim'
-Plug 'chrisniael/indent.vim'
+Plug 'tpope/vim-sleuth'
 "" Plug 'wincent/terminus'
 Plug 'honza/vim-snippets'
 Plug 'ojroques/vim-oscyank', {'branch': 'main'}
@@ -68,20 +68,6 @@ let g:coc_global_extensions = [
       \ 'coc-explorer',
       \ 'coc-snippets',
       \ ]
-
-
-"----------------------------------------------------------------------
-" 字符缩进配置
-" TODO: 可以支持项目目录本地化配置
-"----------------------------------------------------------------------
-" 缩进字符 tab, 宽度 4
-let g:indent_tab_4w_filetypes = ['go', 'gitconfig']
-
-" 缩进字符 2 空格
-let g:indent_space_2w_filetypes = ['c', 'cpp', 'toml', 'json']
-
-" 缩进字符 4 空格
-let g:indent_space_4w_filetypes = ['toml', 'php', 'python', 'proto', "lua", "markdown", "zsh", "sh"]
 
 
 "----------------------------------------------------------------------
