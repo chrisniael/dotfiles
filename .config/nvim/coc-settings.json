@@ -31,6 +31,7 @@
     "typeParameter": "TypeParameter",
     "default": ""
   },
+  "colors.enable": true,
   "list.insertMappings": {
     "<C-k>": "prompt:removetail",
     "<C-f>": "prompt:right",
@@ -56,11 +57,14 @@
   "go.goplsPath": "gopls",
   "go.goplsOptions": {
     "semanticTokens": true,
-    "usePlaceholders": true
+    "usePlaceholders": false
   },
   "rust-analyzer.server.path": "rust-analyzer",
   "python.pythonPath": "python3",
+  "snippets.ultisnips.pythonPrompt": false,
   "Lua.semantic.enable": true,
-  "Lua.completion.callSnippet": "Replace",
-  "snippets.ultisnips.pythonPrompt": false
+  "Lua.completion.callSnippet": "Disable",
+  "Lua.completion.displayContext": 1,
+  "Lua.hint.enable": false,
+  "Lua.hint.setType": false
 }
