@@ -1,8 +1,6 @@
 [user]
 	name = shenyu
 	email = shenyu@shenyu.me
-[credential]
-	helper = manager-core
 [color]
 	branch = auto
 	diff = auto
