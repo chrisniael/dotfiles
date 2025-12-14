@@ -169,9 +169,11 @@ alias cd=cd_func
 # alias ls='ls --color=auto'
 # alias ll='ls -l'
 # alias la='ls -al'
-alias ls='exa -F'
-alias ll='exa -lF'
-alias la='exa -alF -a'
+# 使用 eza 替代 ls
+# https://github.com/eza-community/eza/blob/main/INSTALL.md
+alias ls='eza -F'
+alias ll='eza -lF'
+alias la='eza -alF -a'
 
 # PS1='\u@\h:\w\n\$ '
 PS1="\[\e[31m\]\u\[\e[36m\]@\[\e[33m\]\h\[\e[34m\]:\[\e[35m\]\w \[\e[37m\]\n\$ \[\e[0m\]"
